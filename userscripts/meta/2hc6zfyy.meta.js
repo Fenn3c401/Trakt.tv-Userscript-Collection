@@ -4,6 +4,7 @@
 // @version      1.0.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
+// @license      GPL-3.0-or-later
 // @homepageURL  https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection#readme
 // @supportURL   https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/issues
 // @updateURL    https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/meta/2hc6zfyy.meta.js

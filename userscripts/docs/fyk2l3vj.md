@@ -17,4 +17,4 @@ Adds links of filtered search results to the metadata section (studios, networks
 - Installing the [Trakt.tv | Unlocked Client-Side VIP Features](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters, after accessing the filtered search results.
 - For the time being this script won't work for vip users.
 ## Screenshots
-![Screenshot](screenshots/fyk2l3vj-1.png)
+![screenshot](screenshots/fyk2l3vj-1.png)

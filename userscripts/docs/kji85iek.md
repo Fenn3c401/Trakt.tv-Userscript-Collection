@@ -7,4 +7,4 @@ Makes the posters of list preview stacks/shelves link to the respective title su
 ### General
 - The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript fixes some rating related issues and enables (more) reliable updates of the list-preview-poster rating indicators.
 ## Screenshots
-![Screenshot](screenshots/kji85iek-1.png)
+![screenshot](screenshots/kji85iek-1.png)

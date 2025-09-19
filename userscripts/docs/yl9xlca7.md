@@ -11,4 +11,4 @@ Shows the average general and personal rating of the seasons of a show and the e
 - Specials are always excluded, except on the specials season page.
 - Only visible (i.e. not hidden by a filter) items are used for the calculation of the averages and changes to those filters trigger a recalculation.
 ## Screenshots
-![Screenshot](screenshots/yl9xlca7-1.png)
+![screenshot](screenshots/yl9xlca7-1.png)
