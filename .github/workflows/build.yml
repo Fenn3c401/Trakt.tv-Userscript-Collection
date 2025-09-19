@@ -1,0 +1,26 @@
+name: Build and Document Userscripts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build, Document, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "lts/*"
+
+      - name: Generate All Files
+        run: bash build.sh ${{ github.repository }}
+
+      - name: Commit Generated Files
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: 'build: auto-generate dist, meta, docs and readme'
+          file_pattern: 'userscripts/dist/*.user.js userscripts/meta/*.meta.js userscripts/docs/*.md README.md'
