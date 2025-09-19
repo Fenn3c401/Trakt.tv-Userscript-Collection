@@ -8,3 +8,4 @@ Automatic trakt.tv backups for free users. On every trakt.tv visit a background 
 - You might want to consider the use of an e-mail filter, so as to e.g. automatically move the data export e-mails to a dedicated trakt-tv-data-exports folder.
 - If you don't like the success toasts, you can turn them off by setting showToastOnSuccess to false in the userscript storage tab *(note: only displayed after first run)*, there you can
     also specify your own [cron expression](https://crontab.guru/examples.html). E-Mail data exports have a cooldown period of 24 hours, there is no point in going below that with your cron expression.
+

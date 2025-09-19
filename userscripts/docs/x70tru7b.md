@@ -16,3 +16,4 @@ Unlocks some client-side vip features (advanced filters, filter-by-terms, "more"
 ### Partial Unlock
 - custom calendars (get generated and work, but are not listed in sidebar (can't be deleted either), so you have to save the url of the custom calendar or "regenerate" it via /lists)
 - advanced filters (no saved filters)
+
