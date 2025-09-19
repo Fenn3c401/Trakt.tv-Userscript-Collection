@@ -106,10 +106,10 @@ for file in "$SRC_DIR"/*.user.js; do
   printf ' %s\n\n' "$loc_count_badge" >> "$doc_file"
   ((loc_count_total += loc_count))
 
-  "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n'}" >> "$doc_file"
+  printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n'}" >> "$doc_file"
 
   screenshots="$(find "$SCREENSHOTS_DIR" -type f -iname "$id-*.*" -printf '%f\n' | sort)"
-  "${screenshots:+$'## Screenshots\n'"$(sed -E 's|(.*)|![screenshot](screenshots/\1)|' <<< "$screenshots")"}" >> "$doc_file"
+  printf '%s' "${screenshots:+$'## Screenshots\n'"$(sed -E 's|(.*)|![screenshot](screenshots/\1)|' <<< "$screenshots")"}" >> "$doc_file"
 
   # --- 5. ADD ROW TO README TABLE ---
   escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
