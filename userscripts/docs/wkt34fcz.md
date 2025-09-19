@@ -36,3 +36,6 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [https://base64.guru/converter/encode/image](https://base64.guru/converter/encode/image)
 - [https://compresspng.com](https://compresspng.com)
 - [https://www.svgviewer.dev/](https://www.svgviewer.dev/)
+## Screenshots
+![Screenshot](screenshots/wkt34fcz-1.png)
+![Screenshot](screenshots/wkt34fcz-2.png)
