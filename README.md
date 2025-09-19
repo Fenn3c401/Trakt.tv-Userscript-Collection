@@ -1,7 +1,7 @@
 # Trakt.tv Userscript Collection
 An extensive userscript collection for trakt.tv. Please report any bugs you encounter, if you don't then probably no one else will. Feature requests and (good) ideas for more userscripts are always welcome.
 
-[![github stars](https://img.shields.io/github/stars/Fenn3c401/Trakt.tv-Userscript-Collection?style=flat&color=e3b341)](../../stargazers) [![open issues](https://img.shields.io/github/issues/Fenn3c401/Trakt.tv-Userscript-Collection?color=3fb950)](../../issues) [![closed issues](https://img.shields.io/github/issues-closed/Fenn3c401/Trakt.tv-Userscript-Collection?color=ab7df8)](../../issues?q=is%3Aissue%20state%3Aclosed) [![last commit](https://img.shields.io/github/last-commit/Fenn3c401/Trakt.tv-Userscript-Collection?color=blue)](../../commits) [![userscripts](https://img.shields.io/badge/userscripts-12-a55428)](#userscripts) [![lines of code](https://img.shields.io/badge/loc-2409-orange)](#userscripts)
+[![github stars](https://img.shields.io/github/stars/Fenn3c401/Trakt.tv-Userscript-Collection?style=flat&color=e8a402)](../../stargazers) [![open issues](https://img.shields.io/github/issues/Fenn3c401/Trakt.tv-Userscript-Collection?color=39bd4b)](../../issues) [![closed issues](https://img.shields.io/github/issues-closed/Fenn3c401/Trakt.tv-Userscript-Collection?color=9c65fc)](../../issues?q=is%3Aissue%20state%3Aclosed) [![last commit](https://img.shields.io/github/last-commit/Fenn3c401/Trakt.tv-Userscript-Collection?color=blue)](../../commits) [![userscripts](https://img.shields.io/badge/userscripts-12-f25e1d)](#userscripts) [![lines of code](https://img.shields.io/badge/loc-2409-orange)](#userscripts)
 
 ## Userscripts
 | *NAME* | *VERSION* | *LOC* | *INSTALL* |
