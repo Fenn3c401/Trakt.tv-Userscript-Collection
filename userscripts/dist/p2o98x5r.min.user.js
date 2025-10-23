@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Consolidated Lists View
-// @description  Adds a button to your personal lists summary page (/lists) which appends the lists from other categories (/collaborations, /liked, /liked/official) for a consolidated view.
-// @version      1.0.1
+// @name         Trakt.tv | All-in-One Lists View
+// @description  Appends your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for faster access and management of all your lists in one place. Essentially a bypass for the list category dropdown menu.
+// @version      1.0.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -17,8 +17,8 @@
 // ==/UserScript==
 
 
-"use strict";addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/users\/[^\/]+\/lists$/.test(location.pathname))return;const t=unsafeWindow.jQuery;if(!t)return;const n=t("#sortable-grid"),d=n.children().length?t('<hr id="consolidated-lists-view-spacer">').insertAfter(n):void 0,o=t('<button id="consolidated-lists-view-btn" type="button">Consolidated Lists View</button>').insertAfter(d??n);o.on("click",async()=>{o.text("Loading...").prop("disabled",!0);const l=async i=>fetch(location.pathname+i).then(s=>s.text()).then(s=>t(new DOMParser().parseFromString(s,"text/html")).find(".personal-list"));let e=t((await Promise.all(["/collaborations","/liked","/liked/official"].map(l))).flatMap(i=>i.get()));const r=t(".personal-list"),c=r.map((i,s)=>t(s).attr("data-list-id")).get();if(e=e.filter((i,s)=>!c.includes(t(s).attr("data-list-id"))),!e.length){o.text("No other lists found.");return}const f=+r.last().attr("data-rank");e.each((i,s)=>t(s).attr("data-rank",f+i+1)),e.find(".btn-list-progress").click(function(){unsafeWindow.showLoading();const i=t(this).attr("data-list-id");i&&unsafeWindow.userSettings?.user.vip?unsafeWindow.redirect(unsafeWindow.userURL("progress?list="+i)):unsafeWindow.redirect("/vip/list-progress")}).end().find(".btn-list-subscribe").click(function(){unsafeWindow.showLoading();const i=t(this).attr("data-list-id");i&&unsafeWindow.userSettings?.user.vip?t.post(`/lists/${i}/subscribe`,function(s){unsafeWindow.redirect(s.url)}).fail(function(){unsafeWindow.hideLoading(),unsafeWindow.toastr.error("Doh! We ran into some sort of error.")}):unsafeWindow.redirect("/vip/calendars")}).end().find(".collaborations-deny").on("ajax:success",function(i,s){t("#collaborations-deny-"+s.id).children().addClass("trakt-icon-delete-thick"),t("#collaborations-approve-"+s.id).addClass("off"),t("#collaborations-block-"+s.id).addClass("off")});const a=t("#btn-list-edit-lists");a.hasClass("active")&&a.trigger("click"),a.hide(),n.append(e),d?.remove(),o.remove(),unsafeWindow.genericTooltips(),unsafeWindow.vipTooltips(),unsafeWindow.shareIcons(),unsafeWindow.convertEmojis(),unsafeWindow.userscriptAddLinksToListPreviewPosters?.(),unsafeWindow.addOverlays(),unsafeWindow.$grid?.isotope("insert",e),unsafeWindow.updateListsCount(),unsafeWindow.lazyLoadImages(),requestAnimationFrame(()=>{const i=e.find(".readmore").filter((s,u)=>t(u).height()>300);unsafeWindow.renderReadmore(i)})})},{capture:!0});function addStyles(){GM_addStyle(`
-    #consolidated-lists-view-btn {
+"use strict";addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/users\/[^\/]+\/lists$/.test(location.pathname))return;const i=unsafeWindow.jQuery;if(!i)return;const s=i("#sortable-grid"),r=s.children().length?i('<hr id="all-in-one-lists-view-spacer">').insertAfter(s):void 0,a=i('<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>').insertAfter(r??s);a.on("click",async()=>{a.text("Loading...").prop("disabled",!0);const l=async t=>fetch(location.pathname+t).then(n=>n.text()).then(n=>i(new DOMParser().parseFromString(n,"text/html")).find(".personal-list"));let e=i((await Promise.all(["/collaborations","/liked","/liked/official"].map(l))).flatMap(t=>t.get()));const d=i(".personal-list"),c=d.map((t,n)=>i(n).attr("data-list-id")).get();if(e=e.filter((t,n)=>!c.includes(i(n).attr("data-list-id"))),!e.length){a.text("No other lists found.");return}const f=+d.last().attr("data-rank");e.each((t,n)=>i(n).attr("data-rank",f+t+1)),e.find(".btn-list-progress").click(function(){unsafeWindow.showLoading();const t=i(this).attr("data-list-id");t&&unsafeWindow.userSettings?.user.vip?unsafeWindow.redirect(unsafeWindow.userURL("progress?list="+t)):unsafeWindow.redirect("/vip/list-progress")}).end().find(".btn-list-subscribe").click(function(){unsafeWindow.showLoading();const t=i(this).attr("data-list-id");t&&unsafeWindow.userSettings?.user.vip?i.post(`/lists/${t}/subscribe`,function(n){unsafeWindow.redirect(n.url)}).fail(function(){unsafeWindow.hideLoading(),unsafeWindow.toastr.error("Doh! We ran into some sort of error.")}):unsafeWindow.redirect("/vip/calendars")}).end().find(".collaborations-deny").on("ajax:success",function(t,n){i("#collaborations-deny-"+n.id).children().addClass("trakt-icon-delete-thick"),i("#collaborations-approve-"+n.id).addClass("off"),i("#collaborations-block-"+n.id).addClass("off")});const o=i("#btn-list-edit-lists");o.hasClass("active")&&o.trigger("click"),o.hide(),s.append(e),r?.remove(),a.remove(),unsafeWindow.genericTooltips(),unsafeWindow.vipTooltips(),unsafeWindow.shareIcons(),unsafeWindow.convertEmojis(),unsafeWindow.userscriptAddLinksToListPreviewPosters?.(),unsafeWindow.addOverlays(),unsafeWindow.$grid?.isotope("insert",e),unsafeWindow.updateListsCount(),unsafeWindow.lazyLoadImages(),requestAnimationFrame(()=>{const t=e.find(".readmore").filter((n,u)=>i(u).height()>300);unsafeWindow.renderReadmore(t)})})},{capture:!0});function addStyles(){GM_addStyle(`
+    #all-in-one-lists-view-btn {
       margin: 20px auto 0;
       padding: 8px 16px;
       border-radius: var(--btn-radius);
@@ -30,34 +30,34 @@
       font-family: var(--headings-font-family);
       transition: all 0.2s;
     }
-    #consolidated-lists-view-btn:hover {
+    #all-in-one-lists-view-btn:hover {
       color: var(--brand-primary);
     }
-    #consolidated-lists-view-btn:active {
+    #all-in-one-lists-view-btn:active {
       background-color: #ccc;
     }
-    body.dark-knight #consolidated-lists-view-btn {
+    body.dark-knight #all-in-one-lists-view-btn {
       border: none;
       background-color: #333;
       color: #fff;
     }
-    body.dark-knight #consolidated-lists-view-btn:hover {
+    body.dark-knight #all-in-one-lists-view-btn:hover {
       background-color: var(--brand-primary);
     }
-    body.dark-knight #consolidated-lists-view-btn:active {
+    body.dark-knight #all-in-one-lists-view-btn:active {
       background-color: #666;
     }
 
     @media (min-width: 768px) {
-      body:has(> .bottom[id*="content-page"]) #consolidated-lists-view-btn {
+      body:has(> .bottom[id*="content-page"]) #all-in-one-lists-view-btn {
         margin-bottom: -20px;
       }
     }
 
-    :is(#consolidated-lists-view-btn, #consolidated-lists-view-spacer) {
+    :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
       display: block !important;
     }
-    body:has(#btn-list-edit-lists.active) :is(#consolidated-lists-view-btn, #consolidated-lists-view-spacer) {
+    body:has(#btn-list-edit-lists.active) :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
       display: none !important;
     }
   `)}

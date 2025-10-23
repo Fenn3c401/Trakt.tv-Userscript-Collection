@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Consolidated Lists View
-// @description  Adds a button to your personal lists summary page (/lists) which appends the lists from other categories (/collaborations, /liked, /liked/official) for a consolidated view.
-// @version      1.0.1
+// @name         Trakt.tv | All-in-One Lists View
+// @description  Appends your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for faster access and management of all your lists in one place. Essentially a bypass for the list category dropdown menu.
+// @version      1.0.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -36,8 +36,8 @@ document.addEventListener('turbo:load', () => {
 
 
   const $sortableGrid = $('#sortable-grid'),
-        $spacer = $sortableGrid.children().length ? $(`<hr id="consolidated-lists-view-spacer">`).insertAfter($sortableGrid) : undefined,
-        $btn = $(`<button id="consolidated-lists-view-btn" type="button">Consolidated Lists View</button>`).insertAfter($spacer ?? $sortableGrid);
+        $spacer = $sortableGrid.children().length ? $(`<hr id="all-in-one-lists-view-spacer">`).insertAfter($sortableGrid) : undefined,
+        $btn = $(`<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>`).insertAfter($spacer ?? $sortableGrid);
 
   $btn.on('click', async () => {
     $btn.text('Loading...').prop('disabled', true);
@@ -115,7 +115,7 @@ document.addEventListener('turbo:load', () => {
 
 function addStyles() {
   GM_addStyle(`
-    #consolidated-lists-view-btn {
+    #all-in-one-lists-view-btn {
       margin: 20px auto 0;
       padding: 8px 16px;
       border-radius: var(--btn-radius);
@@ -127,34 +127,34 @@ function addStyles() {
       font-family: var(--headings-font-family);
       transition: all 0.2s;
     }
-    #consolidated-lists-view-btn:hover {
+    #all-in-one-lists-view-btn:hover {
       color: var(--brand-primary);
     }
-    #consolidated-lists-view-btn:active {
+    #all-in-one-lists-view-btn:active {
       background-color: #ccc;
     }
-    body.dark-knight #consolidated-lists-view-btn {
+    body.dark-knight #all-in-one-lists-view-btn {
       border: none;
       background-color: #333;
       color: #fff;
     }
-    body.dark-knight #consolidated-lists-view-btn:hover {
+    body.dark-knight #all-in-one-lists-view-btn:hover {
       background-color: var(--brand-primary);
     }
-    body.dark-knight #consolidated-lists-view-btn:active {
+    body.dark-knight #all-in-one-lists-view-btn:active {
       background-color: #666;
     }
 
     @media (min-width: 768px) {
-      body:has(> .bottom[id*="content-page"]) #consolidated-lists-view-btn {
+      body:has(> .bottom[id*="content-page"]) #all-in-one-lists-view-btn {
         margin-bottom: -20px;
       }
     }
 
-    :is(#consolidated-lists-view-btn, #consolidated-lists-view-spacer) {
+    :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
       display: block !important;
     }
-    body:has(#btn-list-edit-lists.active) :is(#consolidated-lists-view-btn, #consolidated-lists-view-spacer) {
+    body:has(#btn-list-edit-lists.active) :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
       display: none !important;
     }
   `);

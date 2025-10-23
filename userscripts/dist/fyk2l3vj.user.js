@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
 // @description  Adds links of filtered search results to the metadata section (studios, networks, genres etc.) on title summary pages. Like the vip feature, only better. Also adds a country flag. See README for details.
-// @version      0.8.10
+// @version      0.8.11
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -31,7 +31,7 @@
 - Mouse middle click opens the filtered search results (including those where the link is dynamically constructed) in a new background tab.
 - Flags are not available for all countries.
 - A "+ n more" button is added for networks when needed.
-- Installing the [Trakt.tv | Unlocked Client-Side VIP Features](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters, after accessing the filtered search results.
+- Installing the [Trakt.tv | Partial VIP Unlock](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters, after accessing the filtered search results.
 - For the time being this script won't work for vip users.
 */
 

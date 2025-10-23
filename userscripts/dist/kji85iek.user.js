@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced List Preview Posters
 // @description  Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles. See README for details.
-// @version      1.0.0
+// @version      1.0.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -39,7 +39,7 @@ unsafeWindow.ratingOverlay = ($e, rating) => { // addOverlays() already calls ra
 }
 
 
-const addLinksToPosters = unsafeWindow.userscriptAddLinksToListPreviewPosters = () => { // exposed for "Trakt.tv | Consolidated Lists View" userscript
+const addLinksToPosters = unsafeWindow.userscriptAddLinksToListPreviewPosters = () => { // exposed for "Trakt.tv | All-in-One Lists View" userscript
   $('.personal-list .poster[data-url]:not(:has(> a))').each(function() {
     $(this).children().wrapAll(`<a href="${$(this).attr('data-url')}"></a>`);
   });

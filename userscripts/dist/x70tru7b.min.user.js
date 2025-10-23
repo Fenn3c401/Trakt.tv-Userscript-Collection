@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Unlocked Client-Side VIP Features
-// @description  Unlocks some client-side vip features (advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, Turbo page nav and more). See README for details.
-// @version      1.0.0
+// @name         Trakt.tv | Partial VIP Unlock
+// @description  Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, Turbo page nav, ... See README for details.
+// @version      1.1.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -24,12 +24,13 @@
 - watch-now modal country selection
 - bulk list copy and move *(note: item selection is filter based)*
 - all vip settings from /settings page (calendar autoscroll + limit dashboard "up next" episodes to watch-now favorites + only show watch-now icon if title is available on favorites + rewatching settings)
-- faster page navigation with Hotwire's Turbo *(note: might break userscripts from other devs that didn't account for this)*
+- faster page navigation with Hotwire's Turbo (allows for partial page updates instead of full page reloads when navigating) *(note: might break userscripts from other devs that didn't account for this)*
 
 ### Partial Unlock
 - custom calendars (get generated and work, but are not listed in sidebar (can't be deleted either), so you have to save the url of the custom calendar or "regenerate" it via /lists)
 - advanced filters (no saved filters)
+- ical/atom feeds + csv exports (still don't work for a few endpoints e.g. liked comments)
 */
 
 
-"use strict";const $=unsafeWindow.jQuery,compressedCache=unsafeWindow.compressedCache;if(!$||!compressedCache)return;const patchUserSettings=()=>{const e=compressedCache.get("settings");e&&!e.user.vip&&(e.user.vip=!0,compressedCache.set("settings",e),unsafeWindow.userSettings&&(unsafeWindow.userSettings=e))};patchUserSettings(),$(document).on("ajaxSuccess",(e,s,t)=>{t.url.endsWith("/settings.json")&&patchUserSettings()}),document.addEventListener("turbo:load",()=>{$("body").removeAttr("data-turbo"),$(".frame-wrapper .sidenav.advanced-filters .buttons").addClass("vip").find(".btn.vip").text("").removeClass("vip").removeAttr("href").addClass("disabled disabled-init").attr("id","filter-apply").attr("data-apply-text","Apply Filters").before('<a class="btn btn-close-2024" id="filter-close" style="display: inline-block !important; visibility: visible !important;">Close</a>').append('<span class="text">Configure Filters</span><span class="icon fa-solid fa-check"></span>')},{capture:!0});
+"use strict";const $=unsafeWindow.jQuery,compressedCache=unsafeWindow.compressedCache,token=atob(GM_info.script.icon.split(",")[1]).match(/<!-- (.*?) -->/)[1];if(!$||!compressedCache||!token)return;const patchUserSettings=()=>{const t=compressedCache.get("settings");t&&(!t.user.vip||t.account.token!==token)&&(t.user.vip=!0,t.account.token=token,compressedCache.set("settings",t),unsafeWindow.userSettings&&(unsafeWindow.userSettings=t))};patchUserSettings(),$(document).on("ajaxSuccess",(t,s,e)=>{e.url.endsWith("/settings.json")&&patchUserSettings()}),document.addEventListener("turbo:load",()=>{$("body").removeAttr("data-turbo"),$(".feed-icon.csv").attr("href",location.origin+location.pathname+".csv?slurm="+token+location.search.replace("?","&")),$(".frame-wrapper .sidenav.advanced-filters .buttons").addClass("vip").find(".btn.vip").text("").removeClass("vip").removeAttr("href").addClass("disabled disabled-init").attr("id","filter-apply").attr("data-apply-text","Apply Filters").before('<a class="btn btn-close-2024" id="filter-close" style="display: inline-block !important; visibility: visible !important;">Close</a>').append('<span class="text">Configure Filters</span><span class="icon fa-solid fa-check"></span>')},{capture:!0});

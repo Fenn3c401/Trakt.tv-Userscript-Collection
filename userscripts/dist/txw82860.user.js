@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Nested Header Navigation Menus
 // @description  Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website. See README for details.
-// @version      1.0.2
+// @version      1.0.5
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -24,6 +24,21 @@
 'use strict';
 
 const menuTemplates = {
+  historySorting: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
+    hrefPrefix,
+    entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
+      { text: 'SORT BY' },
+      { text: 'Watched Date', href: '/added' },
+      { text: 'Plays', href: '/plays' },
+      { text: 'Time Spent', href: '/time' },
+      { text: 'Title', href: '/title' },
+      { text: 'Release Date', href: '/released' },
+      { text: 'Runtime', href: '/runtime' },
+      { text: 'Popularity', href: '/popularity' },
+      { text: 'Percentage', href: '/percentage' },
+      { text: 'Votes', href: '/votes' },
+    ]),
+  }),
   progressSorting: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
     hrefPrefix,
     entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
@@ -42,35 +57,69 @@ const menuTemplates = {
       { text: 'Random', href: '/random' },
     ]),
   }),
+  librarySorting: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
+    hrefPrefix,
+    entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
+      { text: 'SORT BY' },
+      { text: 'Added Date', href: '/added' },
+      { text: 'Title', href: '/title' },
+      { text: 'Release Date', href: '/released' },
+      ...(/\/shows/.test(hrefPrefix) ? [
+        { text: 'Episode Count', href: '/episodes' },
+      ] : []),
+      ...(!/\/episodes/.test(hrefPrefix) ? [
+        { text: 'Runtime', href: '/runtime' },
+        { text: 'Popularity', href: '/popularity' },
+      ] : []),
+      { text: 'Percentage', href: '/percentage' },
+      { text: 'Votes', href: '/votes' },
+    ]),
+  }),
   ratingSelection: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
     hrefPrefix,
     entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
       { text: 'RATING' },
-      { text: 'All Ratings', href: '/all', submenu: {
-        hrefPrefix: hrefPrefix + '/all',
-        entries: [
-          { text: 'SORT BY' },
-          { text: 'Rated Date', href: '/added', anchor: true },
-          { text: 'Rating', href: '/rating' },
-        ],
-      }},
-      { text: '10 - Totally Ninja!', href: '/10' },
-      { text: '9 - Superb', href: '/9' },
-      { text: '8 - Great', href: '/8' },
-      { text: '7 - Good', href: '/7' },
-      { text: '6 - Fair', href: '/6' },
-      { text: '5 - Meh', href: '/5' },
-      { text: '4 - Poor', href: '/4' },
-      { text: '3 - Bad', href: '/3' },
-      { text: '2 - Terrible', href: '/2' },
-      { text: '1 - Weak Sauce :(', href: '/1' },
+      { text: 'All Ratings', href: '/all', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/all', submenuAnchorIndexes) },
+      { text: '10 - Totally Ninja!', href: '/10', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/10', submenuAnchorIndexes) },
+      { text: '9 - Superb', href: '/9', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/9', submenuAnchorIndexes) },
+      { text: '8 - Great', href: '/8', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/8', submenuAnchorIndexes) },
+      { text: '7 - Good', href: '/7', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/7', submenuAnchorIndexes) },
+      { text: '6 - Fair', href: '/6', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/6', submenuAnchorIndexes) },
+      { text: '5 - Meh', href: '/5', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/5', submenuAnchorIndexes) },
+      { text: '4 - Poor', href: '/4', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/4', submenuAnchorIndexes) },
+      { text: '3 - Bad', href: '/3', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/3', submenuAnchorIndexes) },
+      { text: '2 - Terrible', href: '/2', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/2', submenuAnchorIndexes) },
+      { text: '1 - Weak Sauce :(', href: '/1', submenu: menuTemplates.ratingsSorting(hrefPrefix + '/1', submenuAnchorIndexes) },
+    ]),
+  }),
+  ratingsSorting: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
+    hrefPrefix,
+    entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
+      { text: 'SORT BY' },
+      { text: 'Rated Date', href: '/added' },
+      { text: 'Rating', href: '/rating' },
+      ...(!/\/ratings\/all/.test(hrefPrefix) ? [
+        { text: 'Title', href: '/title' },
+        { text: 'Release Date', href: '/released' },
+        ...(/\/(movies|shows)/.test(hrefPrefix) ? [
+          { text: 'Runtime', href: '/runtime' },
+          { text: 'Popularity', href: '/popularity' },
+        ] : []),
+        { text: 'Percentage', href: '/percentage' },
+        { text: 'Votes', href: '/votes' },
+      ] : []),
     ]),
   }),
   listsViewSorting: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
     hrefPrefix,
     entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
       { text: 'SORT BY' },
-      { text: 'Rank', href: 'rank' },
+      ...(/\/lists\?/.test(hrefPrefix) ? [
+        { text: 'Rank', href: 'rank' },
+      ] : []),
+      ...(/\/liked/.test(hrefPrefix) ? [
+        { text: 'Like Date', href: 'liked' },
+      ] : []),
       { text: 'Updated Date', href: 'updated' },
       { text: 'Title', href: 'title' },
       { text: 'Likes', href: 'likes' },
@@ -116,8 +165,8 @@ const menuTemplates = {
     entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
       { text: 'SORT BY' },
       { text: 'Added Date', href: '/added' },
-      { text: 'Likes <em>(30 Days)</em>', href: '/likes_30' },
-      { text: 'Likes <em>(All Time)</em>', href: '/likes' },
+      { text: 'Reactions <em>(30 Days)</em>', href: '/likes_30' }, // TODO change href once/if they switch to /reactions_30
+      { text: 'Reactions <em>(All Time)</em>', href: '/likes' },
       { text: 'Replies <em>(30 Days)</em>', href: '/replies_30' },
       { text: 'Replies <em>(All Time)</em>', href: '/replies' },
       { text: 'Plays', href: '/plays' },
@@ -132,7 +181,7 @@ const menuTemplates = {
       { text: 'Date', href: '/data' },
     ]),
   }),
-  showsMoviesCatTimePeriod: (hrefPrefix, [anchorIndex = 4, ...submenuAnchorIndexes] = []) => ({
+  showsMoviesCatTimePeriod: (hrefPrefix, [anchorIndex = -1, ...submenuAnchorIndexes] = []) => ({
     hrefPrefix,
     entries: ((arr) => arr.with(anchorIndex, { ...arr.at(anchorIndex), anchor: true }))([
       { text: 'PERIOD' },
@@ -150,9 +199,9 @@ const menus = {
     entries: [
       { text: 'TYPE' },
       { text: 'All Types', href: '/all', anchor: true },
-      { text: 'Movies', href: '/movies' },
-      { text: 'Shows', href: '/shows' },
-      { text: 'Episodes', href: '/episodes' },
+      { text: 'Movies', href: '/movies', submenu: menuTemplates.historySorting('/users/me/history/movies') },
+      { text: 'Shows', href: '/shows', submenu: menuTemplates.historySorting('/users/me/history/shows') },
+      { text: 'Episodes', href: '/episodes', submenu: menuTemplates.historySorting('/users/me/history/episodes') },
     ],
   },
   '.btn-profile a[href$="/library"]': {
@@ -160,9 +209,9 @@ const menus = {
     entries: [
       { text: 'TYPE' },
       { text: 'All Types', href: '/all', anchor: true },
-      { text: 'Movies', href: '/movies' },
-      { text: 'Shows', href: '/shows' },
-      { text: 'Episodes', href: '/episodes' },
+      { text: 'Movies', href: '/movies', submenu: menuTemplates.librarySorting('/users/me/library/movies') },
+      { text: 'Shows', href: '/shows', submenu: menuTemplates.librarySorting('/users/me/library/shows') },
+      { text: 'Episodes', href: '/episodes', submenu: menuTemplates.librarySorting('/users/me/library/episodes') },
     ],
   },
   '.btn-profile a[href$="/progress"]': {
@@ -186,10 +235,10 @@ const menus = {
     entries: [
       { text: 'TYPE' },
       { text: 'All Types', href: '/all', anchor: true, submenu: menuTemplates.ratingSelection('/users/me/ratings/all') },
-      { text: 'Movies', href: '/movies', submenu: menuTemplates.ratingSelection('/users/me/ratings/movies') },
-      { text: 'Shows', href: '/shows', submenu: menuTemplates.ratingSelection('/users/me/ratings/shows') },
-      { text: 'Seasons', href: '/seasons', submenu: menuTemplates.ratingSelection('/users/me/ratings/seasons') },
-      { text: 'Episodes', href: '/episodes', submenu: menuTemplates.ratingSelection('/users/me/ratings/episodes') },
+      { text: 'Movies', href: '/movies', submenu: menuTemplates.ratingSelection('/users/me/ratings/movies', [ , 4]) },
+      { text: 'Shows', href: '/shows', submenu: menuTemplates.ratingSelection('/users/me/ratings/shows', [ , 4]) },
+      { text: 'Seasons', href: '/seasons', submenu: menuTemplates.ratingSelection('/users/me/ratings/seasons', [ , -1]) },
+      { text: 'Episodes', href: '/episodes', submenu: menuTemplates.ratingSelection('/users/me/ratings/episodes', [ , -1]) },
     ],
   },
   '.btn-profile a[href$="/lists"]': {
@@ -234,7 +283,7 @@ const menus = {
       { text: 'Shouts', href: '/shouts', submenu: menuTemplates.commentType('/users/me/comments/shouts') },
       { text: 'Replies', href: '/replies', submenu: menuTemplates.commentType('/users/me/comments/replies') },
       {},
-      { text: 'LIKED COMMENTS' },
+      { text: 'REACTIONS' },
       { text: 'All Comments', href: '/liked/all', submenu: menuTemplates.commentType('/users/me/comments/liked/all', [-1, -1]) },
       { text: 'Reviews', href: '/liked/reviews', submenu: menuTemplates.commentType('/users/me/comments/liked/reviews', [-1, -1]) },
       { text: 'Shouts', href: '/liked/shouts', submenu: menuTemplates.commentType('/users/me/comments/liked/shouts', [-1, -1]) },

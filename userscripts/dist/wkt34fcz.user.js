@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Links (Watch-Now + External)
 // @description  Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream), torrent aggregators (e.g. EXT, Knaben) and more. Easily customizable. See README for details.
-// @version      0.5.1
+// @version      0.5.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -12,9 +12,9 @@
 // @icon         data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiB1cmwoI3JhZGlhbC1ncmFkaWVudCk7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0icmFkaWFsLWdyYWRpZW50IiBjeD0iNDguNDYiIGN5PSItLjk1IiBmeD0iNDguNDYiIGZ5PSItLjk1IiByPSI2NC44NCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM5ZjQyYzYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuMjciIHN0b3AtY29sb3I9IiNhMDQxYzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNDIiIHN0b3AtY29sb3I9IiNhNDNlYmIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNTMiIHN0b3AtY29sb3I9IiNhYTM5YWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNjQiIHN0b3AtY29sb3I9IiNiNDMzOWEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNzMiIHN0b3AtY29sb3I9IiNjMDJiODEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiNjZjIwNjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iI2UxMTQzYyIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii45NyIgc3RvcC1jb2xvcj0iI2Y1MDYxMyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJlZCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPGcgaWQ9Il94MkRfLXByb2R1Y3Rpb24iPgogICAgPGcgaWQ9ImxvZ29tYXJrLnNxdWFyZS5ncmFkaWVudCI+CiAgICAgIDxwYXRoIGlkPSJiYWNrZ3JvdW5kIiBjbGFzcz0iY2xzLTEiIGQ9Ik00OCwxMS4yNnYyNS40N2MwLDYuMjItNS4wNSwxMS4yNy0xMS4yNywxMS4yN0gxMS4yNmMtNi4yMiwwLTExLjI2LTUuMDUtMTEuMjYtMTEuMjdWMTEuMjZDMCw1LjA0LDUuMDQsMCwxMS4yNiwwaDI1LjQ3YzMuMzIsMCw2LjMsMS40Myw4LjM3LDMuNzIuNDcuNTIuODksMS4wOCwxLjI1LDEuNjguMTguMjkuMzQuNTkuNS44OS4zMy42OC42LDEuMzkuNzksMi4xNC4xLjM3LjE4Ljc2LjIzLDEuMTUuMDkuNTQuMTMsMS4xMS4xMywxLjY4WiIvPgogICAgICA8ZyBpZD0iY2hlY2tib3giPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTEzLjYyLDE3Ljk3bDcuOTIsNy45MiwxLjQ3LTEuNDctNy45Mi03LjkyLTEuNDcsMS40N1pNMjguMDEsMzIuMzdsMS40Ny0xLjQ2LTIuMTYtMi4xNiwyMC4zMi0yMC4zMmMtLjE5LS43NS0uNDYtMS40Ni0uNzktMi4xNGwtMjIuNDYsMjIuNDYsMy42MiwzLjYyWk0xMi45MiwxOC42N2wtMS40NiwxLjQ2LDE0LjQsMTQuNCwxLjQ2LTEuNDctNC4zMi00LjMxTDQ2LjM1LDUuNGMtLjM2LS42LS43OC0xLjE2LTEuMjUtMS42OGwtMjMuNTYsMjMuNTYtOC42Mi04LjYxWk00Ny44Nyw5LjU4bC0xOS4xNywxOS4xNywxLjQ3LDEuNDYsMTcuODMtMTcuODN2LTEuMTJjMC0uNTctLjA0LTEuMTQtLjEzLTEuNjhaTTI1LjE2LDIyLjI3bC03LjkyLTcuOTItMS40NywxLjQ3LDcuOTIsNy45MiwxLjQ3LTEuNDdaTTQxLjMyLDM1LjEyYzAsMy40Mi0yLjc4LDYuMi02LjIsNi4ySDEyLjg4Yy0zLjQyLDAtNi4yLTIuNzgtNi4yLTYuMlYxMi44OGMwLTMuNDIsMi43OC02LjIxLDYuMi02LjIxaDIwLjc4di0yLjA3SDEyLjg4Yy00LjU2LDAtOC4yOCwzLjcxLTguMjgsOC4yOHYyMi4yNGMwLDQuNTYsMy43MSw4LjI4LDguMjgsOC4yOGgyMi4yNGM0LjU2LDAsOC4yOC0zLjcxLDguMjgtOC4yOHYtMy41MWgtMi4wN3YzLjUxWiIvPjwhLS0gNDVkMjM4NWQzYWFjYmI1OTMyNmEzODYxNDljNWE4NzggLS0+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==
 // @match        https://trakt.tv/*
 // @run-at       document-start
-// @resource     cineby.app     https://www.cineby.app/logo.png
-// @resource     bitcine.app    https://www.bitcine.app/logo.svg
-// @resource     hexa.watch     https://hexa.watch/hexa-logo.png
+// @resource     cineby     https://www.cineby.ru/logo.png
+// @resource     bitcine    https://www.bitcine.app/logo.svg
+// @resource     hexa       https://hexa.watch/hexa-logo.png
 // @grant        unsafeWindow
 // @grant        GM_addStyle
 // @grant        GM_getResourceURL
@@ -28,7 +28,7 @@
 - The installation of the [Trakt.tv | Trakt API Module](f785bub0.md) userscript is optional, as there is a scraping-based fallback, but very much recommended. Scraping is comparatively slow,
     resource-intensive and error prone, with a heavily reduced set of available item-data. You can see what data is available by scraping alone, in the `scrapeFromSummaryPage()` function.
 - This script also makes the color of watch-now buttons correspond to the title's digital release status. White means the title is available on a streaming service for your selected watch-now country,
-    light-grey means the title is available on a streaming service of another country and dark-grey means that the titles is not available on any streaming service.
+    light-grey means the title is available on a streaming service of another country and dark-grey means that the title is not available on any streaming service.
     Keep in mind that the data-source-counts attribute (which this is based on) can be unreliable, the attribute can be empty despite the title being available for streaming or
     contain sources which don't actually have the title available yet.
 - `DEFAULT_WNLINK_ADDITIONS` controls how many custom watch-now links are added to the two-slot watch-now preview on title summary pages and header search results. Can be 0-2.
@@ -123,17 +123,17 @@ const customWatchNowLinks = [
   },
   {
     name: 'Cineby',
-    buildUrl: (i) => `https://www.cineby.app${buildUrlTemplates.streamingDirectPathDefault(i)}`,
+    buildUrl: (i) => `https://www.cineby.ru${buildUrlTemplates.streamingDirectPathDefault(i)}?play=true`,
     category: watchNowCategories.streamingSiteDirectLink,
     bgColor: '#520000',
-    logo: GM_getResourceURL('cineby.app'),
+    logo: GM_getResourceURL('cineby'),
   },
   {
     name: 'Hexa Watch',
     buildUrl: (i) => `https://hexa.watch/watch${buildUrlTemplates.streamingDirectPathDefault(i)}`,
     category: watchNowCategories.streamingSiteDirectLink,
     bgColor: '#111317',
-    logo: GM_getResourceURL('hexa.watch'),
+    logo: GM_getResourceURL('hexa'),
   },
   {
     name: 'Fmovies+',
@@ -147,7 +147,7 @@ const customWatchNowLinks = [
     buildUrl: (i) => `https://www.bitcine.app${buildUrlTemplates.streamingDirectPathDefault(i)}?play=true`,
     category: watchNowCategories.streamingSiteDirectLink,
     bgColor: '#1f0a37',
-    logo: GM_getResourceURL('bitcine.app'),
+    logo: GM_getResourceURL('bitcine'),
   },
   {
     name: 'SceneNZBs',
@@ -421,32 +421,38 @@ async function getItemData(itemUrl) {
     }
   };
 
-  // will return a subset of the data returned by fetchFromApi(), with some inconsistencies e.g. "year" and "original_title" of shows are not embedded on season + ep summary pages // TODO
+
   const scrapeFromSummaryPage = async () => {
-    let itemDoc = document;
-    if (location.pathname !== itemUrl) {
-      const resp = await fetch(itemUrl);
-      if (!resp.ok) throw new Error(`getItemData: Fetching ${resp.url} failed with status: ${resp.status}`);
-      itemDoc = new DOMParser().parseFromString(await resp.text(), 'text/html');
+    let itemDoc, itemDoc2;
+
+    const resp = await fetch(itemUrl);
+    if (!resp.ok) throw new Error(`getItemData: Fetching ${resp.url} failed with status: ${resp.status}`);
+    itemDoc = new DOMParser().parseFromString(await resp.text(), 'text/html');
+
+    if (resp.url.includes('/seasons/')) {
+      const resp2 = await fetch(resp.url.split('/seasons/')[0]);
+      if (!resp2.ok) throw new Error(`getItemData: Fetching ${resp2.url} failed with status: ${resp2.status}`);
+      itemDoc2 = new DOMParser().parseFromString(await resp2.text(), 'text/html');
     }
 
     const type = itemUrl.split('/').filter(Boolean)[0],
           $additionalStatsLi = $(itemDoc).find('.additional-stats > li'),
+          $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : undefined,
           $notableSummary = $(itemDoc).find('.notable-summary'),
-          filterStatsElemsByLabel = (labelText) => $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
+          filterStatsElemsByLabel = (labelText, $statsElems = $additionalStatsLi) => $statsElems.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
 
     const itemData = {
       itemUrl,
       type,
       ids: {
         trakt: +($notableSummary.attr('data-movie-id') ?? $notableSummary.attr('data-show-id') ?? $notableSummary.attr('data-person-id')),
-        imdb: $(itemDoc).find('#external-link-imdb').attr('href')?.match(/(?:tt|nm)\d+/)?.[0], // tt = 'title type', nm = 'name'
+        imdb: $(itemDoc2 ?? itemDoc).find('#external-link-imdb').attr('href')?.match(/(?:tt|nm)\d+/)?.[0], // tt = 'title type', nm = 'name'
         tmdb: +$(itemDoc).find('#external-link-tmdb').attr('href')?.match(/\d+/)?.[0] || undefined,
       },
       ...(type !== 'people' && { title: $(itemDoc).find(':is(body > [itemtype$="Movie"], body > [itemtype$="TVSeries"], body > [itemtype] > [itemtype$="TVSeries"]) > meta[itemprop="name"]')
                                                   .attr('content')?.match(/(.+?)(?: \(\d{4}\))?$/)?.[1] }),
-      ...(/shows|movies/.test(type) && { original_title: filterStatsElemsByLabel('original title').contents().get(-1)?.textContent }),
-      ...(/shows|movies/.test(type) && { year: +$(itemDoc).find('#summary-wrapper .mobile-title .year').get(0)?.textContent || undefined }),
+      ...(type !== 'people' && { original_title: filterStatsElemsByLabel('original title', $additionalStatsLi2).contents().get(-1)?.textContent }),
+      ...(type !== 'people' && { year: +$(itemDoc2 ?? itemDoc).find('#summary-wrapper .mobile-title .year').get(0)?.textContent || undefined }),
       ...(type !== 'people' && { genres: $additionalStatsLi.find('[itemprop="genre"]').map((_, e) => $(e).text().toLowerCase()).get() }),
       ...(/seasons|episodes/.test(type) && { season: +$notableSummary.attr('data-season-number') }),
       ...(type === 'episodes' && { episode: +$notableSummary.attr('data-episode-number') }),
@@ -458,6 +464,7 @@ async function getItemData(itemUrl) {
 
     return itemData;
   }
+
 
   if (!itemDataCache[itemUrl]) itemDataCache[itemUrl] = await (trakt ? fetchFromApi : scrapeFromSummaryPage)();
   return itemDataCache[itemUrl];

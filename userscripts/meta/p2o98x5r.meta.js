@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Consolidated Lists View
-// @description  Adds a button to your personal lists summary page (/lists) which appends the lists from other categories (/collaborations, /liked, /liked/official) for a consolidated view.
-// @version      1.0.1
+// @name         Trakt.tv | All-in-One Lists View
+// @description  Appends your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for faster access and management of all your lists in one place. Essentially a bypass for the list category dropdown menu.
+// @version      1.0.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
