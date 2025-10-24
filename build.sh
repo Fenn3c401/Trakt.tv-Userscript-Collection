@@ -98,7 +98,7 @@ for file in "$SRC_DIR"/*.user.js; do
   
   install_badge="[![install standard](https://img.shields.io/badge/install-standard-006400)]($DOWNLOAD_URL_DIST)"
   install_min_badge="[![install minified](https://img.shields.io/badge/install-minified-64962a)]($DOWNLOAD_URL_DIST_MIN)"
-  version_badge="[![version](https://img.shields.io/badge/version-$script_version-blue)](../../../../commits/main/$DIST_DIR/$id.user.js)"
+  version_badge="[![version](https://img.shields.io/badge/version-$script_version-blue)](../../../../blame/main/$DIST_DIR/$id.user.js)"
   printf '%s %s %s' "$install_badge" "$install_min_badge" "$version_badge" >> "$doc_file"
 
   loc_count=$(npx cloc --quiet --sum-one --stdin-name="$id.user.js" - <<< "$body" | grep -m 1 'SUM:' | awk '{print $5}')
