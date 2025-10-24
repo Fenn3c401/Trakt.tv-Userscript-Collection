@@ -40,3 +40,5 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 ## Screenshots
 ![screenshot](screenshots/wkt34fcz-1.png)
 ![screenshot](screenshots/wkt34fcz-2.png)
+![screenshot](screenshots/wkt34fcz-3.png)
+![screenshot](screenshots/wkt34fcz-4.png)
