@@ -1,7 +1,7 @@
 # Trakt.tv | Scheduled E-Mail Data Exports
 Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
 
-[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.min.user.js) [![version](https://img.shields.io/badge/version-1.0.1-blue)](../../../../commits/main/userscripts/dist/2hc6zfyy.user.js) [![lines of code](https://img.shields.io/badge/loc-53-orange)](../../userscripts/dist/2hc6zfyy.user.js)
+[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.min.user.js) [![version](https://img.shields.io/badge/version-1.0.1-blue)](../../../../blame/main/userscripts/dist/2hc6zfyy.user.js) [![lines of code](https://img.shields.io/badge/loc-53-orange)](../../userscripts/dist/2hc6zfyy.user.js)
 
 ## Info
 ### General

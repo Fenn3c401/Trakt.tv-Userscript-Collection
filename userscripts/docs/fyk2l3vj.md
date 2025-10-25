@@ -1,7 +1,7 @@
 # Trakt.tv | Enhanced Title Metadata
 Adds links of filtered search results to the metadata section (studios, networks, genres etc.) on title summary pages. Like the vip feature, only better. Also adds a country flag.
 
-[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.min.user.js) [![version](https://img.shields.io/badge/version-0.8.11-blue)](../../../../commits/main/userscripts/dist/fyk2l3vj.user.js) [![lines of code](https://img.shields.io/badge/loc-315-orange)](../../userscripts/dist/fyk2l3vj.user.js)
+[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.min.user.js) [![version](https://img.shields.io/badge/version-0.8.11-blue)](../../../../blame/main/userscripts/dist/fyk2l3vj.user.js) [![lines of code](https://img.shields.io/badge/loc-315-orange)](../../userscripts/dist/fyk2l3vj.user.js)
 
 ## Info
 > Inspired by sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.

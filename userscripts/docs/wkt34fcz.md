@@ -1,7 +1,7 @@
 # Trakt.tv | Custom Links (Watch-Now + External)
 Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream), torrent aggregators (e.g. EXT, Knaben) and more. Easily customizable.
 
-[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js) [![version](https://img.shields.io/badge/version-0.5.4-blue)](../../../../commits/main/userscripts/dist/wkt34fcz.user.js) [![lines of code](https://img.shields.io/badge/loc-408-orange)](../../userscripts/dist/wkt34fcz.user.js)
+[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js) [![version](https://img.shields.io/badge/version-0.5.4-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js) [![lines of code](https://img.shields.io/badge/loc-408-orange)](../../userscripts/dist/wkt34fcz.user.js)
 
 ## Info
 > Inspired by Tusky's [Trakt Watchlist Downloader](https://greasyfork.org/scripts/17991) and Accus1958's [trakt.tv Streaming Services Integration](https://greasyfork.org/scripts/486706) userscripts.

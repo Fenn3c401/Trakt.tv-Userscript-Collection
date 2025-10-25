@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Ratings Distribution
-// @description  Embeds the ratings distribution chart of a title (from its /stats page) on the title summary page. Also allows for rating the title by clicking on the bars.
-// @version      1.0.2
+// @description  Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart. See README for details.
+// @version      1.0.3
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -16,9 +16,15 @@
 // @grant        unsafeWindow
 // @grant        GM_info
 // @grant        GM_addStyle
+// @grant        GM.setValue
 // @grant        GM.xmlHttpRequest
 // @connect      walter-r2.trakt.tv
 // ==/UserScript==
+
+/* README
+### General
+- The installation of the [Trakt.tv | Trakt API Module](f785bub0.md) userscript is optional, as there is a (slower) scraping-based fallback, but very much recommended.
+*/
 
 
 /* global Chart */
@@ -74,6 +80,13 @@ async function getRatingsData(statsPath) {
           ratDist = JSON.parse($(statsDoc).find('#charts-wrapper script').text().match(/ratingsDistribution = (\[.*\])/)[1]);
     ratingsData = { distribution: ratDist, votes: $('#summary-ratings-wrapper').data('vote-count') };
   }
+
+  if (ratingsData.distribution.length === 11) { // bg logging of titles with malformed (length = 11, [0] === 1 or more, only movs/shows no seasons/eps) ratings distribution data e.g. /shows/chainsaw-man/stats
+    // GM.setValue(statsPath, ratingsData.distribution.toString());
+    console.warn('Userscript [' + GM_info.script.name + ']: Malformed ratings distribution data.', ratingsData.distribution);
+    ratingsData.distribution.shift();
+  }
+
   return ratingsData;
 }
 
