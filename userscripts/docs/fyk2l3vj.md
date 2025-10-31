@@ -22,4 +22,5 @@ Adds links of filtered search results to the metadata section (studios, networks
 
 ## Screenshots
 <p align=center>
-  <img src="screenshots/fyk2l3vj-1.png" alt="screenshot" align="middle"></p>
+  <img src="screenshots/fyk2l3vj-1.png" alt="screenshot" align="middle">
+</p>

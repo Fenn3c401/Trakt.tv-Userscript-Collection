@@ -16,4 +16,5 @@ Shows the average general and personal rating of the seasons of a show and the e
 
 ## Screenshots
 <p align=center>
-  <img src="screenshots/yl9xlca7-1.png" alt="screenshot" align="middle"></p>
+  <img src="screenshots/yl9xlca7-1.png" alt="screenshot" align="middle">
+</p>

@@ -12,4 +12,5 @@ Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) 
 
 ## Screenshots
 <p align=center>
-  <img src="screenshots/pmdf6nr9-1.png" alt="screenshot" align="middle"></p>
+  <img src="screenshots/pmdf6nr9-1.png" alt="screenshot" align="middle">
+</p>

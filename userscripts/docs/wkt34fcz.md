@@ -46,4 +46,5 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
   <img src="screenshots/wkt34fcz-2.png" alt="screenshot" align="middle">
   <img src="screenshots/wkt34fcz-3.png" alt="screenshot" align="middle">
   <img src="screenshots/wkt34fcz-4.png" alt="screenshot" align="middle">
-  <img src="screenshots/wkt34fcz-5.png" alt="screenshot" align="middle"></p>
+  <img src="screenshots/wkt34fcz-5.png" alt="screenshot" align="middle">
+</p>

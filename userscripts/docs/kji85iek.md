@@ -12,4 +12,5 @@ Makes the posters of list preview stacks/shelves link to the respective title su
 
 ## Screenshots
 <p align=center>
-  <img src="screenshots/kji85iek-1.png" alt="screenshot" align="middle"></p>
+  <img src="screenshots/kji85iek-1.png" alt="screenshot" align="middle">
+</p>
