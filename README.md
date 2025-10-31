@@ -1,7 +1,15 @@
 # Trakt.tv Userscript Collection
-An extensive userscript collection for trakt.tv. Please report any bugs you encounter, if you don’t, probably no one else will. Feature requests and (good) ideas for more userscripts are always welcome.
+An extensive userscript collection for trakt.tv. Please report any bugs you encounter, if you don’t, probably no one else will. General feedback and feature requests are always welcome.
 
-[![github stars](https://img.shields.io/github/stars/Fenn3c401/Trakt.tv-Userscript-Collection?style=flat&color=e8a402)](../../stargazers) [![open issues](https://img.shields.io/github/issues/Fenn3c401/Trakt.tv-Userscript-Collection?color=39bd4b)](../../issues) [![closed issues](https://img.shields.io/github/issues-closed/Fenn3c401/Trakt.tv-Userscript-Collection?color=9c65fc)](../../issues?q=is%3Aissue%20state%3Aclosed) [![last commit](https://img.shields.io/github/last-commit/Fenn3c401/Trakt.tv-Userscript-Collection?color=blue)](../../commits) [![userscripts](https://img.shields.io/badge/userscripts-11-f25e1d)](#userscripts) [![lines of code](https://img.shields.io/badge/loc-2462-orange)](#userscripts)
+[![github stars](https://img.shields.io/github/stars/Fenn3c401/Trakt.tv-Userscript-Collection?style=flat&color=e8a402)](../../stargazers)
+[![open issues](https://img.shields.io/github/issues/Fenn3c401/Trakt.tv-Userscript-Collection?color=39bd4b)](../../issues)
+[![closed issues](https://img.shields.io/github/issues-closed/Fenn3c401/Trakt.tv-Userscript-Collection?color=9c65fc)](../../issues?q=is%3Aissue%20state%3Aclosed)
+[![last commit](https://img.shields.io/github/last-commit/Fenn3c401/Trakt.tv-Userscript-Collection?color=blue)](../../commits)
+[![number of userscripts](https://img.shields.io/badge/userscripts-11-f25e1d)](#userscripts)
+[![total lines of code](https://img.shields.io/badge/loc-2462-orange)](#userscripts)
+
+> [!WARNING]
+> This project is currently in active development. Features, structure, and documentation may be incomplete and/or change at any time. This especially applies to userscripts with versions below 1.0.0.
 
 ## Userscripts
 | *NAME* | *VERSION* | *LOC* | *INSTALL* |
@@ -19,5 +27,5 @@ An extensive userscript collection for trakt.tv. Please report any bugs you enco
 | [Trakt.tv \| Scheduled E-Mail Data Exports](userscripts/docs/2hc6zfyy.md) | `1.0.1` | `53` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.user.js) / [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.min.user.js) |
 
 ## Requirements
-- [Tampermonkey](https://www.tampermonkey.net) as userscript manager. Use the beta version if you can.
-- Any Chromium/Gecko-based browser. For mobile devices I recommend the Android version of Firefox which allows for installing arbitrary extensions, including Tampermonkey.
+- [Tampermonkey](https://www.tampermonkey.net) as userscript manager. Use the beta version if you can. Violentmonkey is not supported (YMMV).
+- Any Chromium- or Gecko-based browser that allows for installing Tampermonkey. WebKit-based browsers are not supported (YMMV). For mobile devices I recommend the Android version of Firefox.
