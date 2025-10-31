@@ -1,7 +1,10 @@
 # Trakt.tv | Partial VIP Unlock
 Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, faster page navigation and more. Also hides some vip buttons/banners.
 
-[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.user.js) [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js) [![version](https://img.shields.io/badge/version-1.1.2-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js) [![lines of code](https://img.shields.io/badge/loc-37-orange)](../../userscripts/dist/x70tru7b.user.js)
+[![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.user.js)
+[![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js)
+[![version](https://img.shields.io/badge/version-1.1.2-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
+[![lines of code](https://img.shields.io/badge/loc-37-orange)](../../userscripts/dist/x70tru7b.user.js)
 
 ## Info
 ### Full Unlock
