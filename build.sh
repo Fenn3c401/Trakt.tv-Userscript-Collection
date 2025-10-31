@@ -109,7 +109,7 @@ for file in "$SRC_DIR"/*.user.js; do
   printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n\n'}" >> "$doc_file"
 
   screenshots="$(find "$SCREENSHOTS_DIR" -type f -iname "$id-*.*" -printf '%f\n' | sort)"
-  printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'</p>'}" >> "$doc_file"
+  printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}" >> "$doc_file"
 
   # --- 5. ADD ROW TO README TABLE ---
   escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
