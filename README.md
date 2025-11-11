@@ -29,3 +29,4 @@ An extensive userscript collection for trakt.tv. Please report any bugs you enco
 ## Requirements
 - [Tampermonkey](https://www.tampermonkey.net) as userscript manager. Use the beta version if you can. Violentmonkey is not supported (YMMV).
 - Any Chromium- or Gecko-based browser that allows for installing Tampermonkey. WebKit-based browsers are not supported (YMMV). For mobile devices I recommend the Android version of Firefox.
+- "Trakt Classic". I have no plans of porting any of these scripts over to their [new dumbed down version](https://forums.trakt.tv/t/new-trakt-feedback/84794/266).
