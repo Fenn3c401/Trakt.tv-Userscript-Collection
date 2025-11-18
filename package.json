@@ -1,0 +1,8 @@
+{
+  "name": "build",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.27.0",
+    "cloc": "^2.6.0-cloc"
+  }
+}
