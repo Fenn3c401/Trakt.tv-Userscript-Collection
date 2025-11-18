@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# --- CONFIGURATION ---
+# --- CONFIG ---
 REPO_SLUG=$1
 if [[ -z "$REPO_SLUG" ]]; then
   printf 'Error: Repository slug not provided. Exiting.\n' >&2; exit 1
@@ -15,16 +15,12 @@ DIST_DIR='userscripts/dist'
 DOCS_DIR='userscripts/docs'
 SCREENSHOTS_DIR='userscripts/docs/screenshots'
 
-# --- SETUP ---
-printf 'Initializing build environment...\n'
-npm install --save-dev esbuild cloc > /dev/null
-
+# --- PREP ---
 printf 'Removing old build artifacts...\n'
 mkdir -p "$META_DIR" "$DIST_DIR" "$DOCS_DIR" "$SCREENSHOTS_DIR"
 find "$META_DIR" "$DIST_DIR" "$DOCS_DIR" -maxdepth 1 -type f -delete
 
-# --- README PREPARATION ---
-printf 'Preparing README.md for update...\n'
+printf 'Creating temp files for README.md update...\n'
 BEFORE_TABLE_FILE=$(mktemp)
 AFTER_TABLE_FILE=$(mktemp)
 TABLE_CONTENT_FILE=$(mktemp)
@@ -60,7 +56,7 @@ for file in "$SRC_DIR"/*.user.js; do
     printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1
   fi
 
-  # --- 3. GENERATE DIST AND META VERSIONS ---
+  # --- 3. GENERATE DIST AND META FILES ---
   header="$(sed \
     ${readme_comment:+-e '\|// @description| s|$| See README for details.|'} \
     -e '\|// @namespace|d' \
@@ -128,7 +124,7 @@ userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
 ) > README.md
 
 # --- CLEANUP ---
-printf 'Cleaning up temporary files...\n'
+printf 'Removing temp files...\n'
 rm -f "$BEFORE_TABLE_FILE" "$AFTER_TABLE_FILE" "$TABLE_CONTENT_FILE"
 
 printf 'Build process completed successfully!\n'
