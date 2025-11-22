@@ -1,11 +1,9 @@
 #!/bin/bash
-set -e
+set -euo pipefail
+shopt -s nullglob
 
 # --- CONFIG ---
-REPO_SLUG=$1
-if [[ -z "$REPO_SLUG" ]]; then
-  printf 'Error: Repository slug not provided. Exiting.\n' >&2; exit 1
-fi
+REPO_SLUG=${1:?Error: Repository slug not provided. Exiting.}
 BASE_URL="https://github.com/$REPO_SLUG"
 BASE_URL_RAW="https://raw.githubusercontent.com/$REPO_SLUG/main"
 
@@ -52,9 +50,7 @@ for file in "$SRC_DIR"/*.user.js; do
   body="$(sed '\|^// ==UserScript==$|,\|^// ==/UserScript==$|d; \|^/\* README$|,\|^\*/$|d' <<< "$clean_content" | sed -n '\|[^\s]|,$p')"
 
   # --- 2. CHECK FOR ID MISMATCH ---
-  if [ "$id" != "${script_namespace##*/}" ]; then
-    printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1
-  fi
+  [[ "$id" != "${script_namespace##*/}" ]] && printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1
 
   # --- 3. GENERATE DIST AND META FILES ---
   header="$(sed \
@@ -104,12 +100,12 @@ for file in "$SRC_DIR"/*.user.js; do
 
   printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n\n'}" >> "$doc_file"
 
-  screenshots="$(find "$SCREENSHOTS_DIR" -type f -iname "$id-*.*" -printf '%f\n' | sort)"
+  screenshots="$(find "$SCREENSHOTS_DIR" -type f -name "$id-*.*" -printf '%f\n' | sort)"
   printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}" >> "$doc_file"
 
   # --- 5. ADD ROW TO README TABLE ---
   escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
-  install_links="[Standard]($DOWNLOAD_URL_DIST) / [Minified]($DOWNLOAD_URL_DIST_MIN)"
+  install_links="[Standard]($DOWNLOAD_URL_DIST) // [Minified]($DOWNLOAD_URL_DIST_MIN)"
   printf '| [%s](%s) | `%s` | `%s` | %s |\n' "$escaped_script_name" "$DOCS_DIR/$id.md" "$script_version" "$loc_count" "$install_links" >> "$TABLE_CONTENT_FILE"
 done
 
