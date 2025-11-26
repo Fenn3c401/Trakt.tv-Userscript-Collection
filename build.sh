@@ -53,7 +53,7 @@ for file in "$SRC_DIR"/*.user.js; do
 
 
   printf '2. Checking for ID mismatch\n'
-  [[ "$id" != "${script_namespace##*/}" ]] && printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1
+  [[ "$id" != "${script_namespace##*/}" ]] && printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2 && exit 1
 
 
   printf '3. Generating dist and meta files\n'
