@@ -41,7 +41,7 @@ for file in "$SRC_DIR"/*.user.js; do
   printf '>> Processing ID: %s\n' "$id"
 
 
-  printf '1. Parsing source file\n'
+  printf '   1. Parsing source file\n'
   clean_content="$(tr -d '\r' < "$file")"
   script_name="$(grep -m 1 '// @name' <<< "$clean_content" | sed -E 's|// @name\s+||')"
   script_desc="$(grep -m 1 '// @description' <<< "$clean_content" | sed -E 's|// @description\s+||')"
@@ -52,11 +52,11 @@ for file in "$SRC_DIR"/*.user.js; do
   body="$(sed '\|^// ==UserScript==$|,\|^// ==/UserScript==$|d; \|^/\* README$|,\|^\*/$|d' <<< "$clean_content" | sed -n '\|[^\s]|,$p')"
 
 
-  printf '2. Checking for ID mismatch\n'
+  printf '   2. Checking for ID mismatch\n'
   [[ "$id" != "${script_namespace##*/}" ]] && printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2 && exit 1
 
 
-  printf '3. Generating dist and meta files\n'
+  printf '   3. Generating dist and meta files\n'
   header="$(sed \
     ${readme_comment:+-e '\|// @description| s|$| See README for details.|'} \
     -e '\|// @namespace|d' \
@@ -88,7 +88,7 @@ for file in "$SRC_DIR"/*.user.js; do
   printf '%s%s%s' "$header_dist_min" "$middle_content" "$minified_body" > "$DIST_DIR/$id.min.user.js"
 
 
-  printf '4. Generating doc file\n'
+  printf '   4. Generating doc file\n'
   doc_file="$DOCS_DIR/$id.md"
 
   printf '# %s\n%s\n\n' "$script_name" "$script_desc" > "$doc_file"
@@ -109,7 +109,7 @@ for file in "$SRC_DIR"/*.user.js; do
   printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}" >> "$doc_file"
 
 
-  printf '5. Add row to README.md table\n'
+  printf '   5. Add row to README.md table\n'
   escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
   install_links="[Standard]($DOWNLOAD_URL_DIST) // [Minified]($DOWNLOAD_URL_DIST_MIN)"
   printf '| [%s](%s) | `%s` | `%s` | %s |\n' "$escaped_script_name" "$DOCS_DIR/$id.md" "$script_version" "$loc_count" "$install_links" >> "$TABLE_CONTENT_FILE"
