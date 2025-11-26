@@ -2,7 +2,7 @@
 set -euo pipefail
 shopt -s nullglob
 
-# --- CONFIG ---
+
 REPO_SLUG=${1:?Error: Repository slug not provided. Exiting.}
 BASE_URL="https://github.com/$REPO_SLUG"
 BASE_URL_RAW="https://raw.githubusercontent.com/$REPO_SLUG/main"
@@ -13,12 +13,13 @@ DIST_DIR='userscripts/dist'
 DOCS_DIR='userscripts/docs'
 SCREENSHOTS_DIR='userscripts/docs/screenshots'
 
-# --- PREP ---
-printf 'Removing old build artifacts...\n'
+
+printf 'Removing old build artifacts\n'
 mkdir -p "$META_DIR" "$DIST_DIR" "$DOCS_DIR" "$SCREENSHOTS_DIR"
 find "$META_DIR" "$DIST_DIR" "$DOCS_DIR" -maxdepth 1 -type f -delete
 
-printf 'Creating temp files for README.md update...\n'
+
+printf 'Creating temp files for README.md update\n'
 BEFORE_TABLE_FILE=$(mktemp)
 AFTER_TABLE_FILE=$(mktemp)
 TABLE_CONTENT_FILE=$(mktemp)
@@ -32,14 +33,15 @@ end_line=$(tail -n +$((start_line + 1)) README.md | grep -n -m 1 -v '^|' | cut -
 printf '| *NAME* | *VERSION* | *LOC* | *INSTALL* |\n' > "$TABLE_CONTENT_FILE"
 printf '|:---|:---|:---|:---|\n' >> "$TABLE_CONTENT_FILE"
 
-# --- MAIN PROCESSING LOOP ---
+
 printf 'Starting to process userscripts in %s...\n' "$SRC_DIR"
 loc_count_total=0
 for file in "$SRC_DIR"/*.user.js; do
   id="$(basename "$file" .user.js)"
   printf '>> Processing ID: %s\n' "$id"
 
-  # --- 1. PARSE SOURCE FILE ---
+
+  printf '1. Parsing source file\n'
   clean_content="$(tr -d '\r' < "$file")"
   script_name="$(grep -m 1 '// @name' <<< "$clean_content" | sed -E 's|// @name\s+||')"
   script_desc="$(grep -m 1 '// @description' <<< "$clean_content" | sed -E 's|// @description\s+||')"
@@ -49,10 +51,12 @@ for file in "$SRC_DIR"/*.user.js; do
   readme_comment="$(sed -n '\|^/\* README$|,\|^\*/$|p' <<< "$clean_content")"
   body="$(sed '\|^// ==UserScript==$|,\|^// ==/UserScript==$|d; \|^/\* README$|,\|^\*/$|d' <<< "$clean_content" | sed -n '\|[^\s]|,$p')"
 
-  # --- 2. CHECK FOR ID MISMATCH ---
+
+  printf '2. Checking for ID mismatch\n'
   [[ "$id" != "${script_namespace##*/}" ]] && printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1
 
-  # --- 3. GENERATE DIST AND META FILES ---
+
+  printf '3. Generating dist and meta files\n'
   header="$(sed \
     ${readme_comment:+-e '\|// @description| s|$| See README for details.|'} \
     -e '\|// @namespace|d' \
@@ -83,7 +87,8 @@ for file in "$SRC_DIR"/*.user.js; do
   header_dist_min="$(sed "\|// @updateURL|a\// @downloadURL  $DOWNLOAD_URL_DIST_MIN" <<< "$header")"
   printf '%s%s%s' "$header_dist_min" "$middle_content" "$minified_body" > "$DIST_DIR/$id.min.user.js"
 
-  # --- 4. GENERATE DOCUMENTATION FILE ---
+
+  printf '4. Generating doc file\n'
   doc_file="$DOCS_DIR/$id.md"
 
   printf '# %s\n%s\n\n' "$script_name" "$script_desc" > "$doc_file"
@@ -103,14 +108,15 @@ for file in "$SRC_DIR"/*.user.js; do
   screenshots="$(find "$SCREENSHOTS_DIR" -type f -name "$id-*.*" -printf '%f\n' | sort)"
   printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}" >> "$doc_file"
 
-  # --- 5. ADD ROW TO README TABLE ---
+
+  printf '5. Add row to README.md table\n'
   escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
   install_links="[Standard]($DOWNLOAD_URL_DIST) // [Minified]($DOWNLOAD_URL_DIST_MIN)"
   printf '| [%s](%s) | `%s` | `%s` | %s |\n' "$escaped_script_name" "$DOCS_DIR/$id.md" "$script_version" "$loc_count" "$install_links" >> "$TABLE_CONTENT_FILE"
 done
 
-# --- FINALIZE README ---
-printf 'Finalizing README.md...\n'
+
+printf 'Finalizing README.md\n'
 userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
 ( 
   cat "$BEFORE_TABLE_FILE" | sed -E "s|(/badge/loc-)[0-9]+|\1$loc_count_total|; s|(/badge/userscripts-)[0-9]+|\1$userscript_count|"
@@ -119,8 +125,7 @@ userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
   cat "$AFTER_TABLE_FILE"
 ) > README.md
 
-# --- CLEANUP ---
-printf 'Removing temp files...\n'
+printf 'Removing temp files\n'
 rm -f "$BEFORE_TABLE_FILE" "$AFTER_TABLE_FILE" "$TABLE_CONTENT_FILE"
 
 printf 'Build process completed successfully!\n'
