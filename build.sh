@@ -24,10 +24,10 @@ BEFORE_TABLE_FILE=$(mktemp)
 AFTER_TABLE_FILE=$(mktemp)
 TABLE_CONTENT_FILE=$(mktemp)
 
-start_line=$(grep -n -m 1 '## Userscripts' README.md | cut -d: -f1)
+start_line=$(grep -n -m 1 '## Userscripts' README.md | cut -d : -f 1)
 head -n "$start_line" README.md > "$BEFORE_TABLE_FILE"
 
-end_line=$(tail -n +$((start_line + 1)) README.md | grep -n -m 1 -v '^|' | cut -d: -f1)
+end_line=$(tail -n +$((start_line + 1)) README.md | grep -n -m 1 -v '^|' | cut -d : -f 1)
 [[ -n "$end_line" ]] && tail -n +$((start_line + end_line)) README.md > "$AFTER_TABLE_FILE"
 
 printf '| *NAME* | *VERSION* | *LOC* | *INSTALL* |\n' > "$TABLE_CONTENT_FILE"
@@ -35,9 +35,9 @@ printf '|:---|:---|:---|:---|\n' >> "$TABLE_CONTENT_FILE"
 
 
 printf 'Starting to process userscripts in %s...\n' "$SRC_DIR"
-loc_count_total=0
+declare -i loc_count_total=0
 for file in "$SRC_DIR"/*.user.js; do
-  id="$(basename "$file" .user.js)"
+  id=$(basename "$file" .user.js)
   printf '>> Processing ID: %s\n' "$id"
 
 
@@ -53,7 +53,7 @@ for file in "$SRC_DIR"/*.user.js; do
 
 
   printf '   2. Checking for ID mismatch\n'
-  [[ "$id" != "${script_namespace##*/}" ]] && printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2 && exit 1
+  [[ "$id" != "${script_namespace##*/}" ]] && { printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1; }
 
 
   printf '   3. Generating dist and meta files\n'
@@ -117,10 +117,10 @@ done
 
 
 printf 'Finalizing README.md\n'
-userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
+declare -i userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
 ( 
   cat "$BEFORE_TABLE_FILE" | sed -E "s|(/badge/loc-)[0-9]+|\1$loc_count_total|; s|(/badge/userscripts-)[0-9]+|\1$userscript_count|"
-  head -n2 "$TABLE_CONTENT_FILE"
+  head -n 2 "$TABLE_CONTENT_FILE"
   tail -n +3 "$TABLE_CONTENT_FILE" | sort
   cat "$AFTER_TABLE_FILE"
 ) > README.md
