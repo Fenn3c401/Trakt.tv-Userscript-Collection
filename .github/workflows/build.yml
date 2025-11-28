@@ -23,4 +23,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: 'build: auto-generate dist, meta, docs and readme'
-          file_pattern: 'userscripts/dist/*.user.js userscripts/meta/*.meta.js userscripts/docs/*.md README.md'
+          file_pattern: 'userscripts/meta/*.meta.js userscripts/dist/*.user.js userscripts/docs/*.md README.md package.json package-lock.json'
