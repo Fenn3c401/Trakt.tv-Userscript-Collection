@@ -14,6 +14,10 @@ DOCS_DIR='userscripts/docs'
 SCREENSHOTS_DIR='userscripts/docs/screenshots'
 
 
+printf 'Initializing build environment\n'
+npm install --save-exact --save-dev esbuild cloc > /dev/null
+
+
 printf 'Removing old build artifacts\n'
 mkdir -p "$META_DIR" "$DIST_DIR" "$DOCS_DIR" "$SCREENSHOTS_DIR"
 find "$META_DIR" "$DIST_DIR" "$DOCS_DIR" -maxdepth 1 -type f -delete
