@@ -15,7 +15,7 @@ SCREENSHOTS_DIR='userscripts/docs/screenshots'
 
 
 printf 'Initializing build environment\n'
-npm install --save-exact --save-dev esbuild cloc > /dev/null
+npm install --save-dev esbuild cloc > /dev/null
 
 
 printf 'Removing old build artifacts\n'
