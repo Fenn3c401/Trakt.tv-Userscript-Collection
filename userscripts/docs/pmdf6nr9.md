@@ -3,7 +3,7 @@ Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) 
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/pmdf6nr9.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/pmdf6nr9.min.user.js)
-[![version](https://img.shields.io/badge/version-1.0.3-blue)](../../../../blame/main/userscripts/dist/pmdf6nr9.user.js)
+[![version](https://img.shields.io/badge/version-1.0.4-blue)](../../../../blame/main/userscripts/dist/pmdf6nr9.user.js)
 [![lines of code](https://img.shields.io/badge/loc-223-orange)](../../userscripts/dist/pmdf6nr9.user.js)
 
 ## Info

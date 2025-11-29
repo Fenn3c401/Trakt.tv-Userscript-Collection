@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | All-in-One Lists View
 // @description  Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
-// @version      1.0.5
+// @version      1.0.6
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -9,55 +9,56 @@
 // @supportURL   https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/issues
 // @updateURL    https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/meta/p2o98x5r.meta.js
 // @downloadURL  https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/p2o98x5r.min.user.js
-// @icon         data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiB1cmwoI3JhZGlhbC1ncmFkaWVudCk7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0icmFkaWFsLWdyYWRpZW50IiBjeD0iNDguNDYiIGN5PSItLjk1IiBmeD0iNDguNDYiIGZ5PSItLjk1IiByPSI2NC44NCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM5ZjQyYzYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuMjciIHN0b3AtY29sb3I9IiNhMDQxYzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNDIiIHN0b3AtY29sb3I9IiNhNDNlYmIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNTMiIHN0b3AtY29sb3I9IiNhYTM5YWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNjQiIHN0b3AtY29sb3I9IiNiNDMzOWEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNzMiIHN0b3AtY29sb3I9IiNjMDJiODEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiNjZjIwNjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iI2UxMTQzYyIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii45NyIgc3RvcC1jb2xvcj0iI2Y1MDYxMyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJlZCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPGcgaWQ9Il94MkRfLXByb2R1Y3Rpb24iPgogICAgPGcgaWQ9ImxvZ29tYXJrLnNxdWFyZS5ncmFkaWVudCI+CiAgICAgIDxwYXRoIGlkPSJiYWNrZ3JvdW5kIiBjbGFzcz0iY2xzLTEiIGQ9Ik00OCwxMS4yNnYyNS40N2MwLDYuMjItNS4wNSwxMS4yNy0xMS4yNywxMS4yN0gxMS4yNmMtNi4yMiwwLTExLjI2LTUuMDUtMTEuMjYtMTEuMjdWMTEuMjZDMCw1LjA0LDUuMDQsMCwxMS4yNiwwaDI1LjQ3YzMuMzIsMCw2LjMsMS40Myw4LjM3LDMuNzIuNDcuNTIuODksMS4wOCwxLjI1LDEuNjguMTguMjkuMzQuNTkuNS44OS4zMy42OC42LDEuMzkuNzksMi4xNC4xLjM3LjE4Ljc2LjIzLDEuMTUuMDkuNTQuMTMsMS4xMS4xMywxLjY4WiIvPgogICAgICA8ZyBpZD0iY2hlY2tib3giPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTEzLjYyLDE3Ljk3bDcuOTIsNy45MiwxLjQ3LTEuNDctNy45Mi03LjkyLTEuNDcsMS40N1pNMjguMDEsMzIuMzdsMS40Ny0xLjQ2LTIuMTYtMi4xNiwyMC4zMi0yMC4zMmMtLjE5LS43NS0uNDYtMS40Ni0uNzktMi4xNGwtMjIuNDYsMjIuNDYsMy42MiwzLjYyWk0xMi45MiwxOC42N2wtMS40NiwxLjQ2LDE0LjQsMTQuNCwxLjQ2LTEuNDctNC4zMi00LjMxTDQ2LjM1LDUuNGMtLjM2LS42LS43OC0xLjE2LTEuMjUtMS42OGwtMjMuNTYsMjMuNTYtOC42Mi04LjYxWk00Ny44Nyw5LjU4bC0xOS4xNywxOS4xNywxLjQ3LDEuNDYsMTcuODMtMTcuODN2LTEuMTJjMC0uNTctLjA0LTEuMTQtLjEzLTEuNjhaTTI1LjE2LDIyLjI3bC03LjkyLTcuOTItMS40NywxLjQ3LDcuOTIsNy45MiwxLjQ3LTEuNDdaTTQxLjMyLDM1LjEyYzAsMy40Mi0yLjc4LDYuMi02LjIsNi4ySDEyLjg4Yy0zLjQyLDAtNi4yLTIuNzgtNi4yLTYuMlYxMi44OGMwLTMuNDIsMi43OC02LjIxLDYuMi02LjIxaDIwLjc4di0yLjA3SDEyLjg4Yy00LjU2LDAtOC4yOCwzLjcxLTguMjgsOC4yOHYyMi4yNGMwLDQuNTYsMy43MSw4LjI4LDguMjgsOC4yOGgyMi4yNGM0LjU2LDAsOC4yOC0zLjcxLDguMjgtOC4yOHYtMy41MWgtMi4wN3YzLjUxWiIvPjwhLS0gNDVkMjM4NWQzYWFjYmI1OTMyNmEzODYxNDljNWE4NzggLS0+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==
+// @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
+// @match        https://classic.trakt.tv/*
 // @run-at       document-start
 // @grant        unsafeWindow
 // @grant        GM_addStyle
 // ==/UserScript==
 
 
-"use strict";addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/users\/[^\/]+\/lists$/.test(location.pathname))return;const i=unsafeWindow.jQuery;if(!i)return;const s=i("#sortable-grid"),r=s.children().length?i('<hr id="all-in-one-lists-view-spacer">').insertAfter(s):void 0,a=i('<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>').insertAfter(r??s);a.on("click",async()=>{a.text("Loading...").prop("disabled",!0);const l=async t=>fetch(location.pathname+t).then(n=>n.text()).then(n=>i(new DOMParser().parseFromString(n,"text/html")).find(".personal-list"));let e=i((await Promise.all(["/collaborations","/liked","/liked/official"].map(l))).flatMap(t=>t.get()));const d=i(".personal-list"),c=d.map((t,n)=>i(n).attr("data-list-id")).get();if(e=e.filter((t,n)=>!c.includes(i(n).attr("data-list-id"))),!e.length){a.text("No other lists found.");return}const f=+d.last().attr("data-rank");e.each((t,n)=>i(n).attr("data-rank",f+t+1)),e.find(".btn-list-progress").click(function(){unsafeWindow.showLoading();const t=i(this).attr("data-list-id");t&&unsafeWindow.userSettings?.user.vip?unsafeWindow.redirect(unsafeWindow.userURL("progress?list="+t)):unsafeWindow.redirect("/vip/list-progress")}).end().find(".btn-list-subscribe").click(function(){unsafeWindow.showLoading();const t=i(this).attr("data-list-id");t&&unsafeWindow.userSettings?.user.vip?i.post(`/lists/${t}/subscribe`,function(n){unsafeWindow.redirect(n.url)}).fail(function(){unsafeWindow.hideLoading(),unsafeWindow.toastr.error("Doh! We ran into some sort of error.")}):unsafeWindow.redirect("/vip/calendars")}).end().find(".collaborations-deny").on("ajax:success",function(t,n){i("#collaborations-deny-"+n.id).children().addClass("trakt-icon-delete-thick"),i("#collaborations-approve-"+n.id).addClass("off"),i("#collaborations-block-"+n.id).addClass("off")});const o=i("#btn-list-edit-lists");o.hasClass("active")&&o.trigger("click"),o.hide(),s.append(e),r?.remove(),a.remove(),unsafeWindow.genericTooltips(),unsafeWindow.vipTooltips(),unsafeWindow.shareIcons(),unsafeWindow.convertEmojis(),unsafeWindow.userscriptAddLinksToListPreviewPosters?.(),unsafeWindow.addOverlays(),unsafeWindow.$grid?.isotope("insert",e),unsafeWindow.updateListsCount(),unsafeWindow.lazyLoadImages(),requestAnimationFrame(()=>{const t=e.find(".readmore").filter((n,u)=>i(u).height()>300);unsafeWindow.renderReadmore(t)})})},{capture:!0});function addStyles(){GM_addStyle(`
-    #all-in-one-lists-view-btn {
-      margin: 20px auto 0;
-      padding: 8px 16px;
-      border-radius: var(--btn-radius);
-      border: 1px solid hsl(0deg 0% 20% / 65%);
-      background-color: #fff;
-      color: #333;
-      font-size: 18px;
-      font-weight: var(--headings-font-weight);
-      font-family: var(--headings-font-family);
-      transition: all 0.2s;
-    }
-    #all-in-one-lists-view-btn:hover {
-      color: var(--brand-primary);
-    }
-    #all-in-one-lists-view-btn:active {
-      background-color: #ccc;
-    }
-    body.dark-knight #all-in-one-lists-view-btn {
-      border: none;
-      background-color: #333;
-      color: #fff;
-    }
-    body.dark-knight #all-in-one-lists-view-btn:hover {
-      background-color: var(--brand-primary);
-    }
-    body.dark-knight #all-in-one-lists-view-btn:active {
-      background-color: #666;
-    }
+"use strict";addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/users\/[^\/]+\/lists$/.test(location.pathname))return;const i=unsafeWindow.jQuery;if(!i)return;const s=i("#sortable-grid"),r=s.children().length?i('<hr id="all-in-one-lists-view-spacer">').insertAfter(s):void 0,a=i('<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>').insertAfter(r??s);a.on("click",async()=>{a.text("Loading...").prop("disabled",!0);const l=async n=>fetch(location.pathname+n).then(t=>t.text()).then(t=>i(new DOMParser().parseFromString(t,"text/html")).find(".personal-list"));let e=i((await Promise.all(["/collaborations","/liked","/liked/official"].map(l))).flatMap(n=>n.get()));const d=i(".personal-list"),c=d.map((n,t)=>i(t).attr("data-list-id")).get();if(e=e.filter((n,t)=>!c.includes(i(t).attr("data-list-id"))),!e.length){a.text("No other lists found.");return}const f=+d.last().attr("data-rank");e.each((n,t)=>i(t).attr("data-rank",f+n+1)),e.find(".btn-list-progress").click(function(){unsafeWindow.showLoading();const n=i(this).attr("data-list-id");n&&unsafeWindow.userSettings?.user.vip?unsafeWindow.redirect(unsafeWindow.userURL("progress?list="+n)):unsafeWindow.redirect("/vip/list-progress")}).end().find(".btn-list-subscribe").click(function(){unsafeWindow.showLoading();const n=i(this).attr("data-list-id");n&&unsafeWindow.userSettings?.user.vip?i.post(`/lists/${n}/subscribe`,function(t){unsafeWindow.redirect(t.url)}).fail(function(){unsafeWindow.hideLoading(),unsafeWindow.toastr.error("Doh! We ran into some sort of error.")}):unsafeWindow.redirect("/vip/calendars")}).end().find(".collaborations-deny").on("ajax:success",function(n,t){i("#collaborations-deny-"+t.id).children().addClass("trakt-icon-delete-thick"),i("#collaborations-approve-"+t.id).addClass("off"),i("#collaborations-block-"+t.id).addClass("off")});const o=i("#btn-list-edit-lists");o.hasClass("active")&&o.trigger("click"),o.hide(),s.append(e),r?.remove(),a.remove(),unsafeWindow.genericTooltips(),unsafeWindow.vipTooltips(),unsafeWindow.shareIcons(),unsafeWindow.convertEmojis(),unsafeWindow.userscriptAddLinksToListPreviewPosters?.(),unsafeWindow.addOverlays(),unsafeWindow.$grid?.isotope("insert",e),unsafeWindow.updateListsCount(),unsafeWindow.lazyLoadImages(),unsafeWindow.renderReadmore()})},{capture:!0});function addStyles(){GM_addStyle(`
+#all-in-one-lists-view-btn {
+  margin: 20px auto 0;
+  padding: 8px 16px;
+  border-radius: var(--btn-radius);
+  border: 1px solid hsl(0deg 0% 20% / 65%);
+  background-color: #fff;
+  color: #333;
+  font-size: 18px;
+  font-weight: var(--headings-font-weight);
+  font-family: var(--headings-font-family);
+  transition: all 0.2s;
+}
+#all-in-one-lists-view-btn:hover {
+  color: var(--brand-primary);
+}
+#all-in-one-lists-view-btn:active {
+  background-color: #ccc;
+}
+body.dark-knight #all-in-one-lists-view-btn {
+  border: none;
+  background-color: #333;
+  color: #fff;
+}
+body.dark-knight #all-in-one-lists-view-btn:hover {
+  background-color: var(--brand-primary);
+}
+body.dark-knight #all-in-one-lists-view-btn:active {
+  background-color: #666;
+}
 
-    @media (min-width: 768px) {
-      body:has(> .bottom[id*="content-page"]) #all-in-one-lists-view-btn {
-        margin-bottom: -20px;
-      }
-    }
+@media (min-width: 768px) {
+  body:has(> .bottom[id*="content-page"]) #all-in-one-lists-view-btn {
+    margin-bottom: -20px;
+  }
+}
 
-    :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
-      display: block !important;
-    }
-    body:has(#btn-list-edit-lists.active) :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
-      display: none !important;
-    }
+:is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
+  display: block !important;
+}
+body:has(#btn-list-edit-lists.active) :is(#all-in-one-lists-view-btn, #all-in-one-lists-view-spacer) {
+  display: none !important;
+}
   `)}

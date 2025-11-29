@@ -3,8 +3,8 @@ Makes the posters of list preview stacks/shelves link to the respective title su
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/kji85iek.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/kji85iek.min.user.js)
-[![version](https://img.shields.io/badge/version-1.0.1-blue)](../../../../blame/main/userscripts/dist/kji85iek.user.js)
-[![lines of code](https://img.shields.io/badge/loc-42-orange)](../../userscripts/dist/kji85iek.user.js)
+[![version](https://img.shields.io/badge/version-1.0.3-blue)](../../../../blame/main/userscripts/dist/kji85iek.user.js)
+[![lines of code](https://img.shields.io/badge/loc-50-orange)](../../userscripts/dist/kji85iek.user.js)
 
 ## Info
 ### General

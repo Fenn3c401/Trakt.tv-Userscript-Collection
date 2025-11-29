@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
-// @description  Adds links of filtered search results to the metadata section (studios, networks, genres etc.) on title summary pages. Like the vip feature, only better. Also adds a country flag. See README for details.
-// @version      0.8.11
+// @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels. See README for details.
+// @version      0.8.14
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -9,30 +9,33 @@
 // @supportURL   https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/issues
 // @updateURL    https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/meta/fyk2l3vj.meta.js
 // @downloadURL  https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.user.js
-// @icon         data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiB1cmwoI3JhZGlhbC1ncmFkaWVudCk7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0icmFkaWFsLWdyYWRpZW50IiBjeD0iNDguNDYiIGN5PSItLjk1IiBmeD0iNDguNDYiIGZ5PSItLjk1IiByPSI2NC44NCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM5ZjQyYzYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuMjciIHN0b3AtY29sb3I9IiNhMDQxYzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNDIiIHN0b3AtY29sb3I9IiNhNDNlYmIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNTMiIHN0b3AtY29sb3I9IiNhYTM5YWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNjQiIHN0b3AtY29sb3I9IiNiNDMzOWEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNzMiIHN0b3AtY29sb3I9IiNjMDJiODEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiNjZjIwNjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iI2UxMTQzYyIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii45NyIgc3RvcC1jb2xvcj0iI2Y1MDYxMyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJlZCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPGcgaWQ9Il94MkRfLXByb2R1Y3Rpb24iPgogICAgPGcgaWQ9ImxvZ29tYXJrLnNxdWFyZS5ncmFkaWVudCI+CiAgICAgIDxwYXRoIGlkPSJiYWNrZ3JvdW5kIiBjbGFzcz0iY2xzLTEiIGQ9Ik00OCwxMS4yNnYyNS40N2MwLDYuMjItNS4wNSwxMS4yNy0xMS4yNywxMS4yN0gxMS4yNmMtNi4yMiwwLTExLjI2LTUuMDUtMTEuMjYtMTEuMjdWMTEuMjZDMCw1LjA0LDUuMDQsMCwxMS4yNiwwaDI1LjQ3YzMuMzIsMCw2LjMsMS40Myw4LjM3LDMuNzIuNDcuNTIuODksMS4wOCwxLjI1LDEuNjguMTguMjkuMzQuNTkuNS44OS4zMy42OC42LDEuMzkuNzksMi4xNC4xLjM3LjE4Ljc2LjIzLDEuMTUuMDkuNTQuMTMsMS4xMS4xMywxLjY4WiIvPgogICAgICA8ZyBpZD0iY2hlY2tib3giPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTEzLjYyLDE3Ljk3bDcuOTIsNy45MiwxLjQ3LTEuNDctNy45Mi03LjkyLTEuNDcsMS40N1pNMjguMDEsMzIuMzdsMS40Ny0xLjQ2LTIuMTYtMi4xNiwyMC4zMi0yMC4zMmMtLjE5LS43NS0uNDYtMS40Ni0uNzktMi4xNGwtMjIuNDYsMjIuNDYsMy42MiwzLjYyWk0xMi45MiwxOC42N2wtMS40NiwxLjQ2LDE0LjQsMTQuNCwxLjQ2LTEuNDctNC4zMi00LjMxTDQ2LjM1LDUuNGMtLjM2LS42LS43OC0xLjE2LTEuMjUtMS42OGwtMjMuNTYsMjMuNTYtOC42Mi04LjYxWk00Ny44Nyw5LjU4bC0xOS4xNywxOS4xNywxLjQ3LDEuNDYsMTcuODMtMTcuODN2LTEuMTJjMC0uNTctLjA0LTEuMTQtLjEzLTEuNjhaTTI1LjE2LDIyLjI3bC03LjkyLTcuOTItMS40NywxLjQ3LDcuOTIsNy45MiwxLjQ3LTEuNDdaTTQxLjMyLDM1LjEyYzAsMy40Mi0yLjc4LDYuMi02LjIsNi4ySDEyLjg4Yy0zLjQyLDAtNi4yLTIuNzgtNi4yLTYuMlYxMi44OGMwLTMuNDIsMi43OC02LjIxLDYuMi02LjIxaDIwLjc4di0yLjA3SDEyLjg4Yy00LjU2LDAtOC4yOCwzLjcxLTguMjgsOC4yOHYyMi4yNGMwLDQuNTYsMy43MSw4LjI4LDguMjgsOC4yOGgyMi4yNGM0LjU2LDAsOC4yOC0zLjcxLDguMjgtOC4yOHYtMy41MWgtMi4wN3YzLjUxWiIvPjwhLS0gNDVkMjM4NWQzYWFjYmI1OTMyNmEzODYxNDljNWE4NzggLS0+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==
+// @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
+// @match        https://classic.trakt.tv/*
 // @run-at       document-start
 // @grant        unsafeWindow
 // @grant        GM_info
 // @grant        GM_addStyle
 // @grant        GM_openInTab
-// @grant        GM.getValue
-// @grant        GM.setValue
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 /* README
-> Inspired by sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
+> Based on sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
 
 ### General
-- By clicking on the label for languages, genres, networks and studios, you can make a search for all their respective values combined, ANDed for genres and languages, ORed for networks and studios.
-    For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
+- By clicking on the label for languages, genres, networks, studios and writers, you can make a search for all their respective values combined, ANDed for genres, languages and writers,
+    ORed for networks and studios. For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
+- The writers label search was mostly added as an example of how to search for filmography intersections with trakt's search engine (there's no official tutorial about this,
+    just some vague one liner in the api docs about how `+ - && || ! ( ) { } [ ] ^ " ~ * ? : /` have "special meaning" when used in a query).
+    It's much more intersting with actors e.g. [Movies with Will Smith and Alan Tudyk](https://trakt.tv/search/movies?query=%22Will%20Smith%22+%22Alan%20Tudyk%22&fields=people).
+- The title's certification links to the respective `/parentalguide` imdb page (which contains descriptions of nude scenes, graphic content etc.).
+- The title's year links to the search page for other titles from the same year.
 - The search results default to either the "movies" or "shows" search category depending on the type of the current title.
-- The title year and certification link to filtered search results as well.
-- Mouse middle click opens the filtered search results (including those where the link is dynamically constructed) in a new background tab.
-- Flags are not available for all countries.
-- A "+ n more" button is added for networks when needed.
-- Installing the [Trakt.tv | Partial VIP Unlock](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters, after accessing the filtered search results.
-- For the time being this script won't work for vip users.
+- A "+ n more" button is added for networks when needed (some anime have more than a dozen listed).
+- Installing the [Trakt.tv | Partial VIP Unlock](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters on the linked search pages.
+- This script won't work for vip users.
 */
 
 
@@ -54,6 +57,9 @@ const Logger = Object.freeze({
   error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
 });
 
+const gmStorage = { ...(GM_getValue('enhancedTitleMetadata')) };
+GM_setValue('enhancedTitleMetadata', gmStorage);
+
 
 addStyles();
 
@@ -72,13 +78,18 @@ document.addEventListener('turbo:load', async () => {
 
   // YEAR
   const $year = $('#summary-wrapper .year');
-  if ($year.parent().is('a')) $year.insertAfter($year.parent()); // year is part of link to title summary page on e.g. /comments subpage
+  if ($year.parent().is('a')) $year.insertAfter($year.parent()); // year is part of link to title summary page on e.g. /comments pages
   $year.wrapAll(`<a href="/search/${pathSplit[0]}?years=${$year.text().slice(0, 4)}-${$year.text().slice(-4)}"></a>`); // year range on /seasons/all
 
 
   // CERTIFICATION
   const $certification = $('#summary-wrapper div.certification');
-  $certification.wrap(`<a href="/search/${pathSplit[0]}?certifications=${$certification.text().toLowerCase()}"></a>`);
+  $certification.wrap(`<a href="${$('#external-link-imdb').attr('href').split('/episodes')[0]}/parentalguide"></a>`);
+
+
+  // WRITERS
+  const $writers = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase() === 'writers');
+  $writers.find('label').wrap(`<a href="/search/${pathSplit[0]}?query=%22${$writers.find('a:not(.writers-expand)').get().map((e) => e.textContent).join('%22+%22')}%22&fields=people"></a>`);
 
 
   // GENRES
@@ -88,25 +99,26 @@ document.addEventListener('turbo:load', async () => {
     matchingGenres[i] = $(e).text().toLowerCase().replaceAll(' ', '-');
     $(e).wrap(`<a href="/search/${pathSplit[0]}?genres=${matchingGenres[i]}"></a>`);
   });
-  if (matchingGenres.length > 1) $genres.find('label').wrap(`<a href="/search/${pathSplit[0]}?genres=+${matchingGenres.join(',+')}"></a>`); // search for titles with the same set of genres combined
+  if (matchingGenres.length > 1) $genres.find('label').wrap(`<a href="/search/${pathSplit[0]}?genres=+${matchingGenres.join(',+')}"></a>`);
 
 
   // COUNTRY
   const $country = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase() === 'country'); // countryOfOrigin + name meta tags are unreliable
   let matchingCountry; // also used for networks and studios
   if ($country.length) {
-    const allCountriesMap = await getMapOfAllCountries(),
+    const allCountriesMap = await getAllCountriesMap(),
           countryText = $country.contents().get(-1)?.textContent;
 
     matchingCountry = allCountriesMap[countryText];
     if (matchingCountry) {
-      // flags seem to only be available for countries that are also watch-now countries (~139), no flag assets beyond those /movies/kpop-demon-hunters-2025/releases
+      // flags seem to only be available for countries that are also watch-now countries (~139)
       const countryFlag = unsafeWindow.watchnowAllCountries?.[matchingCountry]?.image;
       if (countryFlag) $country.children().last().after(`<img class="country-flag" src="${countryFlag}">`);
 
       $country.contents().filter((_, e) => !$(e).is('meta, label')).wrapAll(`<a href="/search/${pathSplit[0]}?countries=${matchingCountry}"></a>`);
     } else {
-      GM.setValue('allCountriesMap', null);
+      gmStorage.allCountriesMap = null;
+      GM_setValue('enhancedTitleMetadata', gmStorage);
       Logger.error(`Failed to match title country. Cached countries have been cleared. Reload page to try again.`);
     }
   }
@@ -117,7 +129,7 @@ document.addEventListener('turbo:load', async () => {
   const $languages = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase().startsWith('language')),
         matchingLanguages = {}; // also used for networks and studios
   if ($languages.length) {
-    const allLanugagesArrSorted = await getSortedArrOfAllLanguages(),
+    const allLanugagesArrSorted = await getAllLanguagesArrSorted(),
           allLanugagesMap = Object.fromEntries(allLanugagesArrSorted);
     let languagesText = $languages.contents().get(-1).textContent;
 
@@ -140,8 +152,9 @@ document.addEventListener('turbo:load', async () => {
 
       if (matchingLanguagesIds.length > 1) $languages.find('label').wrap(`<a href="/search/${pathSplit[0]}?languages=+${matchingLanguagesIds.join(',+')}"></a>`);
     } else {
-      GM.setValue('allLanugagesArrSorted', null);
-      Logger.error(`Failed to match all title languages (original: ${$languages.contents().get(-1).textContent} | remainder: ${languagesText.trim()}). ` +
+      gmStorage.allLanguagesArrSorted = null;
+      GM_setValue('enhancedTitleMetadata', gmStorage);
+      Logger.error(`Failed to match all title languages (ORIGINAL: ${$languages.contents().get(-1).textContent} REMAINDER: ${languagesText.trim()}). ` +
                    `Cached languages have been cleared. Reload page to try again.`);
     }
   }
@@ -153,7 +166,7 @@ document.addEventListener('turbo:load', async () => {
         $networkAlt = $additionalStatsLi.filter((_, e) => /airs|aired|premiered/i.test($(e).find('label').text())).first(); // can have one network as suffix
   if ($networks.length && pathSplit[3] !== 'all') { // network names on /seasons/all are invalid (memory addresses instead of names)
     const matchingNetworks = {},
-          allNetworksArrSorted = await getSortedArrOfAllNetworks(),
+          allNetworksArrSorted = await getAllNetworksArrSorted(),
           allNetworksMap = Object.fromEntries(allNetworksArrSorted);
     let networksText = $networks.contents().get(-1).textContent; // text is not sanitized and can contain tabs and stray spaces from network names
 
@@ -181,20 +194,20 @@ document.addEventListener('turbo:load', async () => {
       if (matchingNetworksIds.length > 1) {
         $networks.find('label').wrap(`<a href="/search/shows?network_ids=${matchingNetworksIds.join(',')}"></a>`);
 
-        $(`<a href onclick="$(this).hide(); $(this).next().show(); return false;"> + ${matchingNetworksIds.length - 1} more</a>`) // necessary because for some titles there are 10+ networks listed
+        $(`<a href onclick="$(this).hide(); $(this).next().show(); return false;"> + ${matchingNetworksIds.length - 1} more</a>`)
           .insertAfter($networks.children().eq(1))
-          .nextAll()
-          .wrapAll(`<span style="display: none;"></span>`);
+          .nextAll().wrapAll(`<span style="display: none;"></span>`);
       }
 
       $networks.find('a:not(:has(label), [onclick])').slice(1).before(', '); // comma insertion done here because nextAll() doesn't support text nodes
     } else {
-      GM.setValue('allNetworksArrSorted', null);
-      Logger.error(`Failed to match all title networks (original: ${$networks.contents().get(-1).textContent} | remainder: ${networksText.trim()}). ` +
+      gmStorage.allNetworksArrSorted = null;
+      GM_setValue('enhancedTitleMetadata', gmStorage);
+      Logger.error(`Failed to match all title networks (ORIGINAL: ${$networks.contents().get(-1).textContent} REMAINDER: ${networksText.trim()}). ` +
                    `Cached networks have been cleared. Reload page to try again.`);
     }
   } else if ($networkAlt.text().includes(' on ') && pathSplit[3] !== 'all') {
-    const allNetworksArrSorted = await getSortedArrOfAllNetworks(),
+    const allNetworksArrSorted = await getAllNetworksArrSorted(),
           networkText = $networkAlt.contents().last().text().split(' on ')[1];
 
     const matchingNetwork = networkText ? allNetworksArrSorted.find(([id, { name, countryId }], i) =>
@@ -210,7 +223,8 @@ document.addEventListener('turbo:load', async () => {
       $networkAlt.append(` on <a href="/search/shows?network_ids=${matchingNetwork[0]}">${matchingNetwork[1].name}` +
                          `${matchingNetwork[1].countryId ? ` (${matchingNetwork[1].countryId.toUpperCase()})` : ''}</a>`)
     } else {
-      GM.setValue('allNetworksArrSorted', null);
+      gmStorage.allNetworksArrSorted = null;
+      GM_setValue('enhancedTitleMetadata', gmStorage);
       Logger.error(`Failed to match title network (${networkText}). Cached networks have been cleared. Reload page to try again.`);
     }
   }
@@ -236,7 +250,7 @@ document.addEventListener('turbo:load', async () => {
         if (evt) {
           const url = `/search/${pathSplit[0]}?studio_ids=${$(this).find('label').length ? allStudioIdsJoined : dataStudios[0].ids.trakt}`;
           if (evt.type === 'click') location.href = url;
-          else GM_openInTab(location.origin + url, { insert: true, setParent: true });
+          else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
         }
 
         $studios.children().eq(0).attr('href', `/search/${pathSplit[0]}?studio_ids=${allStudioIdsJoined}`);
@@ -287,7 +301,7 @@ document.addEventListener('turbo:load', async () => {
 
           if (evt) {
             if (evt.type === 'click') location.href = url;
-            else GM_openInTab(location.origin + url, { insert: true, setParent: true });
+            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
           }
           $(this).attr('href', url);
         } else {
@@ -329,7 +343,7 @@ document.addEventListener('turbo:load', async () => {
       $studios.contents().eq(1).wrap($(`<a href="#"></a>`).on('click auxclick', matchStudioFromElemContext));
 
       if (studiosMoreCount) {
-        // parseStudiosMoreSplit() always works, but it's overkill in most cases as only a small subset of studios have names containing commas, separate handling of trivial cases minimizes api requests
+        // matchStudiosMoreSplit() always works, but it's overkill in most cases as only a small subset of studios have names containing commas
         if (studiosMoreCount === 1) {
           $studiosMore
             .text(', ')
@@ -352,7 +366,7 @@ document.addEventListener('turbo:load', async () => {
             const url = `/search/${pathSplit[0]}?studio_ids=${Array.from(matchingStudios).join(',')}`;
 
             if (evt.type === 'click') location.href = url;
-            else GM_openInTab(location.origin + url, { insert: true, setParent: true }); // GM_openInTab for reliably opening background tabs
+            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
             $(this).attr('href', url);
           });
       }
@@ -362,78 +376,73 @@ document.addEventListener('turbo:load', async () => {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-// fetch and cache a map of all possible country values (~235) from the advanced filters modal
-async function getMapOfAllCountries() {
-  let allCountriesMap = JSON.parse(await GM.getValue('allCountriesMap', null));
-  if (!allCountriesMap) {
-    const doc = await fetch('/search/movies').then((r) => r.text()).then((d) => new DOMParser().parseFromString(d, 'text/html')); // movie countries are superset of show countries
-    allCountriesMap = Object.fromEntries(
-      $(doc).find('#filter-countries')
-        .children()
-        .get()
+async function getAllCountriesMap() { // ~235
+  if (!gmStorage.allCountriesMap) {
+    const doc = await fetch('/search/movies').then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html')); // movie countries are superset of show countries
+
+    gmStorage.allCountriesMap = JSON.stringify(Object.fromEntries(
+      $(doc).find('#filter-countries').children().get()
         .map((e) => [$(e).text(), $(e).attr('value').toLowerCase()])
+    ));
+    GM_setValue('enhancedTitleMetadata', gmStorage);
+  }
+  return JSON.parse(gmStorage.allCountriesMap);
+}
+
+async function getAllLanguagesArrSorted() { // ~179
+  if (!gmStorage.allLanguagesArrSorted) {
+    const doc = await fetch('/search/movies').then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html')); // movie langs are superset of show langs
+
+    gmStorage.allLanguagesArrSorted = JSON.stringify(
+      $(doc).find('#filter-languages').children().get()
+        .map((e) => [$(e).attr('value'), $(e).text()])
+        .sort(([, nameA], [, nameB]) => nameB.length - nameA.length) // ensure longest names get matched first, necessary because language names can include other language names and commas
     );
-    GM.setValue('allCountriesMap', JSON.stringify(allCountriesMap))
+    GM_setValue('enhancedTitleMetadata', gmStorage);
   }
-  return allCountriesMap;
+  return JSON.parse(gmStorage.allLanguagesArrSorted);
 }
 
-// fetch and cache a sorted list of all possible language values (~179) from the advanced filters modal
-async function getSortedArrOfAllLanguages() {
-  let allLanguagesArrSorted = JSON.parse(await GM.getValue('allLanguagesArrSorted', null));
-  if (!allLanguagesArrSorted) {
-    const doc = await fetch('/search/movies').then((r) => r.text()).then((d) => new DOMParser().parseFromString(d, 'text/html')); // movie languages are superset of show languages
-    allLanguagesArrSorted = $(doc).find('#filter-languages')
-      .children()
-      .get()
-      .map((e) => [$(e).attr('value'), $(e).text()])
-      .sort(([, nameA], [, nameB]) => nameB.length - nameA.length); // ensure longest names get matched first, necessary because language names can include other language names and commas
-    GM.setValue('allLanguagesArrSorted', JSON.stringify(allLanguagesArrSorted))
-  }
-  return allLanguagesArrSorted;
-}
-
-// fetch and cache a sorted list of all possible network values (~4000) from the advanced filters modal (trakt api only returns one single network and only the name, no id)
-async function getSortedArrOfAllNetworks() {
-  let allNetworksArrSorted = JSON.parse(await GM.getValue('allNetworksArrSorted', null));
-  if (!allNetworksArrSorted) {
-    const doc = await fetch('/search/shows').then((r) => r.text()).then((d) => new DOMParser().parseFromString(d, 'text/html')),
+async function getAllNetworksArrSorted() { // ~4000; trakt api only returns one network (not full list) and only the name, not id
+  if (!gmStorage.allNetworksArrSorted) {
+    const doc = await fetch('/search/shows').then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html')),
           collator = new Intl.Collator();
-    allNetworksArrSorted = $(doc).find('#filter-network_ids')
-      .children()
-      .get()
-      .map((e) => $(e).text() ? [+$(e).attr('value'), { name: $(e).text(), countryId: $(e).attr('data-tag')?.toLowerCase() }] : null) // (names are not sanitized, can contain leading/trailing whitespace)
-      .filter(Boolean) // at least one option has no name
-      .sort(([networkIdA, { name: nameA, countryId: countryIdA }], [networkIdB, { name: nameB, countryId: countryIdB }]) =>
-             nameB.length - nameA.length || // ensure longest names get matched first, necessary because network names can include other network names and commas
-             collator.compare(nameA, nameB) || // make sure all those with the same name are neighbors
-             (countryIdB && 1) - (countryIdA && 1) || // prioritize those with country code
-             networkIdB - networkIdA // the lower the network id, the more major the network tends to be
-           );
-    GM.setValue('allNetworksArrSorted', JSON.stringify(allNetworksArrSorted))
+
+    gmStorage.allNetworksArrSorted = JSON.stringify(
+      $(doc).find('#filter-network_ids').children().get()
+        .map((e) => $(e).text() ? [+$(e).attr('value'), { name: $(e).text(), countryId: $(e).attr('data-tag')?.toLowerCase() }] : null) // names can contain leading/trailing whitespace (even tabs)
+        .filter(Boolean)
+        .sort(([networkIdA, { name: nameA, countryId: countryIdA }], [networkIdB, { name: nameB, countryId: countryIdB }]) => {
+          return nameB.length - nameA.length || // ensure longest names get matched first, necessary because network names can include names of other networks and commas
+            collator.compare(nameA, nameB) || // make sure all those with the same name are neighbors
+            (countryIdB && 1) - (countryIdA && 1) || // prioritize those with country code
+            networkIdB - networkIdA; // the lower the network id, the more major the network tends to be
+        })
+    );
+    GM_setValue('enhancedTitleMetadata', gmStorage);
   }
-  return allNetworksArrSorted;
+  return JSON.parse(gmStorage.allNetworksArrSorted);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 function addStyles() {
   GM_addStyle(`
-    #overview .additional-stats .country-flag {
-      width: 20px !important;
-      margin: -2px 5px 0 0 !important;
-      transition: transform .5s ease;
-    }
-    #overview .additional-stats a:hover > .country-flag {
-      transform: scale(1.1);
-    }
+#overview .additional-stats .country-flag {
+  width: 20px !important;
+  margin: -2px 5px 0 0 !important;
+  transition: transform .5s ease;
+}
+#overview .additional-stats a:hover > .country-flag {
+  transform: scale(1.1);
+}
 
-    :is(#info-wrapper .additional-stats a > label, #summary-wrapper a > .year):hover {
-      color: var(--link-color) !important;
-      cursor: pointer !important;
-    }
-    #summary-wrapper a:has(> .certification):hover {
-      color: #fff !important;
-    }
+:is(#info-wrapper .additional-stats a > label, #summary-wrapper a > .year):hover {
+  color: var(--link-color) !important;
+  cursor: pointer !important;
+}
+#summary-wrapper a:has(> .certification):hover {
+  color: #fff !important;
+}
   `);
 }
