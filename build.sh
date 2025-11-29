@@ -81,7 +81,7 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 | *NAME* | *SCRIPT_ID* |
 | :----- | :---------- |
-$(for id in "${ms_ids[@]}"; do printf '| [%s](%s) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$DOCS_DIR/$id.md" "$id"; done | sort)
+$(for id in "${ms_ids[@]}"; do printf '| [%s](%s) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id.md" "$id"; done | sort)
 */
 
 $(for id in "${ms_ids[@]}"; do
