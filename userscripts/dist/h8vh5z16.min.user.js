@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Trakt.tv | Director Badge
-// @description  Appends a special "Director" badge to your username because you deserve it. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.
+// @description  Appends a special "Director" badge to your username because you deserve it. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://classic.trakt.tv/users/sean for how it looks.
 // @version      1.0.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
