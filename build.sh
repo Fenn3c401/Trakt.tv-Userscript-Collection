@@ -166,7 +166,7 @@ EOF
     printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}"
   ) > "$DOCS_DIR/$id.md"
 
-  printf '%s%s\n' "${readme_comment:+"# [README]($BASE_URL/blob/main/$DOCS_DIR/$id-gf.md)"$'\n\n'}" \
+  printf '%s%s\n' "${readme_comment:+"# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md)"$'\n\n'}" \
     "Click [HERE]($BASE_URL#readme) for general info, requirements and a full list of all my Trakt.tv userscripts." \
     > "$DOCS_DIR/$id-gf.md"
 
