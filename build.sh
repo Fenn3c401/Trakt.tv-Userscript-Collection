@@ -43,6 +43,7 @@ declare -i userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
 declare -i loc_count_total=0
 declare -a ms_ids
 declare -A ms_store
+
 for file in "$SRC_DIR"/*.user.js; do
   id=$(basename "$file" .user.js)
   printf '>> Processing ID: %s\n' "$id"
@@ -77,24 +78,25 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 ### General
 - You can turn off individual modules in the userscript storage tab *(note: only displayed after first run)* by setting their respective id *(see table below)* to false.
 
-| *ID*       | *NAME* |
-| :--------- | :----- |
+| *SCRIPT_ID* | *NAME* |
+| :---------- | :----- |
 $(for id in "${ms_ids[@]}"; do printf '| `%s` | %s |\n' "$id" "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")"; done)
 */
+
 $(for id in "${ms_ids[@]}"; do
-  [[ -n "${ms_store["$id.readme_comment"]}" ]] && printf '\n/* README [%s]\n%s\n' "${ms_store["$id.script_name"]}" "$(sed '1d' <<< "${ms_store["$id.readme_comment"]}")"
+  [[ -n "${ms_store["$id.readme_comment"]}" ]] && printf '/* README [%s]\n%s\n\n' "${ms_store["$id.script_name"]}" "$(sed '1d' <<< "${ms_store["$id.readme_comment"]}")"
 done)
 
 'use strict';
 
-const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "['%s']: true, " "$id"; done)...(GM_getValue('megascript')) };
+const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; done)...(GM_getValue('megascript')) };
 GM_setValue('megascript', gmStorage);
 $(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async () => {\n%s\n})();\n" "$id" "${ms_store["$id.body"]}"; done)
 EOF
   fi
 
 
-  printf '   1. Parsing source file\n'
+  printf '   1. Parsing src file\n'
   clean_content="$(tr -d '\r' < "$file")"
   script_name="$(grep -m 1 '^// @name' <<< "$clean_content" | sed -E 's|// @name\s+||')"
   script_desc="$(grep -m 1 '^// @description' <<< "$clean_content" | sed -E 's|// @description\s+||')"
@@ -146,26 +148,25 @@ EOF
 
 
   printf '   3. Generating doc file\n'
-  doc_file="$DOCS_DIR/$id.md"
-  printf '# %s\n%s\n\n' "$script_name" "$script_desc" > "$doc_file"
-  
+  version_slug=$(sed 's|_|__|g; s|-|--|g' <<< "$script_version")
+  loc_count=$(npx cloc --quiet --sum-one --stdin-name="$id.user.js" - <<< "$body" | grep -m 1 'SUM:' | awk '{print $5}')
+  [[ "$id" != 'zzzzzzzz' ]] && ((loc_count_total += loc_count))
+  screenshots="$(find "$SCREENSHOTS_DIR" -type f -name "$id-*.*" -printf '%f\n' | sort)"
+
   install_badge="[![install standard](https://img.shields.io/badge/install-standard-006400)]($DOWNLOAD_URL_DIST)"
   install_min_badge="[![install minified](https://img.shields.io/badge/install-minified-64962a)]($DOWNLOAD_URL_DIST_MIN)"
-  version_badge="[![version](https://img.shields.io/badge/version-$script_version-blue)](../../../../blame/main/$DIST_DIR/$id.user.js)"
-  printf '%s\n%s\n%s\n' "$install_badge" "$install_min_badge" "$version_badge" >> "$doc_file"
-
-  loc_count=$(npx cloc --quiet --sum-one --stdin-name="$id.user.js" - <<< "$body" | grep -m 1 'SUM:' | awk '{print $5}')
+  version_badge="[![version](https://img.shields.io/badge/version-$version_slug-blue)](../../../../blame/main/$DIST_DIR/$id.user.js)"
   loc_count_badge="[![lines of code](https://img.shields.io/badge/loc-$loc_count-orange)](../../$DIST_DIR/$id.user.js)"
-  printf '%s\n\n' "$loc_count_badge" >> "$doc_file"
-  [[ "$id" != 'zzzzzzzz' ]] && ((loc_count_total += loc_count))
 
-  printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n\n'}" >> "$doc_file"
+  (
+    printf '# %s\n%s\n\n' "$script_name" "$script_desc"
+    printf '%s\n%s\n%s\n%s\n\n' "$install_badge" "$install_min_badge" "$version_badge" "$loc_count_badge"
+    printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n\n'}"
+    printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}"
+  ) > "$DOCS_DIR/$id.md"
 
-  screenshots="$(find "$SCREENSHOTS_DIR" -type f -name "$id-*.*" -printf '%f\n' | sort)"
-  printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}" >> "$doc_file"
 
-
-  printf '   4. Add row to README.md table\n'
+  printf '   4. Adding row to README.md table\n'
   escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
   install_links="[Standard]($DOWNLOAD_URL_DIST) // [Minified]($DOWNLOAD_URL_DIST_MIN)"
   printf '| [%s](%s) | `%s` | `%s` | %s |\n' "$escaped_script_name" "$DOCS_DIR/$id.md" "$script_version" "$loc_count" "$install_links" >> "$TABLE_CONTENT_FILE"
@@ -176,7 +177,8 @@ printf 'Finalizing README.md\n'
 ( 
   cat "$BEFORE_TABLE_FILE" | sed -E "s|(/badge/loc-)[0-9]+|\1$loc_count_total|; s|(/badge/userscripts-)[0-9]+|\1$userscript_count|"
   head -n 2 "$TABLE_CONTENT_FILE"
-  tail -n +3 "$TABLE_CONTENT_FILE" | sort
+  sed -n '\|zzzzzzzz|p' "$TABLE_CONTENT_FILE"
+  tail -n +3 "$TABLE_CONTENT_FILE" | sed '\|zzzzzzzz|d' "$TABLE_CONTENT_FILE" | sort
   cat "$AFTER_TABLE_FILE"
 ) > README.md
 
