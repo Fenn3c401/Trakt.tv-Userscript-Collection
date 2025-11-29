@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv. Organized into sections with comments detailing what specific issues are being addressed. See README for details.
-// @version      0.7.0
+// @version      0.7.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -80,7 +80,7 @@ The input is matched against: list title and description for /lists pages, episo
     transform: translateX(0);
   }
 }
-`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper");e.swipe({swipeRight:(t,r,a,n,o,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,r,a,n,o,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})});const optimizedRenderReadmore=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((t,r)=>unsafeWindow.jQuery(r).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(t,r,a)=>r.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>optimizedRenderReadmore,set:()=>{},configurable:!0}),GM_addStyle(`
+`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,r,a,n,o,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,r,a,n,o,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})});const optimizedRenderReadmore=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((t,r)=>unsafeWindow.jQuery(r).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(t,r,a)=>r.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>optimizedRenderReadmore,set:()=>{},configurable:!0}),GM_addStyle(`
 .personal-list .list-description {
   overflow-wrap: anywhere;
 }

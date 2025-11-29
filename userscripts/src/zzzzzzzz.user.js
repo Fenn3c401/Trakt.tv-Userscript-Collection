@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
-// @version      2025-11-29_08-26
+// @version      2025-11-29_11-01
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -675,8 +675,9 @@ GM_addStyle(`
 }
 `);
 window.addEventListener('turbo:load', () => {
-  const $infoWrapper = unsafeWindow.jQuery('body.touch-device #info-wrapper');
+  const $infoWrapper = unsafeWindow.jQuery('body.touch-device #info-wrapper:has(.sidebar)');
   $infoWrapper.swipe({
+    excludedElements: '#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters',
     swipeRight: (_evt, _direction, _distance, _duration, _fingerCount, fingerData) => fingerData[0].start.x < 50 && $infoWrapper.addClass('with-mobile-sidebar'),
     swipeLeft: (_evt, _direction, _distance, _duration, _fingerCount, _fingerData) => $infoWrapper.removeClass('with-mobile-sidebar'),
   });

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-11-29_08-26
+// @version      2025-11-29_11-01
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -171,7 +171,7 @@ body:is(.dashboard, .settings, .authorized_applications, .applications) #results
     transform: translateX(0);
   }
 }
-`),window.addEventListener("turbo:load",()=>{const r=unsafeWindow.jQuery("body.touch-device #info-wrapper");r.swipe({swipeRight:(u,m,l,v,i,o)=>o[0].start.x<50&&r.addClass("with-mobile-sidebar"),swipeLeft:(u,m,l,v,i,o)=>r.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((r,u)=>{unsafeWindow.Mousetrap.bind(`alt+${u+1}`,()=>r.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${u+1}`,()=>r.click())})});const t=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((u,m)=>unsafeWindow.jQuery(m).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(u,m,l)=>m.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>t,set:()=>{},configurable:!0}),GM_addStyle(`
+`),window.addEventListener("turbo:load",()=>{const r=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");r.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(u,m,l,v,i,o)=>o[0].start.x<50&&r.addClass("with-mobile-sidebar"),swipeLeft:(u,m,l,v,i,o)=>r.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((r,u)=>{unsafeWindow.Mousetrap.bind(`alt+${u+1}`,()=>r.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${u+1}`,()=>r.click())})});const t=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((u,m)=>unsafeWindow.jQuery(m).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(u,m,l)=>m.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>t,set:()=>{},configurable:!0}),GM_addStyle(`
 .personal-list .list-description {
   overflow-wrap: anywhere;
 }

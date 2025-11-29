@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv. Organized into sections with comments detailing what specific issues are being addressed. See README for details.
-// @version      0.7.0
+// @version      0.7.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -133,8 +133,9 @@ GM_addStyle(`
 }
 `);
 window.addEventListener('turbo:load', () => {
-  const $infoWrapper = unsafeWindow.jQuery('body.touch-device #info-wrapper');
+  const $infoWrapper = unsafeWindow.jQuery('body.touch-device #info-wrapper:has(.sidebar)');
   $infoWrapper.swipe({
+    excludedElements: '#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters',
     swipeRight: (_evt, _direction, _distance, _duration, _fingerCount, fingerData) => fingerData[0].start.x < 50 && $infoWrapper.addClass('with-mobile-sidebar'),
     swipeLeft: (_evt, _direction, _distance, _duration, _fingerCount, _fingerData) => $infoWrapper.removeClass('with-mobile-sidebar'),
   });
