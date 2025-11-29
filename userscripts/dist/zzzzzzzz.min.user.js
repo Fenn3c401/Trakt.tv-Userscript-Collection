@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 11 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-11-29_02-42
+// @version      2025-11-29_04-19
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -36,8 +36,8 @@
 ### General
 - You can turn off individual modules in the userscript storage tab *(note: only displayed after first run)* by setting their respective id *(see table below)* to false.
 
-| *ID*       | *NAME* |
-| :--------- | :----- |
+| *SCRIPT_ID* | *NAME* |
+| :---------- | :----- |
 | `2hc6zfyy` | Trakt.tv \| Scheduled E-Mail Data Exports |
 | `71cd9s61` | Trakt.tv \| Actor Pronunciation Helper |
 | `cs1u5z40` | Trakt.tv \| Charts - Seasons |
