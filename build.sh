@@ -76,22 +76,25 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 /* README
 ### General
-- You can turn off individual modules in the userscript storage tab *(note: only displayed after first run)* by setting their respective id *(see table below)* to false.
+- You can turn off individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- This userscript is automatically generated. YMMV.
 
 | *SCRIPT_ID* | *NAME* |
 | :---------- | :----- |
-$(for id in "${ms_ids[@]}"; do printf '| `%s` | %s |\n' "$id" "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")"; done)
+$(for id in "${ms_ids[@]}"; do printf '| `%s` | %s |\n' "$id" "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")"; done | sort)
 */
 
 $(for id in "${ms_ids[@]}"; do
   [[ -n "${ms_store["$id.readme_comment"]}" ]] && printf '/* README [%s]\n%s\n\n' "${ms_store["$id.script_name"]}" "$(sed '1d' <<< "${ms_store["$id.readme_comment"]}")"
 done)
 
+
 'use strict';
 
 const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; done)...(GM_getValue('megascript')) };
 GM_setValue('megascript', gmStorage);
 $(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async () => {\n%s\n})();\n" "$id" "${ms_store["$id.body"]}"; done)
+
 EOF
   fi
 
@@ -178,7 +181,7 @@ printf 'Finalizing README.md\n'
   cat "$BEFORE_TABLE_FILE" | sed -E "s|(/badge/loc-)[0-9]+|\1$loc_count_total|; s|(/badge/userscripts-)[0-9]+|\1$userscript_count|"
   head -n 2 "$TABLE_CONTENT_FILE"
   sed -n '\|zzzzzzzz|p' "$TABLE_CONTENT_FILE"
-  tail -n +3 "$TABLE_CONTENT_FILE" | sed '\|zzzzzzzz|d' "$TABLE_CONTENT_FILE" | sort
+  sed '1,2d; \|zzzzzzzz|d' "$TABLE_CONTENT_FILE" | sort
   cat "$AFTER_TABLE_FILE"
 ) > README.md
 
