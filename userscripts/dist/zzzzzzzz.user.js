@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 11 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-11-29_04-19
+// @version      2025-11-29_04-39
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -34,7 +34,8 @@
 
 /* README
 ### General
-- You can turn off individual modules in the userscript storage tab *(note: only displayed after first run)* by setting their respective id *(see table below)* to false.
+- You can turn off individual modules by setting the corresponding script-id to  in the userscript storage tab *(note: only displayed after first run)*.
+- This userscript is automatically generated. YMMV.
 
 | *SCRIPT_ID* | *NAME* |
 | :---------- | :----- |
@@ -155,6 +156,7 @@
 - Specials are always excluded, except on the specials season page.
 - Only visible (i.e. not hidden by a filter) items are used for the calculation of the averages and changes to those filters trigger a recalculation.
 */
+
 
 'use strict';
 
