@@ -1,21 +1,24 @@
 // ==UserScript==
 // @name         Trakt.tv | Nested Header Navigation Menus
 // @description  Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.
-// @version      1.0.5
+// @version      1.0.7
 // @namespace    txw82860
-// @icon         data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiB1cmwoI3JhZGlhbC1ncmFkaWVudCk7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0icmFkaWFsLWdyYWRpZW50IiBjeD0iNDguNDYiIGN5PSItLjk1IiBmeD0iNDguNDYiIGZ5PSItLjk1IiByPSI2NC44NCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM5ZjQyYzYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuMjciIHN0b3AtY29sb3I9IiNhMDQxYzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNDIiIHN0b3AtY29sb3I9IiNhNDNlYmIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNTMiIHN0b3AtY29sb3I9IiNhYTM5YWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNjQiIHN0b3AtY29sb3I9IiNiNDMzOWEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNzMiIHN0b3AtY29sb3I9IiNjMDJiODEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiNjZjIwNjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iI2UxMTQzYyIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii45NyIgc3RvcC1jb2xvcj0iI2Y1MDYxMyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJlZCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPGcgaWQ9Il94MkRfLXByb2R1Y3Rpb24iPgogICAgPGcgaWQ9ImxvZ29tYXJrLnNxdWFyZS5ncmFkaWVudCI+CiAgICAgIDxwYXRoIGlkPSJiYWNrZ3JvdW5kIiBjbGFzcz0iY2xzLTEiIGQ9Ik00OCwxMS4yNnYyNS40N2MwLDYuMjItNS4wNSwxMS4yNy0xMS4yNywxMS4yN0gxMS4yNmMtNi4yMiwwLTExLjI2LTUuMDUtMTEuMjYtMTEuMjdWMTEuMjZDMCw1LjA0LDUuMDQsMCwxMS4yNiwwaDI1LjQ3YzMuMzIsMCw2LjMsMS40Myw4LjM3LDMuNzIuNDcuNTIuODksMS4wOCwxLjI1LDEuNjguMTguMjkuMzQuNTkuNS44OS4zMy42OC42LDEuMzkuNzksMi4xNC4xLjM3LjE4Ljc2LjIzLDEuMTUuMDkuNTQuMTMsMS4xMS4xMywxLjY4WiIvPgogICAgICA8ZyBpZD0iY2hlY2tib3giPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTEzLjYyLDE3Ljk3bDcuOTIsNy45MiwxLjQ3LTEuNDctNy45Mi03LjkyLTEuNDcsMS40N1pNMjguMDEsMzIuMzdsMS40Ny0xLjQ2LTIuMTYtMi4xNiwyMC4zMi0yMC4zMmMtLjE5LS43NS0uNDYtMS40Ni0uNzktMi4xNGwtMjIuNDYsMjIuNDYsMy42MiwzLjYyWk0xMi45MiwxOC42N2wtMS40NiwxLjQ2LDE0LjQsMTQuNCwxLjQ2LTEuNDctNC4zMi00LjMxTDQ2LjM1LDUuNGMtLjM2LS42LS43OC0xLjE2LTEuMjUtMS42OGwtMjMuNTYsMjMuNTYtOC42Mi04LjYxWk00Ny44Nyw5LjU4bC0xOS4xNywxOS4xNywxLjQ3LDEuNDYsMTcuODMtMTcuODN2LTEuMTJjMC0uNTctLjA0LTEuMTQtLjEzLTEuNjhaTTI1LjE2LDIyLjI3bC03LjkyLTcuOTItMS40NywxLjQ3LDcuOTIsNy45MiwxLjQ3LTEuNDdaTTQxLjMyLDM1LjEyYzAsMy40Mi0yLjc4LDYuMi02LjIsNi4ySDEyLjg4Yy0zLjQyLDAtNi4yLTIuNzgtNi4yLTYuMlYxMi44OGMwLTMuNDIsMi43OC02LjIxLDYuMi02LjIxaDIwLjc4di0yLjA3SDEyLjg4Yy00LjU2LDAtOC4yOCwzLjcxLTguMjgsOC4yOHYyMi4yNGMwLDQuNTYsMy43MSw4LjI4LDguMjgsOC4yOGgyMi4yNGM0LjU2LDAsOC4yOC0zLjcxLDguMjgtOC4yOHYtMy41MWgtMi4wN3YzLjUxWiIvPjwhLS0gNDVkMjM4NWQzYWFjYmI1OTMyNmEzODYxNDljNWE4NzggLS0+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==
+// @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
+// @match        https://classic.trakt.tv/*
 // @run-at       document-start
 // @grant        unsafeWindow
 // @grant        GM_addStyle
 // ==/UserScript==
 
 /* README
-> Inspired by sergeyhist's [Trakt.tv Hidden Items](https://github.com/sergeyhist/trakt-scripts/blob/main/Legacy/trakt-hidden.user.js) userscript.
+> Based on sergeyhist's [Trakt.tv Hidden Items](https://github.com/sergeyhist/trakt-scripts/blob/main/Legacy/trakt-hidden.user.js) userscript.
 */
 
 
 'use strict';
+
+const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1];
 
 const menuTemplates = {
   historySorting: (hrefPrefix, [anchorIndex = 1, ...submenuAnchorIndexes] = []) => ({
@@ -136,6 +139,11 @@ const menuTemplates = {
       {},
       { text: 'Trakt Percentage', href: 'percentage' },
       { text: 'Trakt Votes', href: 'votes' },
+      ...(/\/watchlist\?sort=/.test(hrefPrefix) && userslug ? [
+        { text: 'Rotten Tomatoes <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=rtomatoes&sortorder=desc`, useHrefPrefix: false },
+        { text: 'Metacritic <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=metacritic&sortorder=desc`, useHrefPrefix: false },
+        { text: 'MyAnimeList <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=myanimelist&sortorder=desc`, useHrefPrefix: false },
+      ] : []),
       {},
       { text: 'My Rating', href: 'my_rating' },
       { text: 'Watched Date', href: 'watched' },
@@ -182,7 +190,9 @@ const menuTemplates = {
       { text: 'Day', href: '/daily' },
       { text: 'Week', href: '/weekly' },
       { text: 'Month', href: '/monthly' },
-      { text: 'All Time', href: '/all' },
+      ...(!/\/streaming/.test(hrefPrefix) ? [
+        { text: 'All Time', href: '/all' },
+      ] : []),
     ]),
   }),
 };
@@ -398,7 +408,7 @@ const menus = {
     entries: [
       { text: 'Trending', href: '/trending' },
       { text: 'Recommendations', href: '/recommendations' },
-      { text: 'Streaming Charts', href: '/streaming' },
+      { text: 'Streaming Charts', href: '/streaming', submenu: menuTemplates.showsMoviesCatTimePeriod('/shows/streaming', [1]) },
       { text: 'Anticipated', href: '/anticipated' },
       { text: 'Popular', href: '/popular' },
       { text: 'Favorited', href: '/favorited', submenu: menuTemplates.showsMoviesCatTimePeriod('/shows/favorited') },
@@ -411,7 +421,7 @@ const menus = {
     entries: [
       { text: 'Trending', href: '/trending' },
       { text: 'Recommendations', href: '/recommendations' },
-      { text: 'Streaming Charts', href: '/streaming' },
+      { text: 'Streaming Charts', href: '/streaming', submenu: menuTemplates.showsMoviesCatTimePeriod('/movies/streaming', [1]) },
       { text: 'Anticipated', href: '/anticipated' },
       { text: 'Popular', href: '/popular' },
       { text: 'Favorited', href: '/favorited', submenu: menuTemplates.showsMoviesCatTimePeriod('/movies/favorited') },
@@ -626,148 +636,151 @@ window.addEventListener('turbo:load', () => {
 
 function addStyles() {
   GM_addStyle(`
-    #top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu {
-      border-radius: 8px 8px 0 0 !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu > a {
-      transition: color .2s !important;
-    }
-    #top-nav#top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu > a:hover {
-      color: var(--brand-primary-300) !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) ul {
-      height: max-content;
-      width: max-content !important;
-      overflow-y: revert !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu > ul {
-      top: 100% !important;
-      min-width: max(130px, 100%) !important;
-    }
-    #top-nav .links-wrapper > .with-ul-menu > ul {
-      border-radius: 8px 0 8px 8px !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) ul ul {
-      min-width: 100px !important;
-      border-radius: 8px !important;
-      border-top: revert !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) :is(ul a, .dropdown-header) {
-      padding: 6px 16px !important;
-      font-size: 14px !important;
-      margin: revert !important;
-      text-shadow: revert !important;
-    }
-    @media (width <= 767px) {
-      #top-nav :is(.user-wrapper, .links-wrapper) :is(ul a, .dropdown-header) {
-        padding: 6px 12px !important;
-      }
-    }
-    #top-nav#top-nav :is(.user-wrapper, .links-wrapper) ul a,
-    #top-nav .user-wrapper :is(.btn-mobile-links, .btn-tablet-links) > .icon {
-      color: #fff !important; /* light mode override */
-    }
-    #top-nav#top-nav :is(.user-wrapper, .links-wrapper) ul a:hover {
-      background-color: rgb(from var(--brand-primary) r g b / 92%) !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) .dropdown-header {
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) span.left {
-      width: 18px;
-      margin-right: 8px;
-      text-align: center;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) span.right {
-      margin-left: 8px;
-    }
-    body.dark-knight #top-nav#top-nav .btn-profile a:has(> span.toggle-dark-mode):not(:hover) {
-      color: var(--brand-secondary) !important;
-    }
+#top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu {
+  border-radius: 8px 8px 0 0 !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu > a {
+  transition: color .2s !important;
+}
+#top-nav#top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu > a:hover {
+  color: var(--brand-primary-300) !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) ul {
+  height: max-content;
+  width: max-content !important;
+  overflow-y: revert !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu > ul {
+  top: 100% !important;
+  min-width: max(130px, 100%) !important;
+}
+#top-nav .links-wrapper > .with-ul-menu > ul {
+  border-radius: 8px 0 8px 8px !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) ul ul {
+  min-width: 100px !important;
+  border-radius: 8px !important;
+  border-top: revert !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) :is(ul a, .dropdown-header) {
+  padding: 6px 16px !important;
+  font-size: 14px !important;
+  margin: revert !important;
+  text-shadow: revert !important;
+}
+@media (width <= 767px) {
+  #top-nav :is(.user-wrapper, .links-wrapper) :is(ul a, .dropdown-header) {
+    padding: 6px 12px !important;
+  }
+}
+#top-nav#top-nav :is(.user-wrapper, .links-wrapper) ul a,
+#top-nav .user-wrapper :is(.btn-mobile-links, .btn-tablet-links) > .icon {
+  color: #fff !important; /* light mode override */
+}
+#top-nav#top-nav :is(.user-wrapper, .links-wrapper) ul a:hover {
+  background-color: rgb(from var(--brand-primary) r g b / 92%) !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) .dropdown-header {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) span.left {
+  width: 18px;
+  margin-right: 8px;
+  text-align: center;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) span.right {
+  margin-left: 8px;
+}
+body.dark-knight #top-nav#top-nav .btn-profile a:has(> span.toggle-dark-mode):not(:hover) {
+  color: var(--brand-secondary) !important;
+}
+#top-nav .user-wrapper .btn > .menu {
+  cursor: initial; /* .btns set cursor: pointer; which is inheritable => applies to .dividers */
+}
 
 
-    #top-nav :is(.user-wrapper, .links-wrapper) li > a:has(+ ul)::after {
-      content: "\\25B6";
-      display: inline-block;
-      float: right;
-      margin-left: 10px;
-      transform: scale(0.75) rotate(0deg);
-      transition: transform 0.2s;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) :is(:hover, .selected) > a::after {
-      transform: rotate(180deg) scale(1);
-    }
+#top-nav :is(.user-wrapper, .links-wrapper) li > a:has(+ ul)::after {
+  content: "\\25B6";
+  display: inline-block;
+  float: right;
+  margin-left: 10px;
+  transform: scale(0.75) rotate(0deg);
+  transition: transform 0.2s;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) :is(:hover, .selected) > a::after {
+  transform: rotate(180deg) scale(1);
+}
 
 
-    #top-nav :is(.user-wrapper, .links-wrapper) ul {
-      display: none !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) :is(:hover, .selected) > ul {
-      display: block !important;
-    }
+#top-nav :is(.user-wrapper, .links-wrapper) ul {
+  display: none !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) :is(:hover, .selected) > ul {
+  display: block !important;
+}
 
 
-    #top-nav :is(.user-wrapper, .links-wrapper) ul ul {
-      --menu-columns: 5;
-      --menu-overlap: min(97%, calc((100vw - 155px * var(--menu-columns)) / var(--menu-columns) + 100%));
-      right: var(--menu-overlap) !important;
-    }
-    @media (767px < width <= 991px) {
-      #top-nav .links-wrapper ul ul {
-        --menu-columns: 3;
-      }
-      #top-nav .links-wrapper ul ul ul ul {
-        left: var(--menu-overlap) !important;
-        right: revert !important;
-      }
-      #top-nav .links-wrapper ul ul ul a::after {
-        transform: scale(0.75) rotate(180deg);
-      }
-      #top-nav .links-wrapper ul ul ul :is(:hover, .selected) > a::after {
-        transform: rotate(0deg) scale(1);
-      }
-    }
-    @media (width <= 767px) {
-      #top-nav :is(.user-wrapper, .links-wrapper) ul ul {
-        --menu-columns: 3;
-      }
-      #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul ul {
-        left: var(--menu-overlap) !important;
-        right: revert !important;
-      }
-      #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul a::after {
-        transform: scale(0.75) rotate(180deg);
-      }
-      #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul :is(:hover, .selected) > a::after {
-        transform: rotate(0deg) scale(1);
-      }
-    }
+#top-nav :is(.user-wrapper, .links-wrapper) ul ul {
+  --menu-columns: 5;
+  --menu-overlap: min(97%, calc((100vw - 155px * var(--menu-columns)) / var(--menu-columns) + 100%));
+  right: var(--menu-overlap) !important;
+}
+@media (767px < width <= 991px) {
+  #top-nav .links-wrapper ul ul {
+    --menu-columns: 3;
+  }
+  #top-nav .links-wrapper ul ul ul ul {
+    left: var(--menu-overlap) !important;
+    right: revert !important;
+  }
+  #top-nav .links-wrapper ul ul ul a::after {
+    transform: scale(0.75) rotate(180deg);
+  }
+  #top-nav .links-wrapper ul ul ul :is(:hover, .selected) > a::after {
+    transform: rotate(0deg) scale(1);
+  }
+}
+@media (width <= 767px) {
+  #top-nav :is(.user-wrapper, .links-wrapper) ul ul {
+    --menu-columns: 3;
+  }
+  #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul ul {
+    left: var(--menu-overlap) !important;
+    right: revert !important;
+  }
+  #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul a::after {
+    transform: scale(0.75) rotate(180deg);
+  }
+  #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul :is(:hover, .selected) > a::after {
+    transform: rotate(0deg) scale(1);
+  }
+}
 
 
-    #top-nav :is(.user-wrapper, .links-wrapper) ul,
-    #top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu:is(:hover, .selected) {
-      --nesting-depth: 0;
-      z-index: var(--nesting-depth);
-      background-color: hsl(0deg 0% calc(20% + var(--nesting-depth) * 2.5%) / 92%) !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) .divider {
-      background-color: hsl(0deg 0% calc(27% + var(--nesting-depth) * 2.5%)) !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) :is(.dropdown-header, em) {
-      color: hsl(0deg 0% calc(57% + var(--nesting-depth) * 2.5%)) !important;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) ul ul {
-      --nesting-depth: 1;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul {
-      --nesting-depth: 2;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul ul {
-      --nesting-depth: 3;
-    }
-    #top-nav :is(.user-wrapper, .links-wrapper) ul ul ul ul ul {
-      --nesting-depth: 4;
-    }
+#top-nav :is(.user-wrapper, .links-wrapper) ul,
+#top-nav :is(.user-wrapper, .links-wrapper) > .with-ul-menu:is(:hover, .selected) {
+  --nesting-depth: 0;
+  z-index: var(--nesting-depth);
+  background-color: hsl(0deg 0% calc(20% + var(--nesting-depth) * 2.5%) / 92%) !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) .divider {
+  background-color: hsl(0deg 0% calc(27% + var(--nesting-depth) * 2.5%)) !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) :is(.dropdown-header, em) {
+  color: hsl(0deg 0% calc(57% + var(--nesting-depth) * 2.5%)) !important;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) ul ul {
+  --nesting-depth: 1;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) ul ul ul {
+  --nesting-depth: 2;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) ul ul ul ul {
+  --nesting-depth: 3;
+}
+#top-nav :is(.user-wrapper, .links-wrapper) ul ul ul ul ul {
+  --nesting-depth: 4;
+}
   `);
 }
