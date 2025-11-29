@@ -76,12 +76,12 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 /* README
 ### General
-- You can turn off individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- You can turn off individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
 - This userscript is automatically generated. YMMV.
 
-| *SCRIPT_ID* | *NAME* |
-| :---------- | :----- |
-$(for id in "${ms_ids[@]}"; do printf '| `%s` | %s |\n' "$id" "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")"; done | sort)
+| *NAME* | *SCRIPT_ID* |
+| :----- | :---------- |
+$(for id in "${ms_ids[@]}"; do printf '| %s | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id"; done | sort)
 */
 
 $(for id in "${ms_ids[@]}"; do
@@ -94,7 +94,6 @@ done)
 const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; done)...(GM_getValue('megascript')) };
 GM_setValue('megascript', gmStorage);
 $(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async () => {\n%s\n})();\n" "$id" "${ms_store["$id.body"]}"; done)
-
 EOF
   fi
 
