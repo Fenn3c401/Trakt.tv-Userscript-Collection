@@ -34,8 +34,9 @@ head -n "$start_line" README.md > "$BEFORE_TABLE_FILE"
 end_line=$(tail -n +$((start_line + 1)) README.md | grep -n -m 1 -v '^|' | cut -d : -f 1)
 [[ -n "$end_line" ]] && tail -n +$((start_line + end_line)) README.md > "$AFTER_TABLE_FILE"
 
-printf '| *NAME* | *VERSION* | *LOC* | *INSTALL* |\n' > "$TABLE_CONTENT_FILE"
-printf '|:---|:---|:---|:---|\n' >> "$TABLE_CONTENT_FILE"
+( printf '| *NAME* | *VERSION* | *LOC* | *INSTALL* |\n'
+  printf '|:---|:---|:---|:---|\n'
+) > "$TABLE_CONTENT_FILE"
 
 
 printf 'Starting to process userscripts in %s...\n' "$SRC_DIR"
