@@ -5,7 +5,7 @@ An extensive userscript collection for trakt.tv. Please report any bugs you enco
 [![open issues](https://img.shields.io/github/issues/Fenn3c401/Trakt.tv-Userscript-Collection?color=39bd4b)](../../issues)
 [![closed issues](https://img.shields.io/github/issues-closed/Fenn3c401/Trakt.tv-Userscript-Collection?color=9c65fc)](../../issues?q=is%3Aissue%20state%3Aclosed)
 [![last commit](https://img.shields.io/github/last-commit/Fenn3c401/Trakt.tv-Userscript-Collection?color=blue)](../../commits)
-[![number of userscripts](https://img.shields.io/badge/userscripts-11-f25e1d)](#userscripts)
+[![number of userscripts](https://img.shields.io/badge/userscripts-12-f25e1d)](#userscripts)
 [![total lines of code](https://img.shields.io/badge/loc-2462-orange)](#userscripts)
 
 > [!WARNING]
@@ -22,6 +22,7 @@ An extensive userscript collection for trakt.tv. Please report any bugs you enco
 | [Trakt.tv \| Custom Links (Watch-Now + External)](userscripts/docs/wkt34fcz.md) | `0.5.4` | `408` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js) |
 | [Trakt.tv \| Enhanced List Preview Posters](userscripts/docs/kji85iek.md) | `1.0.1` | `42` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/kji85iek.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/kji85iek.min.user.js) |
 | [Trakt.tv \| Enhanced Title Metadata](userscripts/docs/fyk2l3vj.md) | `0.8.11` | `315` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.min.user.js) |
+| [Trakt.tv \| Megascript](userscripts/docs/zzzzzzzz.md) | `2025-11-29_02-42` | `2487` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js) |
 | [Trakt.tv \| Nested Header Navigation Menus](userscripts/docs/txw82860.md) | `1.0.5` | `730` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/txw82860.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/txw82860.min.user.js) |
 | [Trakt.tv \| Partial VIP Unlock](userscripts/docs/x70tru7b.md) | `1.1.2` | `37` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js) |
 | [Trakt.tv \| Scheduled E-Mail Data Exports](userscripts/docs/2hc6zfyy.md) | `1.0.1` | `53` | [Standard](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.user.js) // [Minified](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.min.user.js) |
