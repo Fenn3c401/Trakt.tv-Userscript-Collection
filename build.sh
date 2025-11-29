@@ -81,7 +81,7 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 | *NAME* | *SCRIPT_ID* |
 | :----- | :---------- |
-$(for id in "${ms_ids[@]}"; do printf '| %s | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id"; done | sort)
+$(for id in "${ms_ids[@]}"; do printf '| [%s](%s) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$DOCS_DIR/$id.md" "$id"; done | sort)
 */
 
 $(for id in "${ms_ids[@]}"; do
@@ -160,12 +160,15 @@ EOF
   version_badge="[![version](https://img.shields.io/badge/version-$version_slug-blue)](../../../../blame/main/$DIST_DIR/$id.user.js)"
   loc_count_badge="[![lines of code](https://img.shields.io/badge/loc-$loc_count-orange)](../../$DIST_DIR/$id.user.js)"
 
-  (
-    printf '# %s\n%s\n\n' "$script_name" "$script_desc"
+  ( printf '# %s\n%s\n\n' "$script_name" "$script_desc"
     printf '%s\n%s\n%s\n%s\n\n' "$install_badge" "$install_min_badge" "$version_badge" "$loc_count_badge"
     printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n\n'}"
     printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}"
   ) > "$DOCS_DIR/$id.md"
+
+  printf '%s%s\n' "${readme_comment:+"# [README]($BASE_URL/blob/main/$DOCS_DIR/$id-gf.md)"$'\n\n'}" \
+    "Click [HERE]($BASE_URL#readme) for general info, requirements and a full list of all my Trakt.tv userscripts." \
+    > "$DOCS_DIR/$id-gf.md"
 
 
   printf '   4. Adding row to README.md table\n'
@@ -176,8 +179,7 @@ done
 
 
 printf 'Finalizing README.md\n'
-( 
-  cat "$BEFORE_TABLE_FILE" | sed -E "s|(/badge/loc-)[0-9]+|\1$loc_count_total|; s|(/badge/userscripts-)[0-9]+|\1$userscript_count|"
+( cat "$BEFORE_TABLE_FILE" | sed -E "s|(/badge/loc-)[0-9]+|\1$loc_count_total|; s|(/badge/userscripts-)[0-9]+|\1$userscript_count|"
   head -n 2 "$TABLE_CONTENT_FILE"
   sed -n '\|zzzzzzzz|p' "$TABLE_CONTENT_FILE"
   sed '1,2d; \|zzzzzzzz|d' "$TABLE_CONTENT_FILE" | sort
