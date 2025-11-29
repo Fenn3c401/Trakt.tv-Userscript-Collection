@@ -1,5 +1,5 @@
 # Trakt.tv | Custom Links (Watch-Now + External)
-Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa-Watch), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.
+Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js)
@@ -34,7 +34,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [GOJO.LIVE](https://animetsu.cc) (Anime Streaming)
 - [P-Stream](https://iframe.pstream.mov) (Streaming)
 - [Cineby](https://www.cineby.gd) (Streaming)
-- [Hexa Watch](https://hexa.watch) (Streaming)
+- [Hexa](https://hexa.su) (Streaming)
 - [FMOVIES+](https://www.fmovies.gd) (Streaming)
 - [SceneNZBs](https://scenenzbs.com) (Usenet Indexer)
 - [Debrid Media Manager](https://x.debridmediamanager.com) (Debrid)
