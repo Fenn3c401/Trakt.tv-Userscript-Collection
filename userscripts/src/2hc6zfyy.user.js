@@ -1,22 +1,23 @@
 // ==UserScript==
 // @name         Trakt.tv | Scheduled E-Mail Data Exports
 // @description  Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
-// @version      1.0.1
+// @version      1.0.3
 // @namespace    2hc6zfyy
-// @icon         data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmlld0JveD0iMCAwIDQ4IDQ4Ij4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLmNscy0xIHsKICAgICAgICBmaWxsOiB1cmwoI3JhZGlhbC1ncmFkaWVudCk7CiAgICAgIH0KCiAgICAgIC5jbHMtMiB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxyYWRpYWxHcmFkaWVudCBpZD0icmFkaWFsLWdyYWRpZW50IiBjeD0iNDguNDYiIGN5PSItLjk1IiBmeD0iNDguNDYiIGZ5PSItLjk1IiByPSI2NC44NCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM5ZjQyYzYiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuMjciIHN0b3AtY29sb3I9IiNhMDQxYzMiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNDIiIHN0b3AtY29sb3I9IiNhNDNlYmIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNTMiIHN0b3AtY29sb3I9IiNhYTM5YWQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNjQiIHN0b3AtY29sb3I9IiNiNDMzOWEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuNzMiIHN0b3AtY29sb3I9IiNjMDJiODEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuODIiIHN0b3AtY29sb3I9IiNjZjIwNjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIuOSIgc3RvcC1jb2xvcj0iI2UxMTQzYyIvPgogICAgICA8c3RvcCBvZmZzZXQ9Ii45NyIgc3RvcC1jb2xvcj0iI2Y1MDYxMyIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9InJlZCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICA8L2RlZnM+CiAgPGcgaWQ9Il94MkRfLXByb2R1Y3Rpb24iPgogICAgPGcgaWQ9ImxvZ29tYXJrLnNxdWFyZS5ncmFkaWVudCI+CiAgICAgIDxwYXRoIGlkPSJiYWNrZ3JvdW5kIiBjbGFzcz0iY2xzLTEiIGQ9Ik00OCwxMS4yNnYyNS40N2MwLDYuMjItNS4wNSwxMS4yNy0xMS4yNywxMS4yN0gxMS4yNmMtNi4yMiwwLTExLjI2LTUuMDUtMTEuMjYtMTEuMjdWMTEuMjZDMCw1LjA0LDUuMDQsMCwxMS4yNiwwaDI1LjQ3YzMuMzIsMCw2LjMsMS40Myw4LjM3LDMuNzIuNDcuNTIuODksMS4wOCwxLjI1LDEuNjguMTguMjkuMzQuNTkuNS44OS4zMy42OC42LDEuMzkuNzksMi4xNC4xLjM3LjE4Ljc2LjIzLDEuMTUuMDkuNTQuMTMsMS4xMS4xMywxLjY4WiIvPgogICAgICA8ZyBpZD0iY2hlY2tib3giPgogICAgICAgIDxwYXRoIGNsYXNzPSJjbHMtMiIgZD0iTTEzLjYyLDE3Ljk3bDcuOTIsNy45MiwxLjQ3LTEuNDctNy45Mi03LjkyLTEuNDcsMS40N1pNMjguMDEsMzIuMzdsMS40Ny0xLjQ2LTIuMTYtMi4xNiwyMC4zMi0yMC4zMmMtLjE5LS43NS0uNDYtMS40Ni0uNzktMi4xNGwtMjIuNDYsMjIuNDYsMy42MiwzLjYyWk0xMi45MiwxOC42N2wtMS40NiwxLjQ2LDE0LjQsMTQuNCwxLjQ2LTEuNDctNC4zMi00LjMxTDQ2LjM1LDUuNGMtLjM2LS42LS43OC0xLjE2LTEuMjUtMS42OGwtMjMuNTYsMjMuNTYtOC42Mi04LjYxWk00Ny44Nyw5LjU4bC0xOS4xNywxOS4xNywxLjQ3LDEuNDYsMTcuODMtMTcuODN2LTEuMTJjMC0uNTctLjA0LTEuMTQtLjEzLTEuNjhaTTI1LjE2LDIyLjI3bC03LjkyLTcuOTItMS40NywxLjQ3LDcuOTIsNy45MiwxLjQ3LTEuNDdaTTQxLjMyLDM1LjEyYzAsMy40Mi0yLjc4LDYuMi02LjIsNi4ySDEyLjg4Yy0zLjQyLDAtNi4yLTIuNzgtNi4yLTYuMlYxMi44OGMwLTMuNDIsMi43OC02LjIxLDYuMi02LjIxaDIwLjc4di0yLjA3SDEyLjg4Yy00LjU2LDAtOC4yOCwzLjcxLTguMjgsOC4yOHYyMi4yNGMwLDQuNTYsMy43MSw4LjI4LDguMjgsOC4yOGgyMi4yNGM0LjU2LDAsOC4yOC0zLjcxLDguMjgtOC4yOHYtMy41MWgtMi4wN3YzLjUxWiIvPjwhLS0gNDVkMjM4NWQzYWFjYmI1OTMyNmEzODYxNDljNWE4NzggLS0+CiAgICAgIDwvZz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPg==
+// @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
-// @run-at       document-body
-// @require      https://cdn.jsdelivr.net/npm/croner@9.0.0/dist/croner.umd.min.js#sha256-HN5mqfFU4KGwMqzXnKEjtnbQQpK8bGtloFZZQ93GADw=
+// @match        https://classic.trakt.tv/*
+// @run-at       document-start
+// @require      https://cdn.jsdelivr.net/npm/croner@9.0.0/dist/croner.umd.min.js
 // @grant        unsafeWindow
 // @grant        GM_info
-// @grant        GM.getValues
-// @grant        GM.setValue
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 /* README
 ### General
 - You might want to consider the use of an e-mail filter, so as to e.g. automatically move the data export e-mails to a dedicated trakt-tv-data-exports folder.
-- If you don't like the success toasts, you can turn them off by setting showToastOnSuccess to false in the userscript storage tab *(note: only displayed after first run)*, there you can
+- If you don't like the success toasts, you can turn them off by setting `toastOnSuccess` to false in the userscript storage tab *(note: only displayed after first run)*, there you can
     also specify your own [cron expression](https://crontab.guru/examples.html). E-Mail data exports have a cooldown period of 24 hours, there is no point in going below that with your cron expression.
 */
 
@@ -25,35 +26,35 @@
 
 'use strict';
 
-(async () => { // iife because esbuild doesn't like top-level-await
-  const $ = unsafeWindow.jQuery,
-        toastr = unsafeWindow.toastr,
-        userslug = unsafeWindow.Cookies?.get('trakt_userslug');
+let $, toastr,
+    userslug, cron;
+
+const gmStorage = { toastOnSuccess: true, cronExpr: '@weekly', lastRun: {}, ...(GM_getValue('scheduledEmailDataExports')) };
+GM_setValue('scheduledEmailDataExports', gmStorage);
+
+const Logger = Object.freeze({
+  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
+  _DEFAULT_TOAST: true,
+  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
+    msg = prefix + msg;
+    console[fnConsole](msg, (data ? data : ''));
+    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+  },
+  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
+  success: (msg, opt) => Logger._printMsg('info', 'success', msg, { ...opt, toast: gmStorage.toastOnSuccess }),
+  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
+  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
+});
+
+
+window.addEventListener('turbo:load', () => {
+  $ ??= unsafeWindow.jQuery;
+  toastr ??= unsafeWindow.toastr;
+  userslug ??= unsafeWindow.Cookies?.get('trakt_userslug');
   if (!$ || !toastr || !userslug) return;
 
-  let { showToastOnSuccess, cronExpr, lastRun } = await GM.getValues(['showToastOnSuccess', 'cronExpr', 'lastRun']);
-  if (showToastOnSuccess === undefined) GM.setValue('showToastOnRun', showToastOnSuccess = true);
-  if (cronExpr === undefined) GM.setValue('cronExpr', cronExpr = '@weekly');
-  if (lastRun === undefined) GM.setValue('lastRun', lastRun = {});
-
-  const Logger = Object.freeze({
-    _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
-    _DEFAULT_TOAST: true,
-    _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
-      msg = prefix + msg;
-      console[fnConsole](msg, (data ? data : ''));
-      if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
-    },
-    info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
-    success: (msg, opt) => Logger._printMsg('info', 'success', msg, { ...opt, toast: showToastOnSuccess }),
-    warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
-    error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
-  });
-
-
-  let cron;
   try {
-    cron = new Cron(cronExpr, {
+    cron ??= new Cron(gmStorage.cronExpr, {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
   } catch (err) {
@@ -61,24 +62,21 @@
     return;
   }
 
-  window.addEventListener('turbo:load', () => {
-    const dateNow = new Date();
-    if (!lastRun[userslug] || cron.nextRun(lastRun[userslug]) <= dateNow && dateNow - new Date(lastRun[userslug]) >= 24 * 60 * 60 * 1000) {
-      $.post('/settings/export_data')
-        .done(() => {
-          Logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.');
-          lastRun[userslug] = dateNow.toISOString();
-          GM.setValue('lastRun', lastRun);
-        })
-        .fail((xhr) => {
-          if (xhr.status === 409) {
-            Logger.warning('Failed. Cooldown from previous export is still active. Will retry on next scheduled data export.');
-            lastRun[userslug] = dateNow.toISOString();
-            GM.setValue('lastRun', lastRun);
-          } else {
-            Logger.error(`Failed with status: ${xhr.status}. Reload page to try again.`, { data: xhr });
-          }
-        });
-    }
-  });
-})();
+  const dateNow = new Date();
+
+  if (!gmStorage.lastRun[userslug] || cron.nextRun(gmStorage.lastRun[userslug]) <= dateNow) {
+    $.post('/settings/export_data').done(() => {
+      gmStorage.lastRun[userslug] = dateNow.toISOString();
+      GM_setValue('scheduledEmailDataExports', gmStorage);
+      Logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.');
+    }).fail((xhr) => {
+      if (xhr.status === 409) {
+        gmStorage.lastRun[userslug] = dateNow.toISOString();
+        GM_setValue('scheduledEmailDataExports', gmStorage);
+        Logger.warning('Failed. Cooldown from previous export is still active. Will retry on next scheduled data export.');
+      } else {
+        Logger.error(`Failed with status: ${xhr.status}. Reload page to try again.`, { data: xhr });
+      }
+    });
+  }
+});
