@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
-// @version      2025-11-29_11-01
+// @version      2025-12-03_11-55
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -60,14 +60,23 @@
 | [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) | `2hc6zfyy` |
 */
 
-/* README [Trakt.tv | Scheduled E-Mail Data Exports]
+/* [Trakt.tv | Custom Profile Image]
+A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
+*/
+/* [Trakt.tv | Scheduled E-Mail Data Exports]
+Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
+
 ### General
 - You might want to consider the use of an e-mail filter, so as to e.g. automatically move the data export e-mails to a dedicated trakt-tv-data-exports folder.
 - If you don't like the success toasts, you can turn them off by setting `toastOnSuccess` to false in the userscript storage tab *(note: only displayed after first run)*, there you can
     also specify your own [cron expression](https://crontab.guru/examples.html). E-Mail data exports have a cooldown period of 24 hours, there is no point in going below that with your cron expression.
 */
+/* [Trakt.tv | Actor Pronunciation Helper]
+Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
+*/
+/* [Trakt.tv | Bug Fixes and Optimizations]
+A large collection of bug fixes and optimizations for trakt.tv. Organized into sections with comments detailing what specific issues are being addressed.
 
-/* README [Trakt.tv | Bug Fixes and Optimizations]
 ### Hotkeys and Gestures
 - ***[CUSTOM]*** `alt + 1/2/3/4/5/6/7`: change header-search-category, 1 for "Shows & Movies", 2 for "Shows", ..., 7 for "Users", also expands header-search if collapsed
 - ***[CUSTOM]*** `swipe in from left edge`: display title sidebar on mobile devices
@@ -90,16 +99,18 @@ which is limited to places where there's no need for pagination (/lists, /season
 therefore relying on server-side filtering, does in fact allow for using regular expressions, though from my testing this seems to be the only exception.
 The input is matched against: list title and description for /lists pages, episode title for /seasons pages, title and character name for /people pages, episode and show title for /progress pages.
 */
+/* [Trakt.tv | Charts - Seasons]
+Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.
 
-/* README [Trakt.tv | Charts - Seasons]
 ### General
 - Clicking on the individual data points takes you to the summary page of the respective episode (or the comment page for comment data points).
 - For charts with more than eight episodes, you can also zoom in by highlighting a section of the x-axis with your mouse. You can zoom out again by clicking anywhere inside the chart.
 - This script won't work (well) on mobile devices and the chart is no beauty on light mode either. Basically the whole thing needs an overhaul and is not even close to being finished,
     but the core functionality is there and it might be while until I get back to it, which is why I'm putting it out there as it is right now.
 */
+/* [Trakt.tv | Enhanced Title Metadata]
+Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels.
 
-/* README [Trakt.tv | Enhanced Title Metadata]
 > Based on sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
 
 ### General
@@ -115,22 +126,32 @@ The input is matched against: list title and description for /lists pages, episo
 - Installing the [Trakt.tv | Partial VIP Unlock](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters on the linked search pages.
 - This script won't work for vip users.
 */
+/* [Trakt.tv | Director Badge]
+Appends a special "Director" badge to your username because you deserve it. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://classic.trakt.tv/users/sean for how it looks.
+*/
+/* [Trakt.tv | Enhanced List Preview Posters]
+Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles.
 
-/* README [Trakt.tv | Enhanced List Preview Posters]
 ### General
 - The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript fixes some rating related issues and enables (more) reliable updates of the list-preview-poster rating indicators.
 */
+/* [Trakt.tv | All-in-One Lists View]
+Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
+*/
+/* [Trakt.tv | Charts - Ratings Distribution]
+Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart.
 
-/* README [Trakt.tv | Charts - Ratings Distribution]
 ### General
 - The installation of the [Trakt.tv | Trakt API Module](f785bub0.md) userscript is optional, as there is a (slower) scraping-based fallback, but very much recommended.
 */
+/* [Trakt.tv | Nested Header Navigation Menus]
+Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.
 
-/* README [Trakt.tv | Nested Header Navigation Menus]
 > Based on sergeyhist's [Trakt.tv Hidden Items](https://github.com/sergeyhist/trakt-scripts/blob/main/Legacy/trakt-hidden.user.js) userscript.
 */
+/* [Trakt.tv | Custom Links (Watch-Now + External)]
+Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.
 
-/* README [Trakt.tv | Custom Links (Watch-Now + External)]
 > Based on Tusky's [Trakt Watchlist Downloader](https://greasyfork.org/scripts/17991) with some sites/features/ideas borrowed from Accus1958's
 > [trakt.tv Streaming Services Integration](https://greasyfork.org/scripts/486706), JourneyOver's [External links on Trakt](https://greasyfork.org/en/scripts/547223),
 > sergeyhist's [Watch Now Alternative](https://github.com/sergeyhist/trakt-watch-now-alternative) and Tanase Gabriel's [Trakt.tv Universal Search](https://greasyfork.org/en/scripts/508020) userscripts.
@@ -183,8 +204,9 @@ The input is matched against: list title and description for /lists pages, episo
 - [YouGlish](https://youglish.com)
 - [Oracle of Bacon](https://oracleofbacon.org)
 */
+/* [Trakt.tv | Partial VIP Unlock]
+Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, faster page navigation and more. Also hides some vip buttons/banners.
 
-/* README [Trakt.tv | Partial VIP Unlock]
 ### Full Unlock
 - filter-by-terms
 - "more" buttons on dashboard
@@ -199,8 +221,9 @@ The input is matched against: list title and description for /lists pages, episo
 - advanced filters (no saved filters)
 - ~~ical/atom feeds + csv exports~~ [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)
 */
+/* [Trakt.tv | Average Season And Episode Ratings]
+Shows the average general and personal rating of the seasons of a show and the episodes of a season. You can see the averages for all episodes of a show on its /seasons/all page.
 
-/* README [Trakt.tv | Average Season And Episode Ratings]
 > Based on Tusky's [Trakt Average Season Rating](https://greasyfork.org/scripts/30728) userscript.
 
 ### General
