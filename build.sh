@@ -84,13 +84,13 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 | :----- | :---------- |
 $(for id in "${ms_ids[@]}"; do printf '| [%s](%s) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id.md" "$id"; done | sort)
 */
+
 $(for id in "${ms_ids[@]}"; do
-  printf '\n/* [%s]\n' "${ms_store["$id.script_name"]}"
+  printf '/* [%s]\n' "${ms_store["$id.script_name"]}"
   printf '%s\n' "${ms_store["$id.script_description"]}" 
   [[ -n "${ms_store["$id.readme_comment"]}" ]] && printf '\n%s\n' "$(sed '1d;$d' <<< "${ms_store["$id.readme_comment"]}")"
-  printf '*/\n'
+  printf '*/\n\n'
 done)
-
 
 'use strict';
 
