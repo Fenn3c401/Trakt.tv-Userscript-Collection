@@ -3,7 +3,7 @@ All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2025--12--03__11--55-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2025--12--03__11--59-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-3402-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
