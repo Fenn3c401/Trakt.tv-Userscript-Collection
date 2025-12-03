@@ -92,6 +92,7 @@ $(for id in "${ms_ids[@]}"; do
   printf '*/\n\n'
 done)
 
+
 'use strict';
 
 const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; done)...(GM_getValue('megascript')) };
