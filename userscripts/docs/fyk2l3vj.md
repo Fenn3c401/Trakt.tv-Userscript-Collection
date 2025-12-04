@@ -3,7 +3,7 @@ Adds links of filtered search results to the metadata section (languages, genres
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.min.user.js)
-[![version](https://img.shields.io/badge/version-0.8.14-blue)](../../../../blame/main/userscripts/dist/fyk2l3vj.user.js)
+[![version](https://img.shields.io/badge/version-0.8.16-blue)](../../../../blame/main/userscripts/dist/fyk2l3vj.user.js)
 [![lines of code](https://img.shields.io/badge/loc-317-orange)](../../userscripts/dist/fyk2l3vj.user.js)
 
 ## Info

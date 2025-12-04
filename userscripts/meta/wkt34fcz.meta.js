@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Links (Watch-Now + External)
 // @description  Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable. See README for details.
-// @version      0.6.5
+// @version      0.7.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -30,6 +30,7 @@
 // @grant        GM_getResourceText
 // @grant        GM_getValue
 // @grant        GM_setValue
-// @grant        GM_xmlhttpRequest
+// @grant        GM_openInTab
+// @grant        GM.xmlHttpRequest
 // @connect      moviemaps.org
 // ==/UserScript==

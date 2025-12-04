@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Actor Pronunciation Helper
 // @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
-// @version      0.4.4
+// @version      0.4.5
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -20,7 +20,7 @@
 // ==/UserScript==
 
 
-"use strict";let $,toastr;addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/people\/[^\/]+$/.test(location.pathname)||($??=unsafeWindow.jQuery,toastr??=unsafeWindow.toastr,!$||!toastr))return;let t;$('<button id="btn-pronounce-name"><div class="audio-animation fade"><div class="bar-1"></div><div class="bar-2"></div><div class="bar-3"></div></div><div class="fa fa-volume fade in"></div></button>').appendTo($("#summary-wrapper .mobile-title h1")).tooltip({title:"Pronounce Name",container:"body",placement:"top",html:!0}).on("click",async function(){if($(this).tooltip("hide"),!t){unsafeWindow.showLoading?.();const e=$('body > [itemtype$="Person"] > meta[itemprop="name"]').attr("content"),o=await GM.xmlHttpRequest({url:`https://forvo.com/search/${encodeURIComponent(e)}`}),a=new DOMParser().parseFromString(o.responseText,"text/html"),i=$(a).find("body > script").text().match(/_AUDIO_HTTP_HOST='(.+?)'/)?.[1],n=$(a).find('[onclick^="Play"]').attr("onclick")?.match(/Play\([0-9]+,'(.*?)','(.*?)',(?:true|false),'(.*?)','(.*?)'/)?.slice(1).map(atob);if(unsafeWindow.hideLoading?.(),!n?.length){toastr.error(`Userscript | Actor Pronunciation Helper: Could not find a pronunciation for ${e} on forvo.com`);return}const r=n[0]?`/mp3/${n[0]}`:null,s=n[1]?`/ogg/${n[1]}`:null,l=n[2]?`/audios/mp3/${n[2]}`:null,d=n[3]?`/audios/ogg/${n[3]}`:null;t??=new Audio("https://"+i+(d??l??s??r)),$(t).off("ended").on("ended",()=>{setTimeout(()=>{$(this).find(".audio-animation").removeClass("in"),setTimeout(()=>$(this).find(".fa").addClass("in"),100)},100)})}$(this).find(".fa").removeClass("in"),setTimeout(()=>{$(this).find(".audio-animation").addClass("in"),t.load(),t.play()},200)})},{capture:!0});function addStyles(){GM_addStyle(`
+"use strict";let $,toastr;const Logger=Object.freeze({_DEFAULT_PREFIX:GM_info.script.name.replace("Trakt.tv","Userscript")+": ",_DEFAULT_TOAST:!0,_printMsg(n,e,a,{data:o,prefix:i=Logger._DEFAULT_PREFIX,toast:t=Logger._DEFAULT_TOAST}={}){a=i+a,console[n](a,o||""),t&&toastr[e](a+(o?" See console for details.":""))},info:(n,e)=>Logger._printMsg("info","info",n,e),success:(n,e)=>Logger._printMsg("info","success",n,e),warning:(n,e)=>Logger._printMsg("warn","warning",n,e),error:(n,e)=>Logger._printMsg("error","error",n,e)});addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/people\/[^\/]+$/.test(location.pathname)||($??=unsafeWindow.jQuery,toastr??=unsafeWindow.toastr,!$||!toastr))return;let n;$('<button id="btn-pronounce-name"><div class="audio-animation fade"><div class="bar-1"></div><div class="bar-2"></div><div class="bar-3"></div></div><div class="fa fa-volume fade in"></div></button>').appendTo($("#summary-wrapper .mobile-title h1")).tooltip({title:"Pronounce Name",container:"body",placement:"top",html:!0}).on("click",async function(){if($(this).tooltip("hide"),!n){unsafeWindow.showLoading?.();const e=$('body > [itemtype$="Person"] > meta[itemprop="name"]').attr("content"),a=await GM.xmlHttpRequest({url:`https://forvo.com/search/${encodeURIComponent(e)}`}),o=new DOMParser().parseFromString(a.responseText,"text/html"),i=$(o).find("body > script").text().match(/_AUDIO_HTTP_HOST='(.+?)'/)?.[1],t=$(o).find('[onclick^="Play"]').attr("onclick")?.match(/Play\([0-9]+,'(.*?)','(.*?)',(?:true|false),'(.*?)','(.*?)'/)?.slice(1).map(atob);if(unsafeWindow.hideLoading?.(),!t?.length){Logger.error(`Could not find a pronunciation for ${e} on forvo.com.`);return}const r=t[0]?`/mp3/${t[0]}`:null,s=t[1]?`/ogg/${t[1]}`:null,l=t[2]?`/audios/mp3/${t[2]}`:null,c=t[3]?`/audios/ogg/${t[3]}`:null;n??=new Audio("https://"+i+(c??l??s??r)),$(n).off("ended").on("ended",()=>{setTimeout(()=>{$(this).find(".audio-animation").removeClass("in"),setTimeout(()=>$(this).find(".fa").addClass("in"),100)},100)})}$(this).find(".fa").removeClass("in"),setTimeout(()=>{$(this).find(".audio-animation").addClass("in"),n.load(),n.play()},200)})},{capture:!0});function addStyles(){GM_addStyle(`
 #btn-pronounce-name {
   margin: 0 0 2px 7px;
   position: relative;
@@ -38,7 +38,6 @@
   position: absolute;
   font-size: 16px;
   color: #aaa;
-  /* transition: color 0.2s; */
 }
 #btn-pronounce-name:hover .fa {
   color: var(--link-color);
@@ -58,9 +57,8 @@
   flex: 1;
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(to bottom, rgb(255, 0, 0), rgb(155, 66, 200));
+  background: linear-gradient(180deg, rgb(255 0 0), rgb(155 66 200));
   transform: scaleY(0.2);
-  /* transition: transform 0.3s ease-out; */
 }
 
 #btn-pronounce-name .in .bar-1 { animation: lineWave-1 .4s .3s infinite alternate; }

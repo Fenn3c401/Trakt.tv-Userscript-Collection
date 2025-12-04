@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Actor Pronunciation Helper
 // @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
-// @version      0.4.4
+// @version      0.4.5
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -23,6 +23,20 @@
 'use strict';
 
 let $, toastr;
+
+const Logger = Object.freeze({
+  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
+  _DEFAULT_TOAST: true,
+  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
+    msg = prefix + msg;
+    console[fnConsole](msg, (data ? data : ''));
+    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+  },
+  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
+  success: (msg, opt) => Logger._printMsg('info', 'success', msg, opt),
+  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
+  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
+});
 
 
 addStyles();
@@ -62,7 +76,7 @@ document.addEventListener('turbo:load', () => {
       unsafeWindow.hideLoading?.();
 
       if (!audioVariantsPaths?.length) {
-        toastr.error(`Userscript | Actor Pronunciation Helper: Could not find a pronunciation for ${name} on forvo.com`);
+        Logger.error(`Could not find a pronunciation for ${name} on forvo.com.`);
         return;
       }
 
@@ -109,7 +123,6 @@ function addStyles() {
   position: absolute;
   font-size: 16px;
   color: #aaa;
-  /* transition: color 0.2s; */
 }
 #btn-pronounce-name:hover .fa {
   color: var(--link-color);
@@ -129,9 +142,8 @@ function addStyles() {
   flex: 1;
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(to bottom, rgb(255, 0, 0), rgb(155, 66, 200));
+  background: linear-gradient(180deg, rgb(255 0 0), rgb(155 66 200));
   transform: scaleY(0.2);
-  /* transition: transform 0.3s ease-out; */
 }
 
 #btn-pronounce-name .in .bar-1 { animation: lineWave-1 .4s .3s infinite alternate; }

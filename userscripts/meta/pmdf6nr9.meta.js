@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Ratings Distribution
 // @description  Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart. See README for details.
-// @version      1.0.4
+// @version      1.0.6
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
