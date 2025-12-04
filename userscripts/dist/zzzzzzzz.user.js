@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-12-04_14-36
+// @version      2025-12-04_15-24
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -4209,14 +4209,14 @@ function addStyles() {
 :is(#info-wrapper .sidebar, #watch-now-content) .external a > img {
   height: 100%;
   border-radius: inherit;
-  filter: grayscale(1) var(--extra-filters, url());
+  filter: grayscale(1) var(--extra-filters, grayscale(1));
 }
 :is(#info-wrapper .sidebar, #watch-now-content) .external a:hover {
   color: #fff !important;
   background-color: #555 !important;
 }
 :is(#info-wrapper .sidebar, #watch-now-content) .external a:hover > img {
-  filter: grayscale(1) var(--extra-filters, url()) brightness(1.3);
+  filter: grayscale(1) var(--extra-filters, grayscale(1)) brightness(1.3);
 }
 
 

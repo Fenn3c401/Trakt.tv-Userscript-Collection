@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
-// @version      2025-12-04_14-36
+// @version      2025-12-04_15-24
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -4202,14 +4202,14 @@ function addStyles() {
 :is(#info-wrapper .sidebar, #watch-now-content) .external a > img {
   height: 100%;
   border-radius: inherit;
-  filter: grayscale(1) var(--extra-filters, url());
+  filter: grayscale(1) var(--extra-filters, grayscale(1));
 }
 :is(#info-wrapper .sidebar, #watch-now-content) .external a:hover {
   color: #fff !important;
   background-color: #555 !important;
 }
 :is(#info-wrapper .sidebar, #watch-now-content) .external a:hover > img {
-  filter: grayscale(1) var(--extra-filters, url()) brightness(1.3);
+  filter: grayscale(1) var(--extra-filters, grayscale(1)) brightness(1.3);
 }
 
 
