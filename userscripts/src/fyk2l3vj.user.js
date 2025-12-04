@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
 // @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels.
-// @version      0.8.14
+// @version      0.8.16
 // @namespace    fyk2l3vj
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -35,7 +35,7 @@
 
 'use strict';
 
-let $, toastr, trakt;
+let $, toastr, traktApiModule;
 
 const Logger = Object.freeze({
   _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
@@ -62,7 +62,7 @@ document.addEventListener('turbo:load', async () => {
 
   $ ??= unsafeWindow.jQuery;
   toastr ??= unsafeWindow.toastr;
-  trakt ??= unsafeWindow.userscriptTraktAPIModule?.isFulfilled ? await unsafeWindow.userscriptTraktAPIModule : null;
+  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
   if (!$ || !toastr) return;
 
   const $additionalStatsLi = $('#overview .additional-stats > li'),
@@ -228,7 +228,7 @@ document.addEventListener('turbo:load', async () => {
   // STUDIOS
   const $studios = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase().startsWith('studio'));
   if ($studios.length) {
-    if (trakt) {
+    if (traktApiModule) {
       let hasRun = false;
 
       const matchStudioFromElemContext = async function(evt) {
@@ -237,14 +237,14 @@ document.addEventListener('turbo:load', async () => {
         evt?.preventDefault();
 
         unsafeWindow.showLoading?.();
-        const dataStudios = await trakt[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
+        const dataStudios = await traktApiModule[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
               allStudioIdsJoined = dataStudios.map((studio) => studio.ids.trakt).join();
         unsafeWindow.hideLoading?.();
 
         if (evt) {
           const url = `/search/${pathSplit[0]}?studio_ids=${$(this).find('label').length ? allStudioIdsJoined : dataStudios[0].ids.trakt}`;
           if (evt.type === 'click') location.href = url;
-          else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
+          else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { setParent: true });
         }
 
         $studios.children().eq(0).attr('href', `/search/${pathSplit[0]}?studio_ids=${allStudioIdsJoined}`);
@@ -295,7 +295,7 @@ document.addEventListener('turbo:load', async () => {
 
           if (evt) {
             if (evt.type === 'click') location.href = url;
-            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
+            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { setParent: true });
           }
           $(this).attr('href', url);
         } else {
@@ -360,7 +360,7 @@ document.addEventListener('turbo:load', async () => {
             const url = `/search/${pathSplit[0]}?studio_ids=${Array.from(matchingStudios).join(',')}`;
 
             if (evt.type === 'click') location.href = url;
-            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
+            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { setParent: true });
             $(this).attr('href', url);
           });
       }
