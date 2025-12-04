@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-12-04_13-37
+// @version      2025-12-04_14-28
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -91,10 +91,10 @@ A large collection of bug fixes and optimizations for trakt.tv, organized into ~
 ### General
 - Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
 - Notably there are also a handful of feature patches included, all of them too minor to warrant a separate userscript:
-  - make the "add to list" buttons on grid pages (e.g. /trending) colorcoded:
-      <span style="color:#fff;background:#008ada">light blue</span> = is on watchlist,
-      <span style="color:#fff;background:#0066a0">dark blue</span> = is on personal list,
-      <span style="color:#fff;background:linear-gradient(90deg, #008ada 50%, #0066a0 50%)">50/50</span> = is on both
+  - make the "add to list" buttons on grid pages (e.g. /trending) color-coded:
+      [![light blue](https://img.shields.io/badge/%20-%20-008ada?style=flat-square&labelColor=008ada)](#) = is on watchlist,
+      [![dark blue](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=0066a0)](#) = is on personal list,
+      [![50/50](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=008ada)](#) = is on both
   - change the default sorting on /people pages from "released" to "popularity"
   - grey out usernames of deleted profiles in the comments
   - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name" that can be different from the username/slug. This becomes a problem in comment replies
