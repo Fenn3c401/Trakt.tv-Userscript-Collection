@@ -77,7 +77,9 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 /* README
 ### General
-- You can turn off individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
+- Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
+- As VIP user you should disable: \`2dz6ub1t\`, \`h8vh5z16\`, \`fyk2l3vj\`, \`x70tru7b\`, \`2hc6zfyy\`
 - This userscript is automatically generated. YMMV.
 
 | *NAME* | *SCRIPT_ID* |
