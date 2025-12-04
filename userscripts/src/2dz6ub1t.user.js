@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Profile Image
 // @description  A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
-// @version      1.1.0
+// @version      1.1.1
 // @namespace    2dz6ub1t
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -135,11 +135,11 @@ function addTitlePageElems($fullScreenshot) {
   const fanartUrl = $fullScreenshot.css('background-image').match(/url\("?(?!.+?placeholders)(.+?)"?\)/)?.[1],
         $setProfImgBtns = $('[href="/vip/cover"]');
 
-  const deactivateSetProfImgBtns = (templateId) => {
+  const deactivateSetProfImgBtns = (reasonId) => {
     $setProfImgBtns.has('.fa')
       .parent().addClass('locked')
       .find('.text').unwrap()
-      .append(`<div class="under-action">${['No fanart available', 'Already set'][templateId]}</div>`);
+      .append(`<div class="under-action">${['No fanart available', 'Already set'][reasonId]}</div>`);
     $setProfImgBtns.not(':has(.fa)')
       .off('click').on('click', (evt) => evt.preventDefault())
       .css({ 'color': '#bbb' })
