@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
-// @description  A large collection of bug fixes and optimizations for trakt.tv. Organized into sections with comments detailing what specific issues are being addressed.
-// @version      0.7.1
+// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation.
+// @version      0.7.3
 // @namespace    brzmp0a9
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -13,6 +13,19 @@
 // ==/UserScript==
 
 /* README
+### General
+- Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
+- Notably there are also a handful of feature patches included, all of them too minor to warrant a separate userscript:
+  - make the "add to list" buttons on grid pages (e.g. /trending) color-coded:
+      [![light blue](https://img.shields.io/badge/%20-%20-008ada?style=flat-square&labelColor=008ada)](#) = is on watchlist,
+      [![dark blue](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=0066a0)](#) = is on personal list,
+      [![50/50](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=008ada)](#) = is on both
+  - change the default sorting on /people pages from "released" to "popularity"
+  - grey out usernames of deleted profiles in the comments
+  - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name" that can be different from the username/slug. This becomes a problem in comment replies
+      which always reference the person/comment they are replying to with an `@<userslug>` prefix, which sometimes turns long reply chains into a game of matching pairs..), currently not supported in FF
+- The sections below, with the exception of the custom hotkeys, are unrelated to this script, it's just general documentation of native features.
+
 ### Hotkeys and Gestures
 - ***[CUSTOM]*** `alt + 1/2/3/4/5/6/7`: change header-search-category, 1 for "Shows & Movies", 2 for "Shows", ..., 7 for "Users", also expands header-search if collapsed
 - ***[CUSTOM]*** `swipe in from left edge`: display title sidebar on mobile devices
@@ -30,10 +43,15 @@
 - `arrow-up/down`: header-search results navigation
 
 ### Filter-By-Terms Regex
-The filter-by-terms (called "Filter by Title") function interprets the input as a case-insensitive regular expression, if filering is done client-side with isotope,
-which is limited to places where there's no need for pagination (/lists, /seasons and /people pages). Intriguingly the /progress page, despite having pagination and
-therefore relying on server-side filtering, does in fact allow for using regular expressions, though from my testing this seems to be the only exception.
-The input is matched against: list title and description for /lists pages, episode title for /seasons pages, title and character name for /people pages, episode and show title for /progress pages.
+The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
+The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
+All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
+the `/progress` page and list pages. For some reason. The input is matched against:
+- list title and description for `/users/<userslug>/lists` pages
+- episode title for `/seasons` pages
+- title and character name for `/people` pages
+- episode and show title for `/progress` pages
+- title name for list pages
 */
 
 /* BUG REPORTS
@@ -60,36 +78,56 @@ The input is matched against: list title and description for /lists pages, episo
 // FINISHED
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// replaces malihu scrollbars on season and episode pages (bar with links to other seasons/episodes) with regular css scrollbars because malihu scrollbars: are less responsive, don't support panning,
-// "all" link gets cut off on tablet and mobile-layout if lots of items present, fixed inline width messes up layout when resizing, touch scrolling is jerky and doesn't work directly on scrollbar
+// list-aware colors for list buttons of grid-items: "is on watchlist" (light blue) vs "is on personal list" (dark blue), 50/50 if both are true
 GM_addStyle(`
-#info-wrapper .season-links .links {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  transition: scrollbar-color 0.2s;
-  width: revert !important;
+.grid-item .actions .list.selected.watchlist .base {
+  background: #008ada !important;
 }
-#info-wrapper .season-links .links:hover {
-  scrollbar-color: rgb(102 102 102 / 0.4) transparent;
+.grid-item .actions .list.selected.personal .base {
+  background: #0066a0 !important;
 }
-#info-wrapper .season-links .links > ul {
-  width: max-content !important;
+.grid-item .actions .list.selected.watchlist.personal .base {
+  background: linear-gradient(90deg, #008ada 50%, #0066a0 50%) !important;
 }
 `);
-((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'mCustomScrollbar');
-  desc.value = function(options) { return this; }; // malihu scrollbars are not used anywhere else
-  Object.defineProperty(unsafeWindow.jQuery.fn, 'mCustomScrollbar', desc);
-});
+
+
+// Sort the titles on /people pages by descending (they say asc but it's actually desc) "popularity" instead of "released" on initial page load (arguably the more relevant sort order).
 document.addEventListener('turbo:load', () => {
-  document.querySelector('#info-wrapper .season-links .links .selected')?.scrollIntoView({ block: 'nearest', inline: 'start' });
+  if (/^\/people\/[^\/]+$/.test(location.pathname) && !location.search) history.replaceState({}, document.title, location.pathname + '?sort=popularity,asc');
 }, { capture: true });
+
+
+// - displays userslug next to username in comments (useful as the "reply to" references in comments use @userslug which can differ from the display name)
+// - grey out usernames of deleted profiles in comments
+GM_addStyle(`
+@supports (color: attr(data-color type(<color>))) {
+  .comment-wrapper[data-user-slug] {
+    --userslug: attr(data-user-slug);
+  }
+  .comment-wrapper[data-user-slug] .user-name :is(.username, .type + strong)::after {
+    content: " (@" var(--userslug) ")";
+  }
+  .comment-wrapper[data-user-slug] .user-name {
+    max-width: calc(100% - 40px) !important;
+  }
+  .comment-wrapper[data-user-slug] .user-name > h4 {
+    white-space: nowrap;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+  }
+}
+
+.comment-wrapper[data-user-slug] .user-name .type + strong {
+  color: #aaa !important;
+}
+`);
 
 
 // when closing the "add to list" popover the "close" tooltip doesn't get destroyed,
 // same with poster tooltips of progress grid-items on /dashboard and /progress pages when marking title as watched with auto-refresh turned on
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
   const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'tooltip'),
         oldValue = desc.value;
   desc.value = function(options) {
@@ -144,24 +182,97 @@ window.addEventListener('turbo:load', () => {
 });
 
 
-// .readmore elems on a user's /lists page (list descriptions) lack data-sortable attr, also getSortableGrid() is undefined in that scope, which prevents the readmore afterToggle and blockProcessed
-// callbacks from working as intended, resulting in text overflow when clicking on "read more" (or gaps when clicking on "read less") AFTER isotope instance has been initialized (due to sorting/filtering)
-const optimizedRenderReadmore = () => {
-  const $readmore = unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((_i, e) => unsafeWindow.jQuery(e).height() > 350); // height() filtering because readmore plugin is prone to layout thrashing
-  $readmore.readmore({
-    embedCSS: false,
-    collapsedHeight: 300,
-    speed: 200,
-    moreLink: '<a href="#">Read more...</a>',
-    lessLink: '<a href="#">Read less...</a>',
-    afterToggle: (_trigger, $el, _expanded) => $el.closest('#sortable-grid').length && unsafeWindow.$grid?.isotope(),
+// add "open in background tab" on middle-click / ctrl+enter support where missing to mimic anchor tag behavior
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  const $ = unsafeWindow.jQuery;
+  if (!$) return;
+
+  // open watched-history page of title in bg tab on "view history" middle click
+  $(document).on('auxclick', '.btn-watch .view-all', function(evt) {
+    evt.preventDefault();
+    GM_openInTab(location.origin + $(this).attr('data-url'), { setParent: true });
   });
-  requestAnimationFrame(() => unsafeWindow.$grid?.isotope());
-};
-Object.defineProperty(unsafeWindow, 'renderReadmore', {
-  get: () => optimizedRenderReadmore,
-  set: () => {}, // native renderReadmore() gets assigned on turbo:load
-  configurable: true,
+
+  // open header-search-results in bg tab on middle click
+  $(document).on('mousedown mouseup', '#header-search-autocomplete-results .selected', function(evt) {
+    if (evt.which === 2 && !$(evt.target).closest('a').length) { // ignore events from watch-now links
+      if (evt.type === 'mousedown') evt.preventDefault();
+      else {
+        unsafeWindow.searchModifierKey = true;
+        $(this).trigger('click');
+      }
+    }
+  });
+});
+// allow for ctrl + enter to open selected header-search-result in bg tab as native meta + enter hotkey doesn't work on windows
+document.addEventListener('keydown', (evt) => {
+  if (evt.ctrlKey && evt.key === 'Enter' && evt.target.closest?.('#header-search-query')) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    evt.target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Enter',
+      keyCode: 13,
+      metaKey: true,
+      bubbles: true,
+      cancelable: true,
+    }));
+  }
+}, { capture: true });
+
+
+/* RATING BUGS
+- .mobile-poster .corner-rating doesn't get updated/added until after the next page reload (unlike .sidebar poster .corner-rating)
+- if(ratings && ratings[id]) ratings[id] = stars; doesn't work if title is/was unrated, so rating doesn't get cached in ratings object, which in turn causes various issues:
+    - it's not possible to rate and then unrate at title without prior page reload (hearts gauge is wrong as well)
+    - when adding a watched entry and rating a title in quick succession, the former calls cacheUserData() which calls addOverlays() which
+        uses stale ratings data from local storage, as the server-side ratings were only updated after cacheUserData() had already been called,
+        and therefore incorrectly removes the .sidebar .corner-rating, which was just added by the rating action
+- Why is ratings object getting updated (when it works) before ajaxSuccess? Could lead to incorrect local ratings data if ajax call fails. Should in general wait for ajaxSuccess for overlays etc.
+- When rating a title it can happen that just before the popover gets closed, a mouseover event fires on a different rating-heart, then .summary-user-rating doesn't get updated properly,
+    because in the else branch of the hearts.on('click', ...) callback, only ratedText.html() is called and not ratingText.hide() + ratedText.show(),
+    as it is done (in reverse) for the "if (remove)" branch (this is usually not an issue because the mouseover callback handles the .show() and .hide() correctly, except for that edge case)
+- cached ratings in local storage are not directly updated, can result in glitches upon next page reload and incorrect rating indicators before the next page reload,
+    if addOverlays() is called after rating a title as that uses the stale cached ratings data from local storage, which can happen in a number of different scenarios, for example:
+    - title was just rated on its summary page and then the checkin modal gets opened and closed with esc => wipes rating indicators
+    - title gets rated on summary page, user scrolls down all the way to the #related-items section => dynamic fetching of items => addOverlays() => wiped rating indicators
+*/
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  const $ = unsafeWindow.jQuery;
+  if (!$) return;
+
+  $(document).on('ajaxSuccess', (_evt, _xhr, opt) => {
+    if (opt.url.endsWith('/rate')) {
+      const params = new URLSearchParams(opt.data),
+            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => params.get(key));
+
+      unsafeWindow[type + 's'].ratings[id] = stars;
+      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings);
+
+      unsafeWindow.addOverlays(); // does the same as what's commented out below, has some overhead, but also updates list-preview-poster rating indicators from "Enhanced List Preview Posters" userscript
+      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
+      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
+      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
+      //   $posters.find('.corner-rating').remove();
+      //   unsafeWindow.ratingOverlay($posters, stars);
+
+      //   $summaryUserRating
+      //     .find('.rating-text').hide()
+      //     .end().find('.rated-text').show();
+      // }
+    } else if (opt.url.endsWith('/rate/remove')) {
+      const params = new URLSearchParams(opt.data),
+            type = params.get('type');
+
+      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings); // ratings object already gets updated correctly
+
+      unsafeWindow.addOverlays();
+      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
+      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
+      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
+      //   $posters.find('.corner-rating').remove();
+      // }
+    }
+  });
 });
 
 
@@ -175,6 +286,7 @@ GM_addStyle(`
 
 // advanced-filters networks dropdown menu is too unresponsive (takes several seconds to load or to process query), can be fixed by tweaking chosen.js options
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
   const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'chosen'),
         oldValue = desc.value;
   desc.value = function(options) {
@@ -203,44 +315,6 @@ GM_addStyle(`
     }
   })
 });
-
-
-// add "open in background tab" on middle-click / ctrl+enter support where missing to mimic anchor tag behavior
-((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  const $ = unsafeWindow.jQuery;
-  if (!$) return;
-
-  // open watched-history page of title in bg tab on "view history" middle click
-  $(document).on('auxclick', '.btn-watch .view-all', function(evt) {
-    evt.preventDefault();
-    GM_openInTab(location.origin + $(this).attr('data-url'), { insert: true, setParent: true });
-  });
-
-  // open header-search-results in bg tab on middle click
-  $(document).on('mousedown mouseup', '#header-search-autocomplete-results .selected', function(evt) {
-    if (evt.which === 2 && !$(evt.target).closest('a').length) { // ignore events from watch-now links
-      if (evt.type === 'mousedown') evt.preventDefault();
-      else {
-        unsafeWindow.searchModifierKey = true;
-        $(this).trigger('click');
-      }
-    }
-  });
-});
-// allow for ctrl + enter to open selected header-search-result in bg tab as native meta + enter hotkey doesn't work on windows
-document.addEventListener('keydown', (evt) => {
-  if (evt.ctrlKey && evt.key === 'Enter' && evt.target.closest?.('#header-search-query')) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    evt.target.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter',
-      keyCode: 13,
-      metaKey: true,
-      bubbles: true,
-      cancelable: true,
-    }));
-  }
-}, { capture: true });
 
 
 // The items of the #activity (people that are watching the title right now) and #actors sections on title summary pages have a number of absolute static inline styles (set upon page load)
@@ -377,6 +451,55 @@ GM_addStyle(`
 `);
 
 
+// .readmore elems on a user's /lists page (list descriptions) lack data-sortable attr, also getSortableGrid() is undefined in that scope, which prevents the readmore afterToggle and blockProcessed
+// callbacks from working as intended, resulting in text overflow when clicking on "read more" (or gaps when clicking on "read less") AFTER isotope instance has been initialized (due to sorting/filtering)
+const optimizedRenderReadmore = () => {
+  const $readmore = unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((_i, e) => unsafeWindow.jQuery(e).height() > 350); // height() filtering because readmore plugin is prone to layout thrashing
+  $readmore.readmore({
+    embedCSS: false,
+    collapsedHeight: 300,
+    speed: 200,
+    moreLink: '<a href="#">Read more...</a>',
+    lessLink: '<a href="#">Read less...</a>',
+    afterToggle: (_trigger, $el, _expanded) => $el.closest('#sortable-grid').length && unsafeWindow.$grid?.isotope(),
+  });
+  requestAnimationFrame(() => unsafeWindow.$grid?.isotope());
+};
+Object.defineProperty(unsafeWindow, 'renderReadmore', {
+  get: () => optimizedRenderReadmore,
+  set: () => {}, // native renderReadmore() gets assigned on turbo:load
+  configurable: true,
+});
+
+
+// replaces malihu scrollbars on season and episode pages (bar with links to other seasons/episodes) with regular css scrollbars because malihu scrollbars: are less responsive, don't support panning,
+// "all" link gets cut off on tablet and mobile-layout if lots of items present, fixed inline width messes up layout when resizing, touch scrolling is jerky and doesn't work directly on scrollbar
+GM_addStyle(`
+#info-wrapper .season-links .links {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s;
+  width: revert !important;
+}
+#info-wrapper .season-links .links:hover {
+  scrollbar-color: rgb(102 102 102 / 0.4) transparent;
+}
+#info-wrapper .season-links .links > ul {
+  width: max-content !important;
+}
+`);
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
+  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'mCustomScrollbar');
+  desc.value = function(options) { return this; }; // malihu scrollbars are not used anywhere else
+  Object.defineProperty(unsafeWindow.jQuery.fn, 'mCustomScrollbar', desc);
+});
+document.addEventListener('turbo:load', () => {
+  document.querySelector('#info-wrapper .season-links .links .selected')?.scrollIntoView({ block: 'nearest', inline: 'start' });
+}, { capture: true });
+
+
 // The filter dropdown menu on /people pages has three hidden display type entries [seasons, episodes, people] which have the .selected class and are therefore included in the count for the
 // .filter-counter indicator (=> off by three), despite not actually being accessible and having no effect on the filtered titles, as only shows and movies are listed on /people pages.
 document.addEventListener('turbo:load', () => {
@@ -451,52 +574,6 @@ GM_addStyle(`
 });
 
 
-// list-aware colors for list buttons of grid-items: "is on watchlist" (light blue) vs "is on personal list" (dark blue), 50/50 if both are true
-GM_addStyle(`
-.grid-item .actions .list.selected.watchlist .base {
-  background: #008ada !important;
-}
-.grid-item .actions .list.selected.personal .base {
-  background: #0066a0 !important;
-}
-.grid-item .actions .list.selected.watchlist.personal .base {
-  background: linear-gradient(90deg, #008ada 50%, #0066a0 50%) !important;
-}
-`);
-
-
-// Sort the titles on /people pages by descending (they say asc but it's actually desc) "popularity" instead of "released" on initial page load (arguably the more relevant sort order).
-document.addEventListener('turbo:load', () => {
-  if (/^\/people\/[^\/]+$/.test(location.pathname) && !location.search) history.replaceState({}, document.title, location.pathname + '?sort=popularity,asc');
-}, { capture: true });
-
-
-// - displays userslug next to username in comments (useful as the "reply to" references in comments use @userslug which can differ from the display name)
-// - grey out usernames of deleted profiles in comments
-GM_addStyle(`
-@supports (color: attr(data-color type(<color>))) {
-  .comment-wrapper[data-user-slug] {
-    --userslug: attr(data-user-slug);
-  }
-  .comment-wrapper[data-user-slug] .user-name :is(.username, .type + strong)::after {
-    content: " (@" var(--userslug) ")";
-  }
-  .comment-wrapper[data-user-slug] .user-name {
-    max-width: calc(100% - 40px) !important;
-  }
-  .comment-wrapper[data-user-slug] .user-name > h4 {
-    white-space: nowrap;
-    overflow-x: clip;
-    text-overflow: ellipsis;
-  }
-}
-
-.comment-wrapper[data-user-slug] .user-name .type + strong {
-  color: #aaa !important;
-}
-`);
-
-
 // There's horizontal overflow on the body in a variety of different scenarios, too many to handle individually (e.g. many charts after downsizing and mobile-layout pages in general).
 GM_addStyle(`
 body {
@@ -533,7 +610,7 @@ GM_addStyle(`
 `);
 
 
-// Adds a scrollbar to the #summary-ratings-wrapper on title pages (bar up top with ratings, plays, watchers etc.), which by default only allows for panning. This is handled per row on mobile-layout,
+// Adds a scrollbar to the #summary-ratings-wrapper on title pages (bar up top with ratings, plays, watchers etc.), which usually only allows for panning. This is handled per row on mobile-layout,
 // where by default you can only scroll the whole container as one. Also prevents the text-shadow of the rating icons from getting cut off at the top.
 GM_addStyle(`
 #summary-ratings-wrapper > .container {
@@ -593,62 +670,6 @@ GM_addStyle(`
 `);
 
 
-/* RATING BUGS
-- .mobile-poster .corner-rating doesn't get updated/added until after the next page reload (unlike .sidebar poster .corner-rating)
-- if(ratings && ratings[id]) ratings[id] = stars; doesn't work if title is/was unrated, so rating doesn't get cached in ratings object, which in turn causes various issues:
-    - it's not possible to rate and then unrate at title without prior page reload (hearts gauge is wrong as well)
-    - when adding a watched entry and rating a title in quick succession, the former calls cacheUserData() which calls addOverlays() which
-        uses stale ratings data from local storage, as the server-side ratings were only updated after cacheUserData() had already been called,
-        and therefore incorrectly removes the .sidebar .corner-rating, which was just added by the rating action
-- Why is ratings object getting updated (when it works) before ajaxSuccess? Could lead to incorrect local ratings data if ajax call fails. Should in general wait for ajaxSuccess for overlays etc.
-- When rating a title it can happen that just before the popover gets closed, a mouseover event fires on a different rating-heart, then .summary-user-rating doesn't get updated properly,
-    because in the else branch of the hearts.on('click', ...) callback, only ratedText.html() is called and not ratingText.hide() + ratedText.show(),
-    as it is done (in reverse) for the "if (remove)" branch (this is usually not an issue because the mouseover callback handles the .show() and .hide() correctly, except for that edge case)
-- cached ratings in local storage are not directly updated, can result in glitches upon next page reload and incorrect rating indicators before the next page reload,
-    if addOverlays() is called after rating a title as that uses the stale cached ratings data from local storage, which can happen in a number of different scenarios, for example:
-    - title was just rated on its summary page and then the checkin modal gets opened and closed with esc => wipes rating indicators
-    - title gets rated on summary page, user scrolls down all the way to the #related-items section => dynamic fetching of items => addOverlays() => wiped rating indicators
-*/
-((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  const $ = unsafeWindow.jQuery;
-  if (!$) return;
-
-  $(document).on('ajaxSuccess', (_evt, _xhr, opt) => {
-    if (opt.url.endsWith('/rate')) {
-      const params = new URLSearchParams(opt.data),
-            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => params.get(key));
-
-      unsafeWindow[type + 's'].ratings[id] = stars;
-      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings);
-
-      unsafeWindow.addOverlays(); // does the same as what's commented out below, has some overhead, but also updates list-preview-poster rating indicators from "Enhanced List Preview Posters" userscript
-      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
-      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
-      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
-      //   $posters.find('.corner-rating').remove();
-      //   unsafeWindow.ratingOverlay($posters, stars);
-
-      //   $summaryUserRating
-      //     .find('.rating-text').hide()
-      //     .end().find('.rated-text').show();
-      // }
-    } else if (opt.url.endsWith('/rate/remove')) {
-      const params = new URLSearchParams(opt.data),
-            type = params.get('type');
-
-      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings); // ratings object already gets updated correctly
-
-      unsafeWindow.addOverlays();
-      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
-      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
-      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
-      //   $posters.find('.corner-rating').remove();
-      // }
-    }
-  });
-});
-
-
 // Fix for missing event listeners on mobile-layout "expand options" btns for the grids on user, list and settings pages, if window was downsized after initial page load.
 document.addEventListener('click', (evt) => {
   if (evt.target.closest('.toggle-feeds')) {
@@ -658,7 +679,7 @@ document.addEventListener('click', (evt) => {
     evt.stopPropagation();
     document.querySelector('.toggle-subnav-wrapper')?.classList.toggle('open');
   }
-}, true);
+}, { capture: true });
 
 
 // Make added Array.prototype props/functions non-enumerable. Otherwise causes issues with for..in loops and the props also get listed as event listeners in chrome dev tools.

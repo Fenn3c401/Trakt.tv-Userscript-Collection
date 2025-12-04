@@ -3,12 +3,14 @@ All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2025--11--29__11--01-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
-[![lines of code](https://img.shields.io/badge/loc-3402-orange)](../../userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2025--12--04__14--28-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![lines of code](https://img.shields.io/badge/loc-3526-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
 ### General
-- You can turn off individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
+- As VIP user you should disable: `2dz6ub1t`, `h8vh5z16`, `fyk2l3vj`, `x70tru7b`, `2hc6zfyy`
 - This userscript is automatically generated. YMMV.
 
 | *NAME* | *SCRIPT_ID* |

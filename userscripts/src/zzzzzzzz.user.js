@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
-// @version      2025-11-29_11-01
+// @version      2025-12-04_14-28
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -30,7 +30,6 @@
 // @grant        GM_info
 // @grant        GM_openInTab
 // @grant        GM_setValue
-// @grant        GM_xmlhttpRequest
 // @grant        GM.xmlHttpRequest
 // @connect      forvo.com
 // @connect      moviemaps.org
@@ -39,7 +38,9 @@
 
 /* README
 ### General
-- You can turn off individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
+- As VIP user you should disable: `2dz6ub1t`, `h8vh5z16`, `fyk2l3vj`, `x70tru7b`, `2hc6zfyy`
 - This userscript is automatically generated. YMMV.
 
 | *NAME* | *SCRIPT_ID* |
@@ -60,14 +61,39 @@
 | [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) | `2hc6zfyy` |
 */
 
-/* README [Trakt.tv | Scheduled E-Mail Data Exports]
+/* [Trakt.tv | Custom Profile Image]
+A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
+*/
+
+/* [Trakt.tv | Scheduled E-Mail Data Exports]
+Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
+
 ### General
 - You might want to consider the use of an e-mail filter, so as to e.g. automatically move the data export e-mails to a dedicated trakt-tv-data-exports folder.
 - If you don't like the success toasts, you can turn them off by setting `toastOnSuccess` to false in the userscript storage tab *(note: only displayed after first run)*, there you can
     also specify your own [cron expression](https://crontab.guru/examples.html). E-Mail data exports have a cooldown period of 24 hours, there is no point in going below that with your cron expression.
 */
 
-/* README [Trakt.tv | Bug Fixes and Optimizations]
+/* [Trakt.tv | Actor Pronunciation Helper]
+Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
+*/
+
+/* [Trakt.tv | Bug Fixes and Optimizations]
+A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation.
+
+### General
+- Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
+- Notably there are also a handful of feature patches included, all of them too minor to warrant a separate userscript:
+  - make the "add to list" buttons on grid pages (e.g. /trending) color-coded:
+      [![light blue](https://img.shields.io/badge/%20-%20-008ada?style=flat-square&labelColor=008ada)](#) = is on watchlist,
+      [![dark blue](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=0066a0)](#) = is on personal list,
+      [![50/50](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=008ada)](#) = is on both
+  - change the default sorting on /people pages from "released" to "popularity"
+  - grey out usernames of deleted profiles in the comments
+  - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name" that can be different from the username/slug. This becomes a problem in comment replies
+      which always reference the person/comment they are replying to with an `@<userslug>` prefix, which sometimes turns long reply chains into a game of matching pairs..), currently not supported in FF
+- The sections below, with the exception of the custom hotkeys, are unrelated to this script, it's just general documentation of native features.
+
 ### Hotkeys and Gestures
 - ***[CUSTOM]*** `alt + 1/2/3/4/5/6/7`: change header-search-category, 1 for "Shows & Movies", 2 for "Shows", ..., 7 for "Users", also expands header-search if collapsed
 - ***[CUSTOM]*** `swipe in from left edge`: display title sidebar on mobile devices
@@ -85,13 +111,20 @@
 - `arrow-up/down`: header-search results navigation
 
 ### Filter-By-Terms Regex
-The filter-by-terms (called "Filter by Title") function interprets the input as a case-insensitive regular expression, if filering is done client-side with isotope,
-which is limited to places where there's no need for pagination (/lists, /seasons and /people pages). Intriguingly the /progress page, despite having pagination and
-therefore relying on server-side filtering, does in fact allow for using regular expressions, though from my testing this seems to be the only exception.
-The input is matched against: list title and description for /lists pages, episode title for /seasons pages, title and character name for /people pages, episode and show title for /progress pages.
+The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
+The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
+All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
+the `/progress` page and list pages. For some reason. The input is matched against:
+- list title and description for `/users/<userslug>/lists` pages
+- episode title for `/seasons` pages
+- title and character name for `/people` pages
+- episode and show title for `/progress` pages
+- title name for list pages
 */
 
-/* README [Trakt.tv | Charts - Seasons]
+/* [Trakt.tv | Charts - Seasons]
+Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.
+
 ### General
 - Clicking on the individual data points takes you to the summary page of the respective episode (or the comment page for comment data points).
 - For charts with more than eight episodes, you can also zoom in by highlighting a section of the x-axis with your mouse. You can zoom out again by clicking anywhere inside the chart.
@@ -99,7 +132,9 @@ The input is matched against: list title and description for /lists pages, episo
     but the core functionality is there and it might be while until I get back to it, which is why I'm putting it out there as it is right now.
 */
 
-/* README [Trakt.tv | Enhanced Title Metadata]
+/* [Trakt.tv | Enhanced Title Metadata]
+Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels.
+
 > Based on sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
 
 ### General
@@ -116,36 +151,54 @@ The input is matched against: list title and description for /lists pages, episo
 - This script won't work for vip users.
 */
 
-/* README [Trakt.tv | Enhanced List Preview Posters]
+/* [Trakt.tv | Director Badge]
+Appends a special "Director" badge to your username because you deserve it. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.
+*/
+
+/* [Trakt.tv | Enhanced List Preview Posters]
+Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles.
+
 ### General
 - The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript fixes some rating related issues and enables (more) reliable updates of the list-preview-poster rating indicators.
 */
 
-/* README [Trakt.tv | Charts - Ratings Distribution]
-### General
-- The installation of the [Trakt.tv | Trakt API Module](f785bub0.md) userscript is optional, as there is a (slower) scraping-based fallback, but very much recommended.
+/* [Trakt.tv | All-in-One Lists View]
+Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
 */
 
-/* README [Trakt.tv | Nested Header Navigation Menus]
+/* [Trakt.tv | Charts - Ratings Distribution]
+Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart.
+*/
+
+/* [Trakt.tv | Nested Header Navigation Menus]
+Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.
+
 > Based on sergeyhist's [Trakt.tv Hidden Items](https://github.com/sergeyhist/trakt-scripts/blob/main/Legacy/trakt-hidden.user.js) userscript.
 */
 
-/* README [Trakt.tv | Custom Links (Watch-Now + External)]
+/* [Trakt.tv | Custom Links (Watch-Now + External)]
+Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.
+
 > Based on Tusky's [Trakt Watchlist Downloader](https://greasyfork.org/scripts/17991) with some sites/features/ideas borrowed from Accus1958's
 > [trakt.tv Streaming Services Integration](https://greasyfork.org/scripts/486706), JourneyOver's [External links on Trakt](https://greasyfork.org/en/scripts/547223),
 > sergeyhist's [Watch Now Alternative](https://github.com/sergeyhist/trakt-watch-now-alternative) and Tanase Gabriel's [Trakt.tv Universal Search](https://greasyfork.org/en/scripts/508020) userscripts.
 
 ### General
-- Usually watch-now buttons of grid-items are only displayed if the title has been released and is available for streaming in your selected watch-now country.
-    This script changes that by unhiding all watch-now buttons and color coding them as to the title's digital release status. White means the title is available for streaming
-    in your selected watch-now country, light-grey means the title is available for streaming in another country and dark-grey means that the title is not available for streaming anywhere.
-- `maxSidebarWnLinks` controls how many watch-now links are visible in the watch-now preview of the sidebar.
-    The default is 4 and can be modfied in the userscript storage tab *(note: only displayed after first run)*.
+- `maxSidebarWnLinks` controls how many watch-now links are visible in the watch-now preview of the sidebar. The default is 4 and can be modfied in the userscript storage tab *(note: only displayed after first run)*.
+    There you can also modify `torrentResolution` which defaults to `1080p` and is used for the query of the torrent and usenet links. For modifications beyond that you'll have to mess with the actual config arrays,
+    which will disable automatic updates of the userscript.
 - Nearly all links are direct links to e.g. individual episodes, as opposed to search links, anime included. There's also a fix for anime which default to the "wrong" episode group
     (e.g. Solo Leveling is listed with season 2 being part of 1 due to some tmdb shenanigans). YMMV.
+- Some urls are constructed dynamically on click. That means there might be a small delay before the page opens. The resolved url is then also set as href, so on a second click the element behaves just like a regular
+    link. You can also resolve a dynamic link on right click. So you can e.g. do a double right click with a small delay in between to use the "open in incognito window" option like you can with a regular link.
 - Some links are configured to only be added if certain conditions are met, e.g. anime links are only added for titles where "anime" is included in the genres.
 - I only included anime streaming sites with predicatable path schemes, to allow for for direct episode linking. One of these is "Kuroiru", an anime aggregator
     which contains more direct episode links to other popular anime streaming sites like HiAnime or AnimeKai.
+- Usually watch-now buttons of grid-items are only displayed if the title has been released and is available for streaming in your selected watch-now country.
+    This script changes that by unhiding all watch-now buttons and color coding them as to the title's digital release status. White means the title is available for streaming
+    in your selected watch-now country, light-grey means the title is available for streaming in another country and dark-grey means that the title is not available for streaming anywhere.
+- A scrollable plot summary is added to the watch-now modal. The watch-now modal and the sidebar are also made scrollable.
+- The mobile-layout sidebar from the screenshots is part of the [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript.
 
 ### Default Custom Links
 #### Watch-Now
@@ -164,10 +217,10 @@ The input is matched against: list title and description for /lists pages, episo
 - [Debrid Media Manager](https://x.debridmediamanager.com) (Debrid)
 
 #### External
-- [Reddit](https://www.reddit.com)
+- [Reddit](https://www.reddit.com) (Discussions)
 - [Letterboxd](https://letterboxd.com)
-- [ReverseTV](https://reversetv.enzon19.com)
-- [MovieMaps](https://moviemaps.org)
+- [ReverseTV](https://reversetv.enzon19.com) ("Where have I seen each cast member before?")
+- [MovieMaps](https://moviemaps.org) (Interactive map of filming locations)
 - [Fandom](https://www.fandom.com)
 - [AZNude](https://www.aznude.com)
 - [CelebGate](https://celeb.gate.cc)
@@ -178,29 +231,62 @@ The input is matched against: list title and description for /lists pages, episo
 - [LiveChart](https://www.livechart.me)
 - [TheTVDB](https://thetvdb.com)
 - [TVmaze](https://www.tvmaze.com)
-- [Spotify](https://open.spotify.com)
-- [MediUX](https://mediux.pro)
-- [YouGlish](https://youglish.com)
-- [Oracle of Bacon](https://oracleofbacon.org)
+- [Spotify](https://open.spotify.com) (Soundtrack)
+- [MediUX](https://mediux.pro) (similar to fanart.tv)
+- [YouGlish](https://youglish.com) ("How do I pronounce this actors's name?")
+- [Oracle of Bacon](https://oracleofbacon.org) ([Six Degrees of Kevin Bacon](https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon))
 */
 
-/* README [Trakt.tv | Partial VIP Unlock]
+/* [Trakt.tv | Partial VIP Unlock]
+Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, faster page navigation and more. Also hides some vip buttons/banners.
+
 ### Full Unlock
 - filter-by-terms
 - "more" buttons on dashboard
 - rewatching
 - watch-now modal country selection
-- bulk list copy and move *(note: item selection is filter based)*
-- all vip settings from /settings page (calendar autoscroll + limit dashboard "up next" episodes to watch-now favorites + only show watch-now icon if title is available on favorites + rewatching settings)
+- bulk list actions: reset ranks, copy, move, delete (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
+    In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
+- all vip settings from the `/settings` page: calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings
 - ~2x faster page navigation with Hotwire's Turbo (allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this)
 
 ### Partial Unlock
-- custom calendars (get generated and work, but are not listed in sidebar (can't be deleted either), so you have to save the url of the custom calendar or "regenerate" it via /lists)
+- custom calendars (get generated and work, but are not listed in sidebar and can't be deleted, so you have to save the url of the custom calendar or "regenerate" it on the `/lists` page)
 - advanced filters (no saved filters)
-- ~~ical/atom feeds + csv exports~~ [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)
+- ~~ical/atom feeds + csv exports~~ [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)<br>
+    (Makes their [privacy policy](https://trakt.tv/privacy) and "You're not the product. We never sell your data." mantra read like a bad joke, nevermind the fact that they failed to make any sort of public
+    announcement about this, didn't notify the affected users and didn't produce an incident report, so god knowns on what scale this was exploited. And all I got in return was getting ghosted. Twice.)
+
+### Related Userscripts
+Of the ~15 Trakt.tv userscripts I've got, there are another four which don't unlock an actual vip feature but instead replicate one in some way:
+- [Trakt.tv \| Custom Profile Image](2dz6ub1t.md)
+- [Trakt.tv \| Director Badge](h8vh5z16.md)
+- [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md)
+- [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
+
+### List Limits Bypass
+Credit for this one goes to [SET19724](https://github.com/SET19724) who pointed out some inconsistencies with the unlocked bulk list actions in an issue.
+Turns out with those it's possible to bypass the imposed limits for both the number of lists and items per list:
+
+***Example 1:***<br>
+You've got your number of lists maxed out (2 by default). If you now want another list you can just go to any existing list (doesn't have to be your own) with 1-100 items,
+then use the "copy to new list" option and it creates a new list for you, which you can then edit and use however you want. Rinse and repeat. It works at least all the way up to 15 lists,
+I didn't push it any further. The "copied from..." text is not added if you use one of your own lists as source.<br>
+***=> "new list" target option of bulk list actions doesn't enforce max. list limit; source needs to have 1-100 items***
+
+***Example 2:***<br>
+Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
+Say `watchlist` has 100 items and `watchlist2` + `watchlist3` have 99 items. I can do a bulk move from `watchlist` to `watchlist2` which now has 199 items.
+Then I do a bulk move from `watchlist2` to `watchlist3` which gets that one to 298 items, and then I can move it all back to `watchlist`.
+That's it. You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
+***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
+
+Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
 */
 
-/* README [Trakt.tv | Average Season And Episode Ratings]
+/* [Trakt.tv | Average Season And Episode Ratings]
+Shows the average general and personal rating of the seasons of a show and the episodes of a season. You can see the averages for all episodes of a show on its /seasons/all page.
+
 > Based on Tusky's [Trakt Average Season Rating](https://greasyfork.org/scripts/30728) userscript.
 
 ### General
@@ -337,11 +423,11 @@ function addTitlePageElems($fullScreenshot) {
   const fanartUrl = $fullScreenshot.css('background-image').match(/url\("?(?!.+?placeholders)(.+?)"?\)/)?.[1],
         $setProfImgBtns = $('[href="/vip/cover"]');
 
-  const deactivateSetProfImgBtns = (templateId) => {
+  const deactivateSetProfImgBtns = (reasonId) => {
     $setProfImgBtns.has('.fa')
       .parent().addClass('locked')
       .find('.text').unwrap()
-      .append(`<div class="under-action">${['No fanart available', 'Already set'][templateId]}</div>`);
+      .append(`<div class="under-action">${['No fanart available', 'Already set'][reasonId]}</div>`);
     $setProfImgBtns.not(':has(.fa)')
       .off('click').on('click', (evt) => evt.preventDefault())
       .css({ 'color': '#bbb' })
@@ -462,6 +548,20 @@ gmStorage['71cd9s61'] && (async () => {
 
 let $, toastr;
 
+const Logger = Object.freeze({
+  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
+  _DEFAULT_TOAST: true,
+  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
+    msg = prefix + msg;
+    console[fnConsole](msg, (data ? data : ''));
+    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+  },
+  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
+  success: (msg, opt) => Logger._printMsg('info', 'success', msg, opt),
+  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
+  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
+});
+
 
 addStyles();
 
@@ -500,7 +600,7 @@ document.addEventListener('turbo:load', () => {
       unsafeWindow.hideLoading?.();
 
       if (!audioVariantsPaths?.length) {
-        toastr.error(`Userscript | Actor Pronunciation Helper: Could not find a pronunciation for ${name} on forvo.com`);
+        Logger.error(`Could not find a pronunciation for ${name} on forvo.com.`);
         return;
       }
 
@@ -547,7 +647,6 @@ function addStyles() {
   position: absolute;
   font-size: 16px;
   color: #aaa;
-  /* transition: color 0.2s; */
 }
 #btn-pronounce-name:hover .fa {
   color: var(--link-color);
@@ -567,9 +666,8 @@ function addStyles() {
   flex: 1;
   height: 100%;
   border-radius: 3px;
-  background: linear-gradient(to bottom, rgb(255, 0, 0), rgb(155, 66, 200));
+  background: linear-gradient(180deg, rgb(255 0 0), rgb(155 66 200));
   transform: scaleY(0.2);
-  /* transition: transform 0.3s ease-out; */
 }
 
 #btn-pronounce-name .in .bar-1 { animation: lineWave-1 .4s .3s infinite alternate; }
@@ -609,36 +707,56 @@ gmStorage['brzmp0a9'] && (async () => {
 // FINISHED
 /////////////////////////////////////////////////////////////////////////////////////////////
 
-// replaces malihu scrollbars on season and episode pages (bar with links to other seasons/episodes) with regular css scrollbars because malihu scrollbars: are less responsive, don't support panning,
-// "all" link gets cut off on tablet and mobile-layout if lots of items present, fixed inline width messes up layout when resizing, touch scrolling is jerky and doesn't work directly on scrollbar
+// list-aware colors for list buttons of grid-items: "is on watchlist" (light blue) vs "is on personal list" (dark blue), 50/50 if both are true
 GM_addStyle(`
-#info-wrapper .season-links .links {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  transition: scrollbar-color 0.2s;
-  width: revert !important;
+.grid-item .actions .list.selected.watchlist .base {
+  background: #008ada !important;
 }
-#info-wrapper .season-links .links:hover {
-  scrollbar-color: rgb(102 102 102 / 0.4) transparent;
+.grid-item .actions .list.selected.personal .base {
+  background: #0066a0 !important;
 }
-#info-wrapper .season-links .links > ul {
-  width: max-content !important;
+.grid-item .actions .list.selected.watchlist.personal .base {
+  background: linear-gradient(90deg, #008ada 50%, #0066a0 50%) !important;
 }
 `);
-((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'mCustomScrollbar');
-  desc.value = function(options) { return this; }; // malihu scrollbars are not used anywhere else
-  Object.defineProperty(unsafeWindow.jQuery.fn, 'mCustomScrollbar', desc);
-});
+
+
+// Sort the titles on /people pages by descending (they say asc but it's actually desc) "popularity" instead of "released" on initial page load (arguably the more relevant sort order).
 document.addEventListener('turbo:load', () => {
-  document.querySelector('#info-wrapper .season-links .links .selected')?.scrollIntoView({ block: 'nearest', inline: 'start' });
+  if (/^\/people\/[^\/]+$/.test(location.pathname) && !location.search) history.replaceState({}, document.title, location.pathname + '?sort=popularity,asc');
 }, { capture: true });
+
+
+// - displays userslug next to username in comments (useful as the "reply to" references in comments use @userslug which can differ from the display name)
+// - grey out usernames of deleted profiles in comments
+GM_addStyle(`
+@supports (color: attr(data-color type(<color>))) {
+  .comment-wrapper[data-user-slug] {
+    --userslug: attr(data-user-slug);
+  }
+  .comment-wrapper[data-user-slug] .user-name :is(.username, .type + strong)::after {
+    content: " (@" var(--userslug) ")";
+  }
+  .comment-wrapper[data-user-slug] .user-name {
+    max-width: calc(100% - 40px) !important;
+  }
+  .comment-wrapper[data-user-slug] .user-name > h4 {
+    white-space: nowrap;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+  }
+}
+
+.comment-wrapper[data-user-slug] .user-name .type + strong {
+  color: #aaa !important;
+}
+`);
 
 
 // when closing the "add to list" popover the "close" tooltip doesn't get destroyed,
 // same with poster tooltips of progress grid-items on /dashboard and /progress pages when marking title as watched with auto-refresh turned on
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
   const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'tooltip'),
         oldValue = desc.value;
   desc.value = function(options) {
@@ -693,24 +811,97 @@ window.addEventListener('turbo:load', () => {
 });
 
 
-// .readmore elems on a user's /lists page (list descriptions) lack data-sortable attr, also getSortableGrid() is undefined in that scope, which prevents the readmore afterToggle and blockProcessed
-// callbacks from working as intended, resulting in text overflow when clicking on "read more" (or gaps when clicking on "read less") AFTER isotope instance has been initialized (due to sorting/filtering)
-const optimizedRenderReadmore = () => {
-  const $readmore = unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((_i, e) => unsafeWindow.jQuery(e).height() > 350); // height() filtering because readmore plugin is prone to layout thrashing
-  $readmore.readmore({
-    embedCSS: false,
-    collapsedHeight: 300,
-    speed: 200,
-    moreLink: '<a href="#">Read more...</a>',
-    lessLink: '<a href="#">Read less...</a>',
-    afterToggle: (_trigger, $el, _expanded) => $el.closest('#sortable-grid').length && unsafeWindow.$grid?.isotope(),
+// add "open in background tab" on middle-click / ctrl+enter support where missing to mimic anchor tag behavior
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  const $ = unsafeWindow.jQuery;
+  if (!$) return;
+
+  // open watched-history page of title in bg tab on "view history" middle click
+  $(document).on('auxclick', '.btn-watch .view-all', function(evt) {
+    evt.preventDefault();
+    GM_openInTab(location.origin + $(this).attr('data-url'), { setParent: true });
   });
-  requestAnimationFrame(() => unsafeWindow.$grid?.isotope());
-};
-Object.defineProperty(unsafeWindow, 'renderReadmore', {
-  get: () => optimizedRenderReadmore,
-  set: () => {}, // native renderReadmore() gets assigned on turbo:load
-  configurable: true,
+
+  // open header-search-results in bg tab on middle click
+  $(document).on('mousedown mouseup', '#header-search-autocomplete-results .selected', function(evt) {
+    if (evt.which === 2 && !$(evt.target).closest('a').length) { // ignore events from watch-now links
+      if (evt.type === 'mousedown') evt.preventDefault();
+      else {
+        unsafeWindow.searchModifierKey = true;
+        $(this).trigger('click');
+      }
+    }
+  });
+});
+// allow for ctrl + enter to open selected header-search-result in bg tab as native meta + enter hotkey doesn't work on windows
+document.addEventListener('keydown', (evt) => {
+  if (evt.ctrlKey && evt.key === 'Enter' && evt.target.closest?.('#header-search-query')) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    evt.target.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Enter',
+      keyCode: 13,
+      metaKey: true,
+      bubbles: true,
+      cancelable: true,
+    }));
+  }
+}, { capture: true });
+
+
+/* RATING BUGS
+- .mobile-poster .corner-rating doesn't get updated/added until after the next page reload (unlike .sidebar poster .corner-rating)
+- if(ratings && ratings[id]) ratings[id] = stars; doesn't work if title is/was unrated, so rating doesn't get cached in ratings object, which in turn causes various issues:
+    - it's not possible to rate and then unrate at title without prior page reload (hearts gauge is wrong as well)
+    - when adding a watched entry and rating a title in quick succession, the former calls cacheUserData() which calls addOverlays() which
+        uses stale ratings data from local storage, as the server-side ratings were only updated after cacheUserData() had already been called,
+        and therefore incorrectly removes the .sidebar .corner-rating, which was just added by the rating action
+- Why is ratings object getting updated (when it works) before ajaxSuccess? Could lead to incorrect local ratings data if ajax call fails. Should in general wait for ajaxSuccess for overlays etc.
+- When rating a title it can happen that just before the popover gets closed, a mouseover event fires on a different rating-heart, then .summary-user-rating doesn't get updated properly,
+    because in the else branch of the hearts.on('click', ...) callback, only ratedText.html() is called and not ratingText.hide() + ratedText.show(),
+    as it is done (in reverse) for the "if (remove)" branch (this is usually not an issue because the mouseover callback handles the .show() and .hide() correctly, except for that edge case)
+- cached ratings in local storage are not directly updated, can result in glitches upon next page reload and incorrect rating indicators before the next page reload,
+    if addOverlays() is called after rating a title as that uses the stale cached ratings data from local storage, which can happen in a number of different scenarios, for example:
+    - title was just rated on its summary page and then the checkin modal gets opened and closed with esc => wipes rating indicators
+    - title gets rated on summary page, user scrolls down all the way to the #related-items section => dynamic fetching of items => addOverlays() => wiped rating indicators
+*/
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  const $ = unsafeWindow.jQuery;
+  if (!$) return;
+
+  $(document).on('ajaxSuccess', (_evt, _xhr, opt) => {
+    if (opt.url.endsWith('/rate')) {
+      const params = new URLSearchParams(opt.data),
+            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => params.get(key));
+
+      unsafeWindow[type + 's'].ratings[id] = stars;
+      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings);
+
+      unsafeWindow.addOverlays(); // does the same as what's commented out below, has some overhead, but also updates list-preview-poster rating indicators from "Enhanced List Preview Posters" userscript
+      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
+      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
+      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
+      //   $posters.find('.corner-rating').remove();
+      //   unsafeWindow.ratingOverlay($posters, stars);
+
+      //   $summaryUserRating
+      //     .find('.rating-text').hide()
+      //     .end().find('.rated-text').show();
+      // }
+    } else if (opt.url.endsWith('/rate/remove')) {
+      const params = new URLSearchParams(opt.data),
+            type = params.get('type');
+
+      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings); // ratings object already gets updated correctly
+
+      unsafeWindow.addOverlays();
+      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
+      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
+      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
+      //   $posters.find('.corner-rating').remove();
+      // }
+    }
+  });
 });
 
 
@@ -724,6 +915,7 @@ GM_addStyle(`
 
 // advanced-filters networks dropdown menu is too unresponsive (takes several seconds to load or to process query), can be fixed by tweaking chosen.js options
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
   const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'chosen'),
         oldValue = desc.value;
   desc.value = function(options) {
@@ -752,44 +944,6 @@ GM_addStyle(`
     }
   })
 });
-
-
-// add "open in background tab" on middle-click / ctrl+enter support where missing to mimic anchor tag behavior
-((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  const $ = unsafeWindow.jQuery;
-  if (!$) return;
-
-  // open watched-history page of title in bg tab on "view history" middle click
-  $(document).on('auxclick', '.btn-watch .view-all', function(evt) {
-    evt.preventDefault();
-    GM_openInTab(location.origin + $(this).attr('data-url'), { insert: true, setParent: true });
-  });
-
-  // open header-search-results in bg tab on middle click
-  $(document).on('mousedown mouseup', '#header-search-autocomplete-results .selected', function(evt) {
-    if (evt.which === 2 && !$(evt.target).closest('a').length) { // ignore events from watch-now links
-      if (evt.type === 'mousedown') evt.preventDefault();
-      else {
-        unsafeWindow.searchModifierKey = true;
-        $(this).trigger('click');
-      }
-    }
-  });
-});
-// allow for ctrl + enter to open selected header-search-result in bg tab as native meta + enter hotkey doesn't work on windows
-document.addEventListener('keydown', (evt) => {
-  if (evt.ctrlKey && evt.key === 'Enter' && evt.target.closest?.('#header-search-query')) {
-    evt.preventDefault();
-    evt.stopPropagation();
-    evt.target.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Enter',
-      keyCode: 13,
-      metaKey: true,
-      bubbles: true,
-      cancelable: true,
-    }));
-  }
-}, { capture: true });
 
 
 // The items of the #activity (people that are watching the title right now) and #actors sections on title summary pages have a number of absolute static inline styles (set upon page load)
@@ -926,6 +1080,55 @@ GM_addStyle(`
 `);
 
 
+// .readmore elems on a user's /lists page (list descriptions) lack data-sortable attr, also getSortableGrid() is undefined in that scope, which prevents the readmore afterToggle and blockProcessed
+// callbacks from working as intended, resulting in text overflow when clicking on "read more" (or gaps when clicking on "read less") AFTER isotope instance has been initialized (due to sorting/filtering)
+const optimizedRenderReadmore = () => {
+  const $readmore = unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((_i, e) => unsafeWindow.jQuery(e).height() > 350); // height() filtering because readmore plugin is prone to layout thrashing
+  $readmore.readmore({
+    embedCSS: false,
+    collapsedHeight: 300,
+    speed: 200,
+    moreLink: '<a href="#">Read more...</a>',
+    lessLink: '<a href="#">Read less...</a>',
+    afterToggle: (_trigger, $el, _expanded) => $el.closest('#sortable-grid').length && unsafeWindow.$grid?.isotope(),
+  });
+  requestAnimationFrame(() => unsafeWindow.$grid?.isotope());
+};
+Object.defineProperty(unsafeWindow, 'renderReadmore', {
+  get: () => optimizedRenderReadmore,
+  set: () => {}, // native renderReadmore() gets assigned on turbo:load
+  configurable: true,
+});
+
+
+// replaces malihu scrollbars on season and episode pages (bar with links to other seasons/episodes) with regular css scrollbars because malihu scrollbars: are less responsive, don't support panning,
+// "all" link gets cut off on tablet and mobile-layout if lots of items present, fixed inline width messes up layout when resizing, touch scrolling is jerky and doesn't work directly on scrollbar
+GM_addStyle(`
+#info-wrapper .season-links .links {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s;
+  width: revert !important;
+}
+#info-wrapper .season-links .links:hover {
+  scrollbar-color: rgb(102 102 102 / 0.4) transparent;
+}
+#info-wrapper .season-links .links > ul {
+  width: max-content !important;
+}
+`);
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
+  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'mCustomScrollbar');
+  desc.value = function(options) { return this; }; // malihu scrollbars are not used anywhere else
+  Object.defineProperty(unsafeWindow.jQuery.fn, 'mCustomScrollbar', desc);
+});
+document.addEventListener('turbo:load', () => {
+  document.querySelector('#info-wrapper .season-links .links .selected')?.scrollIntoView({ block: 'nearest', inline: 'start' });
+}, { capture: true });
+
+
 // The filter dropdown menu on /people pages has three hidden display type entries [seasons, episodes, people] which have the .selected class and are therefore included in the count for the
 // .filter-counter indicator (=> off by three), despite not actually being accessible and having no effect on the filtered titles, as only shows and movies are listed on /people pages.
 document.addEventListener('turbo:load', () => {
@@ -1000,52 +1203,6 @@ GM_addStyle(`
 });
 
 
-// list-aware colors for list buttons of grid-items: "is on watchlist" (light blue) vs "is on personal list" (dark blue), 50/50 if both are true
-GM_addStyle(`
-.grid-item .actions .list.selected.watchlist .base {
-  background: #008ada !important;
-}
-.grid-item .actions .list.selected.personal .base {
-  background: #0066a0 !important;
-}
-.grid-item .actions .list.selected.watchlist.personal .base {
-  background: linear-gradient(90deg, #008ada 50%, #0066a0 50%) !important;
-}
-`);
-
-
-// Sort the titles on /people pages by descending (they say asc but it's actually desc) "popularity" instead of "released" on initial page load (arguably the more relevant sort order).
-document.addEventListener('turbo:load', () => {
-  if (/^\/people\/[^\/]+$/.test(location.pathname) && !location.search) history.replaceState({}, document.title, location.pathname + '?sort=popularity,asc');
-}, { capture: true });
-
-
-// - displays userslug next to username in comments (useful as the "reply to" references in comments use @userslug which can differ from the display name)
-// - grey out usernames of deleted profiles in comments
-GM_addStyle(`
-@supports (color: attr(data-color type(<color>))) {
-  .comment-wrapper[data-user-slug] {
-    --userslug: attr(data-user-slug);
-  }
-  .comment-wrapper[data-user-slug] .user-name :is(.username, .type + strong)::after {
-    content: " (@" var(--userslug) ")";
-  }
-  .comment-wrapper[data-user-slug] .user-name {
-    max-width: calc(100% - 40px) !important;
-  }
-  .comment-wrapper[data-user-slug] .user-name > h4 {
-    white-space: nowrap;
-    overflow-x: clip;
-    text-overflow: ellipsis;
-  }
-}
-
-.comment-wrapper[data-user-slug] .user-name .type + strong {
-  color: #aaa !important;
-}
-`);
-
-
 // There's horizontal overflow on the body in a variety of different scenarios, too many to handle individually (e.g. many charts after downsizing and mobile-layout pages in general).
 GM_addStyle(`
 body {
@@ -1082,7 +1239,7 @@ GM_addStyle(`
 `);
 
 
-// Adds a scrollbar to the #summary-ratings-wrapper on title pages (bar up top with ratings, plays, watchers etc.), which by default only allows for panning. This is handled per row on mobile-layout,
+// Adds a scrollbar to the #summary-ratings-wrapper on title pages (bar up top with ratings, plays, watchers etc.), which usually only allows for panning. This is handled per row on mobile-layout,
 // where by default you can only scroll the whole container as one. Also prevents the text-shadow of the rating icons from getting cut off at the top.
 GM_addStyle(`
 #summary-ratings-wrapper > .container {
@@ -1142,62 +1299,6 @@ GM_addStyle(`
 `);
 
 
-/* RATING BUGS
-- .mobile-poster .corner-rating doesn't get updated/added until after the next page reload (unlike .sidebar poster .corner-rating)
-- if(ratings && ratings[id]) ratings[id] = stars; doesn't work if title is/was unrated, so rating doesn't get cached in ratings object, which in turn causes various issues:
-    - it's not possible to rate and then unrate at title without prior page reload (hearts gauge is wrong as well)
-    - when adding a watched entry and rating a title in quick succession, the former calls cacheUserData() which calls addOverlays() which
-        uses stale ratings data from local storage, as the server-side ratings were only updated after cacheUserData() had already been called,
-        and therefore incorrectly removes the .sidebar .corner-rating, which was just added by the rating action
-- Why is ratings object getting updated (when it works) before ajaxSuccess? Could lead to incorrect local ratings data if ajax call fails. Should in general wait for ajaxSuccess for overlays etc.
-- When rating a title it can happen that just before the popover gets closed, a mouseover event fires on a different rating-heart, then .summary-user-rating doesn't get updated properly,
-    because in the else branch of the hearts.on('click', ...) callback, only ratedText.html() is called and not ratingText.hide() + ratedText.show(),
-    as it is done (in reverse) for the "if (remove)" branch (this is usually not an issue because the mouseover callback handles the .show() and .hide() correctly, except for that edge case)
-- cached ratings in local storage are not directly updated, can result in glitches upon next page reload and incorrect rating indicators before the next page reload,
-    if addOverlays() is called after rating a title as that uses the stale cached ratings data from local storage, which can happen in a number of different scenarios, for example:
-    - title was just rated on its summary page and then the checkin modal gets opened and closed with esc => wipes rating indicators
-    - title gets rated on summary page, user scrolls down all the way to the #related-items section => dynamic fetching of items => addOverlays() => wiped rating indicators
-*/
-((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  const $ = unsafeWindow.jQuery;
-  if (!$) return;
-
-  $(document).on('ajaxSuccess', (_evt, _xhr, opt) => {
-    if (opt.url.endsWith('/rate')) {
-      const params = new URLSearchParams(opt.data),
-            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => params.get(key));
-
-      unsafeWindow[type + 's'].ratings[id] = stars;
-      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings);
-
-      unsafeWindow.addOverlays(); // does the same as what's commented out below, has some overhead, but also updates list-preview-poster rating indicators from "Enhanced List Preview Posters" userscript
-      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
-      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
-      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
-      //   $posters.find('.corner-rating').remove();
-      //   unsafeWindow.ratingOverlay($posters, stars);
-
-      //   $summaryUserRating
-      //     .find('.rating-text').hide()
-      //     .end().find('.rated-text').show();
-      // }
-    } else if (opt.url.endsWith('/rate/remove')) {
-      const params = new URLSearchParams(opt.data),
-            type = params.get('type');
-
-      unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings); // ratings object already gets updated correctly
-
-      unsafeWindow.addOverlays();
-      // const $summaryUserRating = $('#summary-ratings-wrapper .summary-user-rating');
-      // if (opt.url.startsWith($summaryUserRating.attr('data-url'))) {
-      //   const $posters = $(':is(#summary-wrapper .mobile-poster, #info-wrapper .sidebar) .poster');
-      //   $posters.find('.corner-rating').remove();
-      // }
-    }
-  });
-});
-
-
 // Fix for missing event listeners on mobile-layout "expand options" btns for the grids on user, list and settings pages, if window was downsized after initial page load.
 document.addEventListener('click', (evt) => {
   if (evt.target.closest('.toggle-feeds')) {
@@ -1207,7 +1308,7 @@ document.addEventListener('click', (evt) => {
     evt.stopPropagation();
     document.querySelector('.toggle-subnav-wrapper')?.classList.toggle('open');
   }
-}, true);
+}, { capture: true });
 
 
 // Make added Array.prototype props/functions non-enumerable. Otherwise causes issues with for..in loops and the props also get listed as event listeners in chrome dev tools.
@@ -1313,7 +1414,7 @@ gmStorage['cs1u5z40'] && (async () => {
 
 'use strict';
 
-let $, trakt;
+let $, traktApiModule;
 let $grid, isSeasonChart, filterSpecials, labelsCallback, chart, datasetsData, firstRunDelay;
 
 Chart.defaults.borderColor = 'rgb(44 44 44 / 0.5)';
@@ -1327,7 +1428,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/shows\/[^/]+\/seasons\/[^/]+$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  trakt ??= unsafeWindow.userscriptTraktAPIModule?.isFulfilled ? await unsafeWindow.userscriptTraktAPIModule : null;
+  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
   if (!$) return;
 
   $grid = $('#seasons-episodes-sortable');
@@ -1380,7 +1481,7 @@ function initializeChart() {
 
     if (Math.abs(closestPoint.element.y - event.layerY) < 10) {
       const url = `${datasetsData[closestPoint.index].urlFull}${closestPoint.datasetIndex === 3 ? '/comments' : ''}`;
-      GM_openInTab(url, { active: true, insert: true });
+      GM_openInTab(url, { active: true });
     } else {
       if (chart.isZoomedOrPanned()) {
         chart.resetZoom('active');
@@ -1419,8 +1520,8 @@ function getDatasetsData() {
       itemData.comments = $(i.element).find('.episode-stats > a[data-original-title="Comments"]').text() || 0;
     } else {
       itemData.mainTitle = $(i.element).find('div[data-type="season"] .titles-link h3').text();
-      if (trakt) { // TODO
-        const respJSON = await trakt.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, pagination: true, limit: 1 });
+      if (traktApiModule) { // TODO
+        const respJSON = await traktApiModule.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, pagination: true, limit: 1 });
         itemData.comments = respJSON.pagination.item_count;
       } else {
         const resp = await fetch(i.element.dataset.url + '.json');
@@ -1689,7 +1790,7 @@ function addStyles() {
 gmStorage['fyk2l3vj'] && (async () => {
 'use strict';
 
-let $, toastr, trakt;
+let $, toastr, traktApiModule;
 
 const Logger = Object.freeze({
   _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
@@ -1716,7 +1817,7 @@ document.addEventListener('turbo:load', async () => {
 
   $ ??= unsafeWindow.jQuery;
   toastr ??= unsafeWindow.toastr;
-  trakt ??= unsafeWindow.userscriptTraktAPIModule?.isFulfilled ? await unsafeWindow.userscriptTraktAPIModule : null;
+  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
   if (!$ || !toastr) return;
 
   const $additionalStatsLi = $('#overview .additional-stats > li'),
@@ -1882,7 +1983,7 @@ document.addEventListener('turbo:load', async () => {
   // STUDIOS
   const $studios = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase().startsWith('studio'));
   if ($studios.length) {
-    if (trakt) {
+    if (traktApiModule) {
       let hasRun = false;
 
       const matchStudioFromElemContext = async function(evt) {
@@ -1891,14 +1992,14 @@ document.addEventListener('turbo:load', async () => {
         evt?.preventDefault();
 
         unsafeWindow.showLoading?.();
-        const dataStudios = await trakt[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
+        const dataStudios = await traktApiModule[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
               allStudioIdsJoined = dataStudios.map((studio) => studio.ids.trakt).join();
         unsafeWindow.hideLoading?.();
 
         if (evt) {
           const url = `/search/${pathSplit[0]}?studio_ids=${$(this).find('label').length ? allStudioIdsJoined : dataStudios[0].ids.trakt}`;
           if (evt.type === 'click') location.href = url;
-          else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
+          else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { setParent: true });
         }
 
         $studios.children().eq(0).attr('href', `/search/${pathSplit[0]}?studio_ids=${allStudioIdsJoined}`);
@@ -1949,7 +2050,7 @@ document.addEventListener('turbo:load', async () => {
 
           if (evt) {
             if (evt.type === 'click') location.href = url;
-            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
+            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { setParent: true });
           }
           $(this).attr('href', url);
         } else {
@@ -2014,7 +2115,7 @@ document.addEventListener('turbo:load', async () => {
             const url = `/search/${pathSplit[0]}?studio_ids=${Array.from(matchingStudios).join(',')}`;
 
             if (evt.type === 'click') location.href = url;
-            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { insert: true, setParent: true });
+            else if (evt.originalEvent.button === 1) GM_openInTab(location.origin + url, { setParent: true });
             $(this).attr('href', url);
           });
       }
@@ -2369,7 +2470,7 @@ gmStorage['pmdf6nr9'] && (async () => {
 
 'use strict';
 
-let $, trakt;
+let $, traktApiModule;
 const numFormatCompact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
 numFormatCompact.formatTLC = (n) => numFormatCompact.format(n).toLowerCase();
 
@@ -2380,7 +2481,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/(shows|movies)\//.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  trakt ??= unsafeWindow.userscriptTraktAPIModule?.isFulfilled ? await unsafeWindow.userscriptTraktAPIModule : null;
+  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
   if (!$) return;
 
   const $summaryWrapper = $('#summary-wrapper'),
@@ -2407,10 +2508,10 @@ document.addEventListener('turbo:load', async () => {
 
 async function getRatingsData(statsPath) {
   let ratingsData;
-  if (trakt) {
+  if (traktApiModule) {
     const statsPathSplit = statsPath.split('/').slice(1, -1),
           id = isNaN(statsPathSplit[1]) ? statsPathSplit[1] : $('.summary-user-rating').attr(`data-${statsPathSplit[0].slice(0, -1)}-id`), // /shows/1883 numeric slugs are interpreted as trakt-id by api
-          resp = await trakt[(statsPathSplit[4] ?? statsPathSplit[2] ?? statsPathSplit[0])].ratings({ id, season: statsPathSplit[3], episode: statsPathSplit[5] });
+          resp = await traktApiModule[(statsPathSplit[4] ?? statsPathSplit[2] ?? statsPathSplit[0])].ratings({ id, season: statsPathSplit[3], episode: statsPathSplit[5] });
     ratingsData = { distribution: Object.values(resp.distribution), votes: resp.votes };
   } else {
     const resp = await fetch(statsPath),
@@ -3421,7 +3522,7 @@ const customLinkHelperFns = {
       `.then((arr) => arr.map((e) => (e.levDist = userscriptLevDist('${i.ids.slug}${i.season > 1 ? `-${i.season_title.toLowerCase().replaceAll(/ |'/g, '-')}` : ''}', e['anime-planet'] ?? ''), e))` +
                         `.sort((a, b) => a.levDist - b.levDist)` +
                         `.find((e) => e['${site}'])?.['${site}'])`,
-  fetchWikidataClaim: (i, claimId) =>
+  fetchWikidataClaim: (i, claimId) => // not for people
     `fetch('https://query.wikidata.org/sparql?format=json&query=${encodeURIComponent( // cached on disk for 5 mins
       `SELECT ?value WHERE { ` +
         `?item wdt:${i.type === 'movies' ? 'P4947' : 'P4983'} "${i.ids.tmdb}" . ` +
@@ -3430,6 +3531,7 @@ const customLinkHelperFns = {
       `} LIMIT 1`
     )}').then((r) => r.json())` +
       `.then((r) => r.results.bindings[0]?.value?.value)`,
+  hideNativeExternalLink: (idSuffix) => `#external-link-${idSuffix} { display: none !important; }`,
 };
 
 const watchNowCategories = {
@@ -3443,42 +3545,43 @@ const watchNowCategories = {
 
 const customWatchNowLinks = [
   {
-    buildHref: (i) => `https://ext.to/browse/?q=${customLinkHelperFns.getDefaultTorrentQuery(i)} 1080p 265${/shows|seasons/.test(i.type) ? '&sort=size&order=desc' : '&sort=seeds&order=desc'}&with_adult=1`, // https://ext.to/advanced/
+    buildHref: (i) => `https://ext.to/browse/?q=${customLinkHelperFns.getDefaultTorrentQuery(i)} ${gmStorage.torrentResolution} 265${/shows|seasons/.test(i.type) ? '&sort=size&order=desc' : '&sort=seeds&order=desc'}&with_adult=1`, // https://ext.to/advanced/
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #242730;', text: 'EXT', textStyle: 'background-image: linear-gradient(90deg, #3990f6 48.2%, #2c67a6 48.2% 66.2%, #3990f6 66.2%); background-clip: text; color: transparent; font-size: 50cqi; font-weight: 850; letter-spacing: -0.5px; padding-right: 3%;' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('torrentAggregator'),
   },
   {
     buildHref: (i) => `https://web.stremio.com/#/detail/${i.type === 'movies' ? `movie/${i.ids.imdb}/${i.ids.imdb}` : `series/${i.ids.imdb}${i.type === 'seasons' ? `?season=${i.season}` : i.type === 'episodes' ? encodeURIComponent(`/${i.ids.imdb}:${i.season}:${i.episode}`) : ''}`}`,
-    // buildHref: (i) => `stremio:///detail/${i.type === 'movies' ? `movie/${i.ids.imdb}/${i.ids.imdb}` : `series/${i.ids.imdb}${i.type === 'seasons' ? `?season=${i.season}` : i.type === 'episodes' ? encodeURIComponent(`/${i.ids.imdb}:${i.season}:${i.episode}`) : ''}`}`,
+    // to open in desktop app use: buildHref: (i) => `stremio:///detail/...
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #19163a;', img: 'stremio', text: 'Stremio' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('debrid'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}.then((id) => open('https://kuroiru.co/anime/' + id + '/ep' + ${i.episode ?? '1'}))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}.then((id) => 'https://kuroiru.co/anime/' + id + '/ep' + ${i.episode ?? '1'})`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #191919;', img: 'kuroiru' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeAggregator'),
     includeIf: (i) => i.genres.includes('anime'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => open('https://www.miruro.to/watch/' + id + '/episode-' + ${i.episode ?? '1'}))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://www.miruro.to/watch/' + id + '/episode-' + ${i.episode ?? '1'})`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #0e0e0e;', img: 'miruro' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeStreaming'),
     includeIf: (i) => i.genres.includes('anime'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => open('https://anidap.se/watch?id=' + id + '&ep=' + ${i.episode ?? '1'} + '&provider=yuki&type=sub'))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://anidap.se/watch?id=' + id + '&ep=' + ${i.episode ?? '1'} + '&provider=yuki&type=sub')`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #1f2728;', img: 'anidap', imgStyle: 'transform: scale(2.2);' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeStreaming'),
     includeIf: (i) => i.genres.includes('anime'),
+    addStyles: `@font-face { font-family: "GangOfThree"; src: url("${GM_getResourceURL('gojolive')}") format("woff2"); font-display: block; }`,
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => open('https://animetsu.cc/watch/' + id + '?ep=' + ${i.episode ?? '1'}))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://animetsu.cc/watch/' + id + '?ep=' + ${i.episode ?? '1'})`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #111;', text: 'GOJO.LIVE', textStyle: 'font-family: GangOfThree; font-size: 18cqi;' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeStreaming'),
     includeIf: (i) => i.genres.includes('anime'),
   },
   {
-    buildHref: (i) => `https://knaben.org/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} 1080p (265|av1)/${i.type === 'movies' ? '3000000' : i.genres.includes('anime') ? '6000000' : '2000000'}/1/seeders`,
+    buildHref: (i) => `https://knaben.org/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${gmStorage.torrentResolution} (265|av1)/${i.type === 'movies' ? '3000000' : i.genres.includes('anime') ? '6000000' : '2000000'}/1/seeders`,
     innerHtml: `<div class="icon btn-custom" style="background: #323537; flex-direction: column;">${GM_getResourceText('knaben').replace('<svg', '<svg style="max-height: 79%;"')}<div class="text" style="font-family: system-ui; font-size: 10cqi; letter-spacing: 0.3px;">KNABEN DATABASE</div></div>`,
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('torrentAggregator'),
   },
@@ -3503,7 +3606,7 @@ const customWatchNowLinks = [
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('streaming'),
   },
   {
-    buildHref: (i) => `https://scenenzbs.com/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} 1080p (265|av1)`, // https://scenenzbs.com/search#adv-subtabs
+    buildHref: (i) => `https://scenenzbs.com/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${gmStorage.torrentResolution} (265|av1)`, // https://scenenzbs.com/search#adv-subtabs
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #212529;', img: 'scenenzbs', imgStyle: 'transform: scale(1.8) translateY(-1px);' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('usenetIndexer'),
   },
@@ -3519,6 +3622,7 @@ const customExternalLinks = [
     buildHref: (i) => `/${/seasons|episodes/.test(i.type) ? 'shows' : i.type}/${i.ids.slug}${i.season !== undefined ? `/seasons/${i.season}${i.episode ? `/episodes/${i.episode}` : ''}` : ''}/wikipedia`,
     innerHtml: customLinkHelperFns.getFaBrandsHtml('wikipedia-w'),
     tooltipHtml: 'Wikipedia',
+    addStyles: customLinkHelperFns.hideNativeExternalLink('wikipedia'),
   },
   {
     buildHref: (i) => `https://duckduckgo.com/?q=site:reddit.com Discussion ${encodeURIComponent(i.title)}${i.type === 'movies' ? ` ${i.year}` : ''}${i.season !== undefined ? ` Season ${i.season}${i.episode ? ` Episode ${i.episode}` : ''}` : ''}`,
@@ -3534,19 +3638,19 @@ const customExternalLinks = [
   },
   {
     buildHref: (i) => `https://reversetv.enzon19.com/${/seasons|episodes/.test(i.type) ? 'shows' : i.type}/${i.ids.slug}${i.season !== undefined ? `/seasons/${i.season_old ?? i.season}${i.episode ? `/episodes/${i.episode_old ?? i.episode}` : ''}` : ''}`,
-    innerHtml: customLinkHelperFns.getDdgFaviconHtml('reversetv.enzon19.com', 'filter: invert(1) grayscale(1);'),
+    innerHtml: customLinkHelperFns.getDdgFaviconHtml('reversetv.enzon19.com', '--extra-filters: invert(1);'),
     tooltipHtml: 'ReverseTV',
     includeIf: (i) => i.type !== 'people',
   },
   {
-    buildHref: (i) => `javascript:GM_xmlhttpRequest({ url: 'https://moviemaps.org/ajax/search?token=${encodeURIComponent(i.title)}&max_matches=1&use_similar=1', responseType: 'json', onload: (r) => open('https://moviemaps.org' + (r.response[0]?.url ?? '/search?q=${encodeURIComponent(i.title)}')) })`,
+    buildHref: (i) => `userscriptGmXhrCustomLinks({ url: 'https://moviemaps.org/ajax/search?token=${encodeURIComponent(i.title)}&max_matches=1&use_similar=1', responseType: 'json'}).then((r) => 'https://moviemaps.org' + (r.response[0]?.url ?? '/search?q=${encodeURIComponent(i.title)}'))`,
     innerHtml: `<i class="fa-regular fa-map"></i>`,
     tooltipHtml: 'MovieMaps',
     includeIf: (i) => i.type !== 'people' && !['animation', 'anime'].some((g) => i.genres.includes(g)),
   },
   {
     buildHref: (i) => `https://${i.title.toLowerCase().replaceAll(/[^a-z0-9]/g, '')}.fandom.com/wiki/`,
-    innerHtml: customLinkHelperFns.getDdgFaviconHtml('fandom.com', 'filter: invert(1) grayscale(1);'),
+    innerHtml: customLinkHelperFns.getDdgFaviconHtml('fandom.com', '--extra-filters: invert(1);'),
     tooltipHtml: 'Fandom',
     includeIf: (i) => i.type !== 'people',
   },
@@ -3558,7 +3662,7 @@ const customExternalLinks = [
   },
   {
     buildHref: (i) => `https://celeb.gate.cc/${i.name.toLowerCase().replaceAll(' ', '-')}/gallery.html?s=i.clicks.total&cdir=desc#images`,
-    innerHtml: '<img src="https://celeb.gate.cc/assets/logo.png" style="filter: brightness(1.3) grayscale(1);">',
+    innerHtml: '<img src="https://celeb.gate.cc/assets/logo.png" style="--extra-filters: brightness(1.1);">',
     tooltipHtml: 'CelebGate',
     includeIf: (i) => i.type === 'people' && customLinkHelperFns.isAdultFemale(i),
   },
@@ -3569,25 +3673,25 @@ const customExternalLinks = [
     includeIf: (i) => i.type !== 'people',
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}.then((id) => open('https://myanimelist.net/anime/' + id))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}.then((id) => 'https://myanimelist.net/anime/' + id)`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('myanimelist.net'),
     tooltipHtml: 'MyAnimeList',
     includeIf: (i) => i.genres?.includes('anime'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => open('https://anilist.co/anime/' + id))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://anilist.co/anime/' + id)`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('anilist.co'),
     tooltipHtml: 'AniList',
     includeIf: (i) => i.genres?.includes('anime'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'anidb')}.then((id) => open('https://anidb.net/anime/' + id))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anidb')}.then((id) => 'https://anidb.net/anime/' + id)`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('anidb.net'),
     tooltipHtml: 'AniDB',
     includeIf: (i) => i.genres?.includes('anime'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchAnimeId(i, 'livechart')}.then((id) => open('https://livechart.me/anime/' + id))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'livechart')}.then((id) => 'https://livechart.me/anime/' + id)`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('www.livechart.me'),
     tooltipHtml: 'LiveChart',
     includeIf: (i) => i.genres?.includes('anime'),
@@ -3596,29 +3700,32 @@ const customExternalLinks = [
     buildHref: (i) => `https://www.themoviedb.org/${i.type === 'people' ? 'person' : i.type === 'movies' ? 'movie' : 'tv'}/${i.ids.tmdb}${i.season !== undefined ? `/season/${i.season}${i.episode ? `/episode/${i.episode}` : ''}` : ''}`,
     innerHtml: '<img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg">',
     tooltipHtml: 'TMDB',
+    addStyles: customLinkHelperFns.hideNativeExternalLink('tmdb'),
   },
   {
     buildHref: (i) => `https://www.imdb.com/${i.type === 'people' ? 'name' : 'title'}/${i.ids.imdb}${i.season ? `/episodes/?season=${i.season}` : ''}`,
     innerHtml: customLinkHelperFns.getFaBrandsHtml('imdb', 'font-size: 24px;'),
     tooltipHtml: 'IMDb',
+    addStyles: customLinkHelperFns.hideNativeExternalLink('imdb'),
   },
   {
-    buildHref: (i) => `javascript:${customLinkHelperFns.fetchWikidataClaim(i, i.type === 'movies' ? 'P12196' : 'P4835')}.then((id) => open('https://www.thetvdb.com/dereferrer/${i.type === 'movies' ? 'movie' : 'series'}/' + id))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchWikidataClaim(i, i.type === 'movies' ? 'P12196' : 'P4835')}.then((id) => 'https://www.thetvdb.com/dereferrer/${i.type === 'movies' ? 'movie' : 'series'}/' + id)`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('thetvdb.com'),
     tooltipHtml: 'TheTVDB',
     includeIf: (i) => i.type !== 'people',
   },
   {
-    buildHref: (i) => i.type !== 'people' ? `javascript:fetch('https://api.tvmaze.com/lookup/shows?imdb=${i.ids.imdb}').then((r) => open(r.url.replace('api.', '')))` : `https://www.tvmaze.com/search?q=${i.name.toLowerCase().replaceAll(' ', '+')}`,
+    buildHref: (i) => i.type !== 'people' ? `fetch('https://api.tvmaze.com/lookup/shows?imdb=${i.ids.imdb}').then((r) => r.url.replace('api.', ''))` : `fetch('https://api.tvmaze.com/search/people?q=${i.name}').then((r) => r.json()).then((r) => r[0]?.person.url ?? 'https://www.tvmaze.com/search?q=${i.name}')`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('tvmaze.com'),
     tooltipHtml: 'TVmaze',
     includeIf: (i) => /shows|seasons|episodes|people/.test(i.type),
   },
   {
-    buildHref: (i) => $('#external-link-justwatch').attr('href'),
+    buildHref: (i) => $(`.btn-watch-now[data-url="${i.item_url}"] ~ .external #external-link-justwatch`).attr('href') ?? $('#powered_by_url').attr('value'),
     innerHtml: '<i class="fa-kit fa-justwatch"></i>',
     tooltipHtml: 'JustWatch',
-    includeIf: (i) => $('#external-link-justwatch').length,
+    includeIf: (i) => i.type !== 'people' && $(`.btn-watch-now[data-url="${i.item_url}"] ~ .external #external-link-justwatch, #watch-now-content[data-url="${i.item_url}"] > #powered_by_url`).length,
+    addStyles: customLinkHelperFns.hideNativeExternalLink('justwatch'),
   },
   {
     buildHref: (i) => `https://open.spotify.com/search/${i.title} Soundtrack`,
@@ -3627,10 +3734,11 @@ const customExternalLinks = [
     includeIf: (i) => i.type !== 'people',
   },
   {
-    buildHref: (i) => i.type === 'movies' ? `https://fanart.tv/movie/${i.ids.tmdb}` : `javascript:fetch('https://api.tvmaze.com/lookup/shows?imdb=${i.ids.imdb}').then((r) => r.json()).then((r) => open('https://fanart.tv/series/' + r.externals.thetvdb))`,
+    buildHref: (i) => i.type === 'movies' ? `https://fanart.tv/movie/${i.ids.tmdb}` : `fetch('https://api.tvmaze.com/lookup/shows?imdb=${i.ids.imdb}').then((r) => r.json()).then((r) => 'https://fanart.tv/series/' + r.externals.thetvdb)`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('fanart.tv'),
     tooltipHtml: 'Fanart.tv',
     includeIf: (i) => i.type !== 'people',
+    addStyles: customLinkHelperFns.hideNativeExternalLink('fanart'),
   },
   {
     buildHref: (i) => `https://mediux.pro/${i.type === 'movies' ? 'movies' : 'shows'}/${i.ids.tmdb}`,
@@ -3640,31 +3748,61 @@ const customExternalLinks = [
   },
   {
     buildHref: (i) => `https://youglish.com/pronounce/${i.name.replaceAll(' ', '_')}/english`,
-    innerHtml: 'YG',
+    innerHtml: customLinkHelperFns.getDdgFaviconHtml('youglish.com'),
     tooltipHtml: 'YouGlish',
     includeIf: (i) => i.type === 'people',
   },
   {
     buildHref: (i) => `https://oracleofbacon.org/graph.php?who=${i.name.replaceAll(' ', '+')}`,
-    innerHtml: 'Bacon°',
+    innerHtml: `<i class="fa-regular fa-chart-network"></i>`,
+    tooltipHtml: 'Oracle of Bacon',
     includeIf: (i) => i.type === 'people',
   },
   {
-    buildHref: (i) => $('#external-link-official').attr('href'),
+    buildHref: (i) => i.homepage,
     innerHtml: '<i class="fa-light fa-clapperboard-play"></i>',
     tooltipHtml: 'Official Site',
-    includeIf: (i) => $('#external-link-official').length,
+    includeIf: (i) => i.homepage,
+    addStyles: customLinkHelperFns.hideNativeExternalLink('official'),
+  },
+  {
+    buildHref: (i) => $('#external-link-mastodon').attr('href'),
+    innerHtml: customLinkHelperFns.getFaBrandsHtml('mastodon'),
+    tooltipHtml: 'Mastodon',
+    includeIf: (i) => $(`:is(.btn-watch-now, .poster[data-person-id])[data-url="${i.item_url}"] ~ .external #external-link-mastodon`).length,
+    addStyles: customLinkHelperFns.hideNativeExternalLink('mastodon'),
+  },
+  {
+    buildHref: (i) => $('#external-link-instagram').attr('href'),
+    innerHtml: customLinkHelperFns.getFaBrandsHtml('instagram'),
+    tooltipHtml: 'Instagram',
+    includeIf: (i) => $(`:is(.btn-watch-now, .poster[data-person-id])[data-url="${i.item_url}"] ~ .external #external-link-instagram`).length,
+    addStyles: customLinkHelperFns.hideNativeExternalLink('instagram'),
+  },
+  {
+    buildHref: (i) => $('#external-link-twitter').attr('href'),
+    innerHtml: customLinkHelperFns.getFaBrandsHtml('x-twitter'),
+    includeIf: (i) => $(`:is(.btn-watch-now, .poster[data-person-id])[data-url="${i.item_url}"] ~ .external #external-link-twitter`).length,
+    addStyles: customLinkHelperFns.hideNativeExternalLink('twitter'),
+  },
+  {
+    buildHref: (i) => $('#external-link-facebook').attr('href'),
+    innerHtml: customLinkHelperFns.getFaBrandsHtml('facebook'),
+    tooltipHtml: 'Facebook',
+    includeIf: (i) => $(`:is(.btn-watch-now, .poster[data-person-id])[data-url="${i.item_url}"] ~ .external #external-link-facebook`).length,
+    addStyles: customLinkHelperFns.hideNativeExternalLink('facebook'),
   },
 ];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-let $, trakt;
-unsafeWindow.GM_xmlhttpRequest = GM_xmlhttpRequest;
+let $, traktApiModule;
 unsafeWindow.userscriptLevDist = levenshteinDistance;
+unsafeWindow.userscriptGmOpenInTab = GM_openInTab;
+unsafeWindow.userscriptGmXhrCustomLinks = GM.xmlHttpRequest;
 unsafeWindow.userscriptItemDataCache = {};
 
-const gmStorage = { maxSidebarWnLinks: 4, ...(GM_getValue('customLinks')) };
+const gmStorage = { maxSidebarWnLinks: 4, torrentResolution: '1080p', ...(GM_getValue('customLinks')) };
 GM_setValue('customLinks', gmStorage);
 
 
@@ -3672,42 +3810,41 @@ addStyles();
 
 document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
-  trakt ??= unsafeWindow.userscriptTraktAPIModule?.isFulfilled ? await unsafeWindow.userscriptTraktAPIModule : null;
+  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
   if (!$) return;
 
-  const pathBeforeFetch = location.pathname,
-        itemUrl = $('.notable-summary').attr('data-url') || $('.sidebar').attr('data-url'),
-        itemData = /^\/(movies|shows|seasons|episodes|people)\/[^\/]+$/.test(itemUrl) ? await getItemData(itemUrl) : undefined; // regex covers list + alternate season itemUrls
-  if (pathBeforeFetch !== location.pathname) return;
+  const $watchNowContent = $('#watch-now-content'),
+        $searchResults = $('#header-search-autocomplete-results'),
+        itemUrl = $('.notable-summary').attr('data-url') || $('.sidebar').attr('data-url');
 
-  if (customExternalLinks.length && itemData) {
-    addExternalLinksToSidebar(itemData);
-    addExternalLinksToAdditionalStats(itemData);
-  }
+  $(document).off('ajaxSuccess.userscript83278').on('ajaxSuccess.userscript83278', (_evt, _xhr, opt) => {
+    if ($watchNowContent.length && opt.url.includes('/streaming_links?country=')) addCustomLinksToModal($watchNowContent);
+    if ($searchResults.length && /^\/search\/autocomplete(?!\/(people|lists|users))/.test(opt.url)) addWatchNowLinksToSearchResults($searchResults);
+  });
 
-  if (customWatchNowLinks.length) {
-    if (itemData && itemData.type !== 'people') {
-      addWatchNowLinksToSidebar(itemData);
-      addWatchNowLinksToActionButtons(itemData);
+  if (/^\/(movies|shows|seasons|episodes|people)\/[^\/]+$/.test(itemUrl)) { // regex filters list + alternate season itemUrls
+    const pathBeforeFetch = location.pathname,
+          itemData = await getItemData(itemUrl);
+
+    if (pathBeforeFetch === location.pathname) {
+      addExternalLinksToSidebar(itemData);
+      addExternalLinksToAdditionalStats(itemData);
+      if (itemData.type !== 'people') {
+        addWatchNowLinksToSidebar(itemData);
+        addWatchNowLinksToActionButtons(itemData);
+      }
     }
-
-    const $watchNowContent = $('#watch-now-content'),
-          $searchResults = $('#header-search-autocomplete-results');
-
-    if ($watchNowContent.has('.streaming-links').length) addWatchNowLinksToModal($watchNowContent);
-
-    $(document).off('ajaxSuccess.userscript83278').on('ajaxSuccess.userscript83278', (_evt, _xhr, opt) => {
-      if ($watchNowContent.length && opt.url.includes('/streaming_links?country=')) addWatchNowLinksToModal($watchNowContent);
-      if ($searchResults.length && /^\/search\/autocomplete(?!\/(people|lists|users))/.test(opt.url)) addWatchNowLinksToSearchResults($searchResults);
-    });
   }
 }, { capture: true });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 const getCustomLinkHtml = (l, itemData, innerHtmlOverride) => {
-  const href = l.buildHref(itemData);
-  return `<a ${href.startsWith('javascript:') ? 'onauxclick="event.button === 1 && this.click();"' : 'target="_blank"'} href="${href}" data-original-title="${l.tooltipHtml ?? ''}">${innerHtmlOverride || l.innerHtml}</a>`;
+  const buildHref = l.buildHref(itemData);
+  return `<a ${!/\)\.then\(/.test(buildHref) ? `href="${buildHref}"` : `href="javascript:void(0);" ` +
+    `onclick="${buildHref}.then((url) => { this.setAttribute('href', url); userscriptGmOpenInTab(url, { active: true, setParent: true }); })" ` +
+    `onauxclick="${buildHref}.then((url) => { this.setAttribute('href', url); if (event.button === 1) userscriptGmOpenInTab(url, { setParent: true }); })"`} ` +
+    `target="_blank" data-original-title="${l.tooltipHtml ?? ''}">${innerHtmlOverride ?? l.innerHtml}</a>`;
 };
 
 function addExternalLinksToSidebar(itemData) {
@@ -3725,7 +3862,7 @@ function addExternalLinksToSidebar(itemData) {
 function addExternalLinksToAdditionalStats(itemData) {
   $(customExternalLinks
     .filter((l) => l.includeIf ? l.includeIf(itemData) : true)
-    .map((l) => getCustomLinkHtml(l, itemData, $(l.tooltipHtml ?? l.innerHtml).text() || (l.tooltipHtml ?? l.innerHtml)) + ', ')
+    .map((l) => getCustomLinkHtml(l, itemData, $(l.innerHtml).attr('alt') ?? l.tooltipHtml) + ', ')
     .join('')
   ).insertAfter('.additional-stats.with-external-links label:contains("Links")');
 }
@@ -3803,166 +3940,172 @@ async function addWatchNowLinksToSearchResults($searchResults) {
   });
 }
 
-async function addWatchNowLinksToModal($watchNowContent) {
+async function addCustomLinksToModal($watchNowContent) {
   const itemData = await getItemData($watchNowContent.attr('data-url'));
 
   $watchNowContent.find('> .streaming-links').prepend(
     `<div class="title">Custom Links</div>` +
+    `<div class="section external"></div>` +
     `<div class="section"></div>` +
     ($watchNowContent.has('.no-links').length ? `<div class="title"></div>` : '')
+  ).end().find('> .title-wrapper .titles').append(
+    `<div class="overview">${itemData.episode_overview ?? itemData.season_overview ?? itemData.overview ?? 'No overview available.'}</div>`
   );
+
+  $(customExternalLinks
+    .filter((l) => l.includeIf ? l.includeIf(itemData) : true)
+    .map((l) => getCustomLinkHtml(l, itemData))
+    .join('')
+  ).appendTo($watchNowContent.find('.section.external')).tooltip({
+    placement: 'bottom',
+    html: true,
+  });
 
   $(customWatchNowLinks
     .filter((l) => l.includeIf ? l.includeIf(itemData) : true)
     .map((l) => getCustomLinkHtml(l, itemData, l.innerHtml + (l.tooltipHtml ? `<div class="price">${l.tooltipHtml}</div>` : '')))
     .join('')
-  ).appendTo($watchNowContent.find('.section').first());
+  ).appendTo($watchNowContent.find('.section.external + .section'));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-async function getItemData(itemUrl) {
-  const fixWrongDefaultEpisodeGroup = async (itemData) => { // some anime don't default to the "correct" episode group e.g. /shows/cowboy-bebop (eps out of order), /shows/solo-leveling (1 instead of 2 seasons)
-    const showData = await fetch(`https://api.tvmaze.com/lookup/shows?imdb=${itemData.ids.imdb}`) // max 20 calls / 10s, cached on disk for 1 hour
-                             .then((r) => r.ok ? fetch(r.url + '?embed[]=episodes&embed[]=seasons') : null)
-                             .then((r) => r?.ok ? r.json() : null);
-    const episodeData = showData?._embedded.episodes.find((ep) => ep.name.trim().toLowerCase() === itemData.episode_title.trim().toLowerCase());
+const getItemDataFromTraktApi = async (itemUrl) => {
+  const itemUrlSplit = itemUrl.split('/').filter(Boolean),
+        type = itemUrlSplit[0];
+  let itemDoc, $notableSummary, showData, seasonData, episodeData;
 
-    if (episodeData) {
-      itemData.season_old = itemData.season;
-      itemData.episode_old = itemData.episode;
-      itemData.season = episodeData.season;
-      itemData.episode = episodeData.number;
-      itemData.season_title = showData._embedded.seasons.find((s) => s.number == episodeData.season).name || `Season ${episodeData.season}`;
-      ['season_original_title', 'season_ids', 'season_first_aired', 'season_episode_count'].forEach((prop) => delete itemData[prop]);
-    }
-  }
-
-
-  const fetchFromApi = async () => { // cached on disk for 8 hours
-    const itemUrlSplit = itemUrl.split('/').filter(Boolean),
-          type = itemUrlSplit[0];
-    let itemDoc, $notableSummary, showData, seasonData, episodeData;
-
-    // itemUrlSplit[1] is trakt-id for seasons + eps and slug for shows + movs + people, can be numeric for shows e.g. /shows/1883 which gets interpreted as trakt-id by api
-    if (type === 'seasons' || type === 'shows' && !isNaN(itemUrlSplit[1])) {
-      const resp = await fetch(itemUrl);
-      if (!resp.ok) throw new Error(`getItemData: Fetching ${resp.url} failed with status: ${resp.status}`);
-      itemDoc = new DOMParser().parseFromString(await resp.text(), 'text/html');
-      $notableSummary = $(itemDoc).find('.notable-summary');
-    }
-
-    if (type === 'episodes') {
-      [{ show: showData, episode: episodeData }] = await trakt.search.id({ id_type: 'trakt', id: itemUrlSplit[1], type: 'episode', extended: 'full' }); // doesn't work with slugs and doesn't support type: 'season'
-      seasonData = await trakt.seasons.season.info({ id: showData.ids.trakt, season: episodeData.season, extended: 'full' });
-    };
-    const itemData = {
-      item_url: itemUrl,
-      type,
-      ...(type !== 'episodes' && {
-        ...(await trakt[type === 'seasons' ? 'shows' : type].summary({ id: $notableSummary?.attr('data-show-id') ?? itemUrlSplit[1], extended: 'full' })),
-      }),
-      ...(type === 'seasons' && {
-        season: +$notableSummary.attr('data-season-number'),
-        season_title: $(itemDoc).find('#level-up-link[href*="/seasons/"]').text() || $(itemDoc).find('#summary-wrapper .mobile-title h1').contents()[0]?.textContent.trim(),
-      }),
-      ...(type === 'episodes' && {
-        ...showData,
-        season: seasonData.number,
-        season_title: seasonData.title,
-        season_original_title: seasonData.original_title,
-        season_ids: seasonData.ids,
-        season_first_aired: seasonData.first_aired,
-        season_episode_count: seasonData.episode_count,
-        episode: episodeData.number,
-        episode_abs: episodeData.number_abs,
-        episode_title: episodeData.title,
-        episode_original_title: episodeData.original_title,
-        episode_ids: episodeData.ids,
-        episode_first_aired: episodeData.first_aired,
-        episode_type: episodeData.episode_type,
-      }),
-    };
-    if (type === 'episodes' && itemData.genres.includes('anime')) await fixWrongDefaultEpisodeGroup(itemData);
-
-    return itemData;
-  };
-
-
-  const scrapeFromSummaryPage = async () => {
-    let itemDoc, itemDoc2;
-
+  // itemUrlSplit[1] is trakt-id for seasons + eps and slug for shows + movs + people, can be numeric for shows e.g. /shows/1883 which gets interpreted as trakt-id by api
+  if (type === 'seasons' || type === 'shows' && !isNaN(itemUrlSplit[1])) {
     const resp = await fetch(itemUrl);
     if (!resp.ok) throw new Error(`getItemData: Fetching ${resp.url} failed with status: ${resp.status}`);
     itemDoc = new DOMParser().parseFromString(await resp.text(), 'text/html');
-
-    if (resp.url.includes('/seasons/')) {
-      const resp2 = await fetch(resp.url.split('/seasons/')[0]);
-      if (!resp2.ok) throw new Error(`getItemData: Fetching ${resp2.url} failed with status: ${resp2.status}`);
-      itemDoc2 = new DOMParser().parseFromString(await resp2.text(), 'text/html');
-    }
-
-    const type = itemUrl.split('/').filter(Boolean)[0],
-          $notableSummary = $(itemDoc).find('.notable-summary'),
-          $additionalStatsLi = $(itemDoc).find('.additional-stats > li'),
-          $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : undefined,
-          filterStatsElemsByLabel = (labelText, $statsElems = $additionalStatsLi) => $statsElems.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
-
-    const itemData = {
-      item_url: itemUrl,
-      type,
-      ids: {
-        trakt: +($notableSummary.attr('data-movie-id') ?? $notableSummary.attr('data-show-id') ?? $notableSummary.attr('data-person-id')),
-        imdb: $(itemDoc2 ?? itemDoc).find('#external-link-imdb').attr('href')?.match(/(?:tt|nm)\d+/)?.[0],
-        tmdb: +$(itemDoc).find('#external-link-tmdb').attr('href')?.match(/\d+/)?.[0] || undefined,
-        slug: resp.url.split('/')[4],
-      },
-      ...(type !== 'people' && {
-        title: $(itemDoc).find(':is(body > [itemtype$="Movie"], body > [itemtype$="TVSeries"], body > [itemtype] > [itemtype$="TVSeries"]) > meta[itemprop="name"]').attr('content')?.match(/(.+?)(?: \(\d{4}\))?$/)?.[1],
-        original_title: filterStatsElemsByLabel('original title', $additionalStatsLi2).contents().get(-1)?.textContent,
-        year: +$(itemDoc2 ?? itemDoc).find('#summary-wrapper .mobile-title .year')[0]?.textContent || undefined,
-        genres: $additionalStatsLi.find('[itemprop="genre"]').map((_, e) => $(e).text().toLowerCase()).get(),
-      }),
-      ...(/seasons|episodes/.test(type) && {
-        season: +$notableSummary.attr('data-season-number'),
-        season_title: $(itemDoc).find('#level-up-link[href*="/seasons/"]').text() || $(itemDoc).find('#summary-wrapper .mobile-title h1').contents()[0]?.textContent.trim(),
-      }),
-      ...(type === 'episodes' && {
-        episode: +$notableSummary.attr('data-episode-number'),
-        episode_title: $(itemDoc).find('body > [itemtype$="TVEpisode"] > meta[itemprop="name"]').attr('content'),
-      }),
-      ...(type === 'people' && {
-        name: $(itemDoc).find('body > [itemtype$="Person"] > meta[itemprop="name"]').attr('content'),
-        gender: filterStatsElemsByLabel('gender').contents().get(-1)?.textContent.toLowerCase().replace('-', '_'),
-        birthday: filterStatsElemsByLabel('birthday').children().last().attr('data-date'),
-      }),
-    };
-    if (Object.hasOwn(itemData, 'original_title')) itemData.original_title ??= itemData.title;
-    if (itemData.type === 'episodes' && itemData.genres.includes('anime')) await fixWrongDefaultEpisodeGroup(itemData);
-
-    return itemData;
+    $notableSummary = $(itemDoc).find('.notable-summary');
   }
 
+  if (type === 'episodes') {
+    [{ show: showData, episode: episodeData }] = await traktApiModule.search.id({ id_type: 'trakt', id: itemUrlSplit[1], type: 'episode', extended: 'full' }); // doesn't work with slugs and doesn't support type: 'season'
+    seasonData = await traktApiModule.seasons.season.info({ id: showData.ids.trakt, season: episodeData.season, extended: 'full' });
+  };
+  const itemData = {
+    item_url: itemUrl,
+    type,
+    ...(type !== 'episodes' && {
+      ...(await traktApiModule[type === 'seasons' ? 'shows' : type].summary({ id: $notableSummary?.attr('data-show-id') ?? itemUrlSplit[1], extended: 'full' })), // cached on disk for 8 hours
+    }),
+    ...(type === 'seasons' && {
+      season: +$notableSummary.attr('data-season-number'),
+      season_title: $(itemDoc).find('#level-up-link[href*="/seasons/"]').text() || $(itemDoc).find('#summary-wrapper .mobile-title h1').contents()[0]?.textContent.trim(),
+      season_overview: $(itemDoc).find('#overview #overview').text() || null,
+    }),
+    ...(type === 'episodes' && {
+      ...showData,
+      season: seasonData.number,
+      season_title: seasonData.title,
+      season_original_title: seasonData.original_title,
+      season_ids: seasonData.ids,
+      season_first_aired: seasonData.first_aired,
+      season_episode_count: seasonData.episode_count,
+      season_overview: seasonData.overview,
+      episode: episodeData.number,
+      episode_abs: episodeData.number_abs,
+      episode_title: episodeData.title,
+      episode_original_title: episodeData.original_title,
+      episode_ids: episodeData.ids,
+      episode_first_aired: episodeData.first_aired,
+      episode_type: episodeData.episode_type,
+      episode_overview: episodeData.overview,
+    }),
+  };
+  return itemData;
+}
 
-  return (unsafeWindow.userscriptItemDataCache[itemUrl] ??= await (trakt ? fetchFromApi : scrapeFromSummaryPage)());
+const getItemDataFromSummaryPage = async (itemUrl) => {
+  let itemDoc, itemDoc2;
+
+  const resp = await fetch(itemUrl);
+  if (!resp.ok) throw new Error(`getItemData: Fetching ${resp.url} failed with status: ${resp.status}`);
+  itemDoc = new DOMParser().parseFromString(await resp.text(), 'text/html');
+
+  if (resp.url.includes('/seasons/')) {
+    const resp2 = await fetch(resp.url.split('/seasons/')[0]);
+    if (!resp2.ok) throw new Error(`getItemData: Fetching ${resp2.url} failed with status: ${resp2.status}`);
+    itemDoc2 = new DOMParser().parseFromString(await resp2.text(), 'text/html');
+  }
+
+  const type = itemUrl.split('/').filter(Boolean)[0],
+        $notableSummary = $(itemDoc).find('.notable-summary'),
+        $additionalStatsLi = $(itemDoc).find('.additional-stats > li'),
+        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : undefined,
+        filterStatsElemsByLabel = (labelText, $statsElems = $additionalStatsLi) => $statsElems.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
+
+  const itemData = {
+    item_url: itemUrl,
+    type,
+    ids: {
+      trakt: +($notableSummary.attr('data-movie-id') ?? $notableSummary.attr('data-show-id') ?? $notableSummary.attr('data-person-id')),
+      imdb: $(itemDoc2 ?? itemDoc).find('#external-link-imdb').attr('href')?.match(/(?:tt|nm)\d+/)?.[0],
+      tmdb: +$(itemDoc).find('#external-link-tmdb').attr('href')?.match(/\d+/)?.[0] || undefined,
+      slug: resp.url.split('/')[4],
+    },
+    homepage: $(itemDoc2 ?? itemDoc).find('#external-link-official').attr('href') ?? null,
+    ...(type !== 'people' && {
+      title: $(itemDoc).find(':is(body > [itemtype$="Movie"], body > [itemtype$="TVSeries"], body > [itemtype] > [itemtype$="TVSeries"]) > meta[itemprop="name"]').attr('content')?.match(/(.+?)(?: \(\d{4}\))?$/)?.[1],
+      original_title: filterStatsElemsByLabel('original title', $additionalStatsLi2).contents().get(-1)?.textContent,
+      year: +$(itemDoc2 ?? itemDoc).find('#summary-wrapper .mobile-title .year')[0]?.textContent || undefined,
+      genres: $additionalStatsLi.find('[itemprop="genre"]').map((_, e) => $(e).text().toLowerCase()).get(),
+      overview: $(itemDoc2 ?? itemDoc).find('#overview #overview').text() || null,
+    }),
+    ...(/seasons|episodes/.test(type) && {
+      season: +$notableSummary.attr('data-season-number'),
+      season_title: $(itemDoc).find('#level-up-link[href*="/seasons/"]').text() || $(itemDoc).find('#summary-wrapper .mobile-title h1').contents()[0]?.textContent.trim(),
+    }),
+    ...(type === 'seasons' && {
+      season_overview: $(itemDoc).find('#overview #overview').text() || null,
+    }),
+    ...(type === 'episodes' && {
+      episode: +$notableSummary.attr('data-episode-number'),
+      episode_title: $(itemDoc).find('body > [itemtype$="TVEpisode"] > meta[itemprop="name"]').attr('content'),
+      episode_overview: $(itemDoc).find('#overview #overview').text() || null,
+    }),
+    ...(type === 'people' && {
+      name: $(itemDoc).find('body > [itemtype$="Person"] > meta[itemprop="name"]').attr('content'),
+      gender: filterStatsElemsByLabel('gender').contents().get(-1)?.textContent.toLowerCase().replace('-', '_'),
+      birthday: filterStatsElemsByLabel('birthday').children().last().attr('data-date'),
+    }),
+  };
+  if (Object.hasOwn(itemData, 'original_title')) itemData.original_title ??= itemData.title;
+  return itemData;
+}
+
+const verifyEpisodeGroup = async (itemData) => { // some anime don't default to the "correct" episode group e.g. /shows/cowboy-bebop (eps out of order), /shows/solo-leveling (1 instead of 2 seasons)
+  const showData = await fetch(`https://api.tvmaze.com/lookup/shows?imdb=${itemData.ids.imdb}`) // max 20 calls / 10s; cached on disk for 1 hour
+                           .then((r) => r.ok ? fetch(r.url + '?embed[]=episodes&embed[]=seasons') : null)
+                           .then((r) => r?.ok ? r.json() : null);
+  const episodeData = showData?._embedded.episodes.find((ep) => ep.name.trim().toLowerCase() === itemData.episode_title.trim().toLowerCase());
+
+  if (episodeData && (itemData.season !== episodeData.season || itemData.episode !== episodeData.number)) { // ep group used by tvmaze is usually the "correct" one
+    itemData.season_old = itemData.season;
+    itemData.episode_old = itemData.episode;
+    itemData.season = episodeData.season;
+    itemData.episode = episodeData.number;
+    itemData.season_title = showData._embedded.seasons.find((s) => s.number == episodeData.season).name || `Season ${episodeData.season}`;
+    ['season_original_title', 'season_ids', 'season_first_aired', 'season_episode_count'].forEach((prop) => delete itemData[prop]);
+  }
+  return itemData;
+}
+
+async function getItemData(itemUrl) {
+  return (unsafeWindow.userscriptItemDataCache[itemUrl] ??= await (
+    (traktApiModule ? getItemDataFromTraktApi : getItemDataFromSummaryPage)(itemUrl)
+      .then((i) => i.type === 'episodes' && i.genres.includes('anime') ? verifyEpisodeGroup(i) : i)
+  ));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 function addStyles() {
-  const watchNowCountry = document.cookie.match(/(?:^|; )watchnow_country=([^;]*)/)?.[1] ?? new Intl.Locale(navigator.language).region.toLowerCase();
-
   GM_addStyle(`
-@font-face {
-  font-family: "GangOfThree";
-  src: url("${GM_getResourceURL('gojolive')}") format("woff2");
-  font-display: block;
-}
-
-
-#external-link-official, #external-link-imdb, #external-link-tmdb, #external-link-fanart, #external-link-justwatch, #external-link-wikipedia {
-  display: none !important;
-}
 #info-wrapper .additional-stats.with-external-links .visible-xs {
   font-size: 0;
   user-select: none;
@@ -3985,7 +4128,7 @@ function addStyles() {
 [data-source-counts] > .fa-play::before {
   color: #777 !important;
 }
-[data-source-counts*="'${watchNowCountry}'"] > .fa-play::before {
+[data-source-counts*="'${document.cookie.match(/(?:^|; )watchnow_country=([^;]*)/)?.[1] ?? new Intl.Locale(navigator.language).region}'" i] > .fa-play::before {
   color: #ccc !important;
 }
 :is([data-source-counts="{}"], [data-source-counts="{'none':1}"]) > .fa-play::before {
@@ -3996,7 +4139,17 @@ function addStyles() {
 }
 
 
-.streaming-links .icon.btn-custom {
+#info-wrapper :is(.sidebar, .action-buttons) .streaming-links a:is(:nth-child(3n), :nth-child(4n)) {
+  display: inline-block !important;
+}
+#info-wrapper .sidebar .streaming-links a:nth-child(n+${gmStorage.maxSidebarWnLinks + 1} of a),
+#info-wrapper .action-buttons .streaming-links a:nth-child(n+3 of a),
+#header-search-autocomplete-results .streaming-links a:nth-child(n+3 of a) {
+  display: none !important;
+}
+
+
+.streaming-links a > .icon.btn-custom {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -4026,41 +4179,89 @@ function addStyles() {
 }
 
 
-#info-wrapper :is(.sidebar, .action-buttons) .streaming-links a:is(:nth-child(3n), :nth-child(4n)) {
-  display: inline-block !important;
-}
-#info-wrapper .sidebar .streaming-links a:nth-child(n+${gmStorage.maxSidebarWnLinks + 1} of a),
-#info-wrapper .action-buttons .streaming-links a:nth-child(n+3 of a),
-#header-search-autocomplete-results .streaming-links a:nth-child(n+3 of a) {
-  display: none !important;
-}
-
-
-#info-wrapper .sidebar .external a {
+:is(#info-wrapper .sidebar, #watch-now-content) .external a {
   height: 27px;
+  padding: 3px 5px !important;
+  line-height: 18px !important;
+  font-size: 14px !important;
   vertical-align: middle;
+  color: #ccc !important;
+  background-color: #333 !important;
+  border: solid 1px #333 !important;
+  border-radius: 3px !important;
+  width: revert !important;
 }
-#info-wrapper .sidebar .external a:has(> *) {
+:is(#info-wrapper .sidebar, #watch-now-content) .external a:has(> *) {
   padding: 1.5px !important;
 }
-#info-wrapper .sidebar .external a > img {
+:is(#info-wrapper .sidebar, #watch-now-content) .external a > :is(div, i) {
+  padding: 0 2px !important;
+  font-size: 19px;
+  vertical-align: -5px;
+}
+:is(#info-wrapper .sidebar, #watch-now-content) .external a > img {
   height: 100%;
   border-radius: inherit;
-  filter: grayscale(1);
+  filter: grayscale(1) var(--extra-filters, url());
 }
-#info-wrapper .sidebar .external a > :is(div, i) {
-  font-size: 18px;
-  vertical-align: -5px;
+:is(#info-wrapper .sidebar, #watch-now-content) .external a:hover {
+  color: #fff !important;
+  background-color: #555 !important;
+}
+:is(#info-wrapper .sidebar, #watch-now-content) .external a:hover > img {
+  filter: grayscale(1) var(--extra-filters, url()) brightness(1.3);
+}
+
+
+#watch-now-content .title-wrapper {
+  margin-bottom: revert !important;
+}
+#watch-now-content .title-wrapper .titles {
+  padding-bottom: revert !important;
+}
+#watch-now-content .title-wrapper .titles .overview {
+  height: 60px;
+  margin-top: 5px;
+  padding: 5px 0 10px;
+  mask: linear-gradient(to bottom, transparent, white 5px 45px, transparent);
+  overflow-y: auto;
+  scrollbar-width: none;
+  color: #ccc;
 }
 
 
 #watch-now-modal {
-  top: 37.5px !important;
+  top: 35px !important;
+  max-height: calc(100% - 70px);
+  display: flex;
+  flex-direction: column;
 }
-#watch-now-modal #watch-now-content .streaming-links {
-  max-height: calc(100vh - 190px) !important;
-  overflow: auto !important;
+#watch-now-content {
+  display: contents;
+}
+#watch-now-content .streaming-links {
+  margin: 10px 0 !important;
+  mask: linear-gradient(to bottom, transparent, white 10px calc(100% - 10px), transparent);
+  overflow: auto;
   scrollbar-width: none;
+}
+#watch-now-content .title {
+  margin: 10px 0 15px !important;
+}
+#watch-now-content .section.external {
+  margin: 0 30px 15px !important;
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#watch-now-content .section:not(.external) a {
+  padding-bottom: 10px !important;
+}
+@media (width <= 767px) {
+  #watch-now-content .section.external {
+    margin: 0 15px 15px !important;
+  }
 }
 
 
@@ -4071,7 +4272,10 @@ function addStyles() {
     scrollbar-width: none;
   }
 }
-  `);
+
+
+${customWatchNowLinks.concat(customExternalLinks).map((l) => l.addStyles).filter(Boolean).join('\n')}
+  `); // font data-uris are so long that everything below them doesn't get shown in style tag
 }
 })();
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
-// @description  A large collection of bug fixes and optimizations for trakt.tv. Organized into sections with comments detailing what specific issues are being addressed. See README for details.
-// @version      0.7.1
+// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation. See README for details.
+// @version      0.7.3
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -19,6 +19,19 @@
 // ==/UserScript==
 
 /* README
+### General
+- Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
+- Notably there are also a handful of feature patches included, all of them too minor to warrant a separate userscript:
+  - make the "add to list" buttons on grid pages (e.g. /trending) color-coded:
+      [![light blue](https://img.shields.io/badge/%20-%20-008ada?style=flat-square&labelColor=008ada)](#) = is on watchlist,
+      [![dark blue](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=0066a0)](#) = is on personal list,
+      [![50/50](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=008ada)](#) = is on both
+  - change the default sorting on /people pages from "released" to "popularity"
+  - grey out usernames of deleted profiles in the comments
+  - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name" that can be different from the username/slug. This becomes a problem in comment replies
+      which always reference the person/comment they are replying to with an `@<userslug>` prefix, which sometimes turns long reply chains into a game of matching pairs..), currently not supported in FF
+- The sections below, with the exception of the custom hotkeys, are unrelated to this script, it's just general documentation of native features.
+
 ### Hotkeys and Gestures
 - ***[CUSTOM]*** `alt + 1/2/3/4/5/6/7`: change header-search-category, 1 for "Shows & Movies", 2 for "Shows", ..., 7 for "Users", also expands header-search if collapsed
 - ***[CUSTOM]*** `swipe in from left edge`: display title sidebar on mobile devices
@@ -36,28 +49,50 @@
 - `arrow-up/down`: header-search results navigation
 
 ### Filter-By-Terms Regex
-The filter-by-terms (called "Filter by Title") function interprets the input as a case-insensitive regular expression, if filering is done client-side with isotope,
-which is limited to places where there's no need for pagination (/lists, /seasons and /people pages). Intriguingly the /progress page, despite having pagination and
-therefore relying on server-side filtering, does in fact allow for using regular expressions, though from my testing this seems to be the only exception.
-The input is matched against: list title and description for /lists pages, episode title for /seasons pages, title and character name for /people pages, episode and show title for /progress pages.
+The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
+The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
+All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
+the `/progress` page and list pages. For some reason. The input is matched against:
+- list title and description for `/users/<userslug>/lists` pages
+- episode title for `/seasons` pages
+- title and character name for `/people` pages
+- episode and show title for `/progress` pages
+- title name for list pages
 */
 
 
 "use strict";GM_addStyle(`
-#info-wrapper .season-links .links {
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  transition: scrollbar-color 0.2s;
-  width: revert !important;
+.grid-item .actions .list.selected.watchlist .base {
+  background: #008ada !important;
 }
-#info-wrapper .season-links .links:hover {
-  scrollbar-color: rgb(102 102 102 / 0.4) transparent;
+.grid-item .actions .list.selected.personal .base {
+  background: #0066a0 !important;
 }
-#info-wrapper .season-links .links > ul {
-  width: max-content !important;
+.grid-item .actions .list.selected.watchlist.personal .base {
+  background: linear-gradient(90deg, #008ada 50%, #0066a0 50%) !important;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"mCustomScrollbar");e.value=function(t){return this},Object.defineProperty(unsafeWindow.jQuery.fn,"mCustomScrollbar",e)}),document.addEventListener("turbo:load",()=>{document.querySelector("#info-wrapper .season-links .links .selected")?.scrollIntoView({block:"nearest",inline:"start"})},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),t=e.value;e.value=function(r){return r?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r.container,t.apply(this,arguments)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",e)}),GM_addStyle(`
+`),document.addEventListener("turbo:load",()=>{/^\/people\/[^\/]+$/.test(location.pathname)&&!location.search&&history.replaceState({},document.title,location.pathname+"?sort=popularity,asc")},{capture:!0}),GM_addStyle(`
+@supports (color: attr(data-color type(<color>))) {
+  .comment-wrapper[data-user-slug] {
+    --userslug: attr(data-user-slug);
+  }
+  .comment-wrapper[data-user-slug] .user-name :is(.username, .type + strong)::after {
+    content: " (@" var(--userslug) ")";
+  }
+  .comment-wrapper[data-user-slug] .user-name {
+    max-width: calc(100% - 40px) !important;
+  }
+  .comment-wrapper[data-user-slug] .user-name > h4 {
+    white-space: nowrap;
+    overflow-x: clip;
+    text-overflow: ellipsis;
+  }
+}
+
+.comment-wrapper[data-user-slug] .user-name .type + strong {
+  color: #aaa !important;
+}
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),t=e.value;e.value=function(r){return r?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r.container,t.apply(this,arguments)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",e)}),GM_addStyle(`
 @media (width <= 767px) {
   #info-wrapper .sticky-wrapper {
     display: block !important;
@@ -80,11 +115,11 @@ The input is matched against: list title and description for /lists pages, episo
     transform: translateX(0);
   }
 }
-`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,r,a,n,o,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,r,a,n,o,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})});const optimizedRenderReadmore=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((t,r)=>unsafeWindow.jQuery(r).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(t,r,a)=>r.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>optimizedRenderReadmore,set:()=>{},configurable:!0}),GM_addStyle(`
+`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,r,a,n,o,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,r,a,n,o,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&(e(document).on("auxclick",".btn-watch .view-all",function(t){t.preventDefault(),GM_openInTab(location.origin+e(this).attr("data-url"),{setParent:!0})}),e(document).on("mousedown mouseup","#header-search-autocomplete-results .selected",function(t){t.which===2&&!e(t.target).closest("a").length&&(t.type==="mousedown"?t.preventDefault():(unsafeWindow.searchModifierKey=!0,e(this).trigger("click")))}))}),document.addEventListener("keydown",e=>{e.ctrlKey&&e.key==="Enter"&&e.target.closest?.("#header-search-query")&&(e.preventDefault(),e.stopPropagation(),e.target.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",keyCode:13,metaKey:!0,bubbles:!0,cancelable:!0})))},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSuccess",(t,r,a)=>{if(a.url.endsWith("/rate")){const n=new URLSearchParams(a.data),[o,i,s]=["type","trakt_id","stars"].map(d=>n.get(d));unsafeWindow[o+"s"].ratings[i]=s,unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}else if(a.url.endsWith("/rate/remove")){const n=new URLSearchParams(a.data),o=n.get("type");unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}})}),GM_addStyle(`
 .personal-list .list-description {
   overflow-wrap: anywhere;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),t=e.value;e.value=function(r){return this.attr("id")==="filter-network_ids"&&(r.max_shown_results=200),t.apply(this,arguments)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",e)}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,r,a)=>{if(/\/lists\/[\d]+\/like/.test(a.url)){const n=new URLSearchParams(a.data).get("trakt_id"),o=e(`[data-list-id="${n}"] > .like .count-number`),i=o.text(),s=a.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{a.url===p.url&&o.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&(e(document).on("auxclick",".btn-watch .view-all",function(t){t.preventDefault(),GM_openInTab(location.origin+e(this).attr("data-url"),{insert:!0,setParent:!0})}),e(document).on("mousedown mouseup","#header-search-autocomplete-results .selected",function(t){t.which===2&&!e(t.target).closest("a").length&&(t.type==="mousedown"?t.preventDefault():(unsafeWindow.searchModifierKey=!0,e(this).trigger("click")))}))}),document.addEventListener("keydown",e=>{e.ctrlKey&&e.key==="Enter"&&e.target.closest?.("#header-search-query")&&(e.preventDefault(),e.stopPropagation(),e.target.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",keyCode:13,metaKey:!0,bubbles:!0,cancelable:!0})))},{capture:!0}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),t=e.value;e.value=function(r){return this.attr("id")==="filter-network_ids"&&(r.max_shown_results=200),t.apply(this,arguments)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",e)}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,r,a)=>{if(/\/lists\/[\d]+\/like/.test(a.url)){const n=new URLSearchParams(a.data).get("trakt_id"),o=e(`[data-list-id="${n}"] > .like .count-number`),i=o.text(),s=a.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{a.url===p.url&&o.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
 #activity .users-wrapper {
   width: 100%;
   padding-bottom: 15px !important;
@@ -212,7 +247,21 @@ The input is matched against: list title and description for /lists pages, episo
   margin-top: 5px;
   margin-left: revert !important;
 }
-`),document.addEventListener("turbo:load",()=>{/^\/people\/[^\/]+$/.test(location.pathname)&&unsafeWindow.jQuery?.("#filter-fade-hide .dropdown-menu li.typer:is(.season, .episode, .person) a.selected").removeClass("selected")},{capture:!0}),window.addEventListener("turbo:load",()=>unsafeWindow.jQuery?.(".feed-icon.csv").off("click")),GM_addStyle(`
+`);const optimizedRenderReadmore=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((t,r)=>unsafeWindow.jQuery(r).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(t,r,a)=>r.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>optimizedRenderReadmore,set:()=>{},configurable:!0}),GM_addStyle(`
+#info-wrapper .season-links .links {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s;
+  width: revert !important;
+}
+#info-wrapper .season-links .links:hover {
+  scrollbar-color: rgb(102 102 102 / 0.4) transparent;
+}
+#info-wrapper .season-links .links > ul {
+  width: max-content !important;
+}
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"mCustomScrollbar");e.value=function(t){return this},Object.defineProperty(unsafeWindow.jQuery.fn,"mCustomScrollbar",e)}),document.addEventListener("turbo:load",()=>{document.querySelector("#info-wrapper .season-links .links .selected")?.scrollIntoView({block:"nearest",inline:"start"})},{capture:!0}),document.addEventListener("turbo:load",()=>{/^\/people\/[^\/]+$/.test(location.pathname)&&unsafeWindow.jQuery?.("#filter-fade-hide .dropdown-menu li.typer:is(.season, .episode, .person) a.selected").removeClass("selected")},{capture:!0}),window.addEventListener("turbo:load",()=>unsafeWindow.jQuery?.(".feed-icon.csv").off("click")),GM_addStyle(`
 @media (767px < width) {
   body.comments:has(#read) {
     overflow-x: clip !important;
@@ -252,37 +301,6 @@ The input is matched against: list title and description for /lists pages, episo
   line-height: inherit !important;
 }
 `),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{unsafeWindow.jQuery?.(document).on("ajaxSuccess",(e,t,r)=>{r.url.endsWith("/dashboard/schedule")&&unsafeWindow.jQuery("#schedule-wrapper .btn-watch-now:not([data-source-counts])").attr("data-source-counts","{}"),/\/(dashboard\/on_deck|progress_item\/watched)\/\d+$/.test(r.url)&&unsafeWindow.posterGridTooltips?.()})}),GM_addStyle(`
-.grid-item .actions .list.selected.watchlist .base {
-  background: #008ada !important;
-}
-.grid-item .actions .list.selected.personal .base {
-  background: #0066a0 !important;
-}
-.grid-item .actions .list.selected.watchlist.personal .base {
-  background: linear-gradient(90deg, #008ada 50%, #0066a0 50%) !important;
-}
-`),document.addEventListener("turbo:load",()=>{/^\/people\/[^\/]+$/.test(location.pathname)&&!location.search&&history.replaceState({},document.title,location.pathname+"?sort=popularity,asc")},{capture:!0}),GM_addStyle(`
-@supports (color: attr(data-color type(<color>))) {
-  .comment-wrapper[data-user-slug] {
-    --userslug: attr(data-user-slug);
-  }
-  .comment-wrapper[data-user-slug] .user-name :is(.username, .type + strong)::after {
-    content: " (@" var(--userslug) ")";
-  }
-  .comment-wrapper[data-user-slug] .user-name {
-    max-width: calc(100% - 40px) !important;
-  }
-  .comment-wrapper[data-user-slug] .user-name > h4 {
-    white-space: nowrap;
-    overflow-x: clip;
-    text-overflow: ellipsis;
-  }
-}
-
-.comment-wrapper[data-user-slug] .user-name .type + strong {
-  color: #aaa !important;
-}
-`),GM_addStyle(`
 body {
   overflow-x: clip !important;
 }
@@ -360,7 +378,7 @@ body {
     vertical-align: -33%;
   }
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSuccess",(t,r,a)=>{if(a.url.endsWith("/rate")){const n=new URLSearchParams(a.data),[o,i,s]=["type","trakt_id","stars"].map(d=>n.get(d));unsafeWindow[o+"s"].ratings[i]=s,unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}else if(a.url.endsWith("/rate/remove")){const n=new URLSearchParams(a.data),o=n.get("type");unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}})}),document.addEventListener("click",e=>{e.target.closest(".toggle-feeds")?(e.stopPropagation(),document.querySelector(".toggle-feeds-wrapper")?.classList.toggle("open")):e.target.closest(".toggle-subnav-options")&&(e.stopPropagation(),document.querySelector(".toggle-subnav-wrapper")?.classList.toggle("open"))},!0),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{["remove","intersection","move","uniq"].forEach(e=>{const t=Object.getOwnPropertyDescriptor(Array.prototype,e);t&&(t.enumerable=!1,Object.defineProperty(Array.prototype,e,t))})}),GM_addStyle(`
+`),document.addEventListener("click",e=>{e.target.closest(".toggle-feeds")?(e.stopPropagation(),document.querySelector(".toggle-feeds-wrapper")?.classList.toggle("open")):e.target.closest(".toggle-subnav-options")&&(e.stopPropagation(),document.querySelector(".toggle-subnav-wrapper")?.classList.toggle("open"))},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{["remove","intersection","move","uniq"].forEach(e=>{const t=Object.getOwnPropertyDescriptor(Array.prototype,e);t&&(t.enumerable=!1,Object.defineProperty(Array.prototype,e,t))})}),GM_addStyle(`
 body.releases .panel-body {
   overflow-x: auto !important;
   scrollbar-width: thin;

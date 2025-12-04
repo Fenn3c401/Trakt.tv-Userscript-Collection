@@ -77,7 +77,9 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 /* README
 ### General
-- You can turn off individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
+- Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
+- As VIP user you should disable: \`2dz6ub1t\`, \`h8vh5z16\`, \`fyk2l3vj\`, \`x70tru7b\`, \`2hc6zfyy\`
 - This userscript is automatically generated. YMMV.
 
 | *NAME* | *SCRIPT_ID* |
@@ -86,7 +88,10 @@ $(for id in "${ms_ids[@]}"; do printf '| [%s](%s) | `%s` |\n' "$(sed 's#|#\\|#g'
 */
 
 $(for id in "${ms_ids[@]}"; do
-  [[ -n "${ms_store["$id.readme_comment"]}" ]] && printf '/* README [%s]\n%s\n\n' "${ms_store["$id.script_name"]}" "$(sed '1d' <<< "${ms_store["$id.readme_comment"]}")"
+  printf '/* [%s]\n' "${ms_store["$id.script_name"]}"
+  printf '%s\n' "${ms_store["$id.script_description"]}" 
+  [[ -n "${ms_store["$id.readme_comment"]}" ]] && printf '\n%s\n' "$(sed '1d;$d' <<< "${ms_store["$id.readme_comment"]}")"
+  printf '*/\n\n'
 done)
 
 
@@ -102,18 +107,21 @@ EOF
   printf '   1. Parsing src file\n'
   clean_content="$(tr -d '\r' < "$file")"
   script_name="$(grep -m 1 '^// @name' <<< "$clean_content" | sed -E 's|// @name\s+||')"
-  script_desc="$(grep -m 1 '^// @description' <<< "$clean_content" | sed -E 's|// @description\s+||')"
+  script_description="$(grep -m 1 '^// @description' <<< "$clean_content" | sed -E 's|// @description\s+||')"
   script_version="$(grep -m 1 '^// @version' <<< "$clean_content" | sed -E 's|// @version\s+||')"
   script_namespace="$(grep -m 1 '^// @namespace' <<< "$clean_content" | sed -E 's|// @namespace\s+||')"
   header="$(sed -n '\|^// ==UserScript==$|,\|^// ==/UserScript==$|p' <<< "$clean_content")"
   readme_comment="$(sed -n '\|^/\* README$|,\|^\*/$|p' <<< "$clean_content")"
   body="$(sed '\|^// ==UserScript==$|,\|^// ==/UserScript==$|d; \|^/\* README$|,\|^\*/$|d' <<< "$clean_content" | sed -n '\|[^\s]|,$p')"
+  screenshots="$(find "$SCREENSHOTS_DIR" -type f -name "$id-*.*" -printf '%f\n' | sort)"
 
   [[ "$id" != "${script_namespace##*/}" ]] && { printf 'Error: Userscript ID from filename does not match ID from namespace. Exiting.\n' >&2; exit 1; }
 
   if [[ "$id" != 'zzzzzzzz' ]]; then
     ms_ids+=("$id")
     ms_store["$id.script_name"]="$script_name"
+    ms_store["$id.script_description"]="$script_description"
+    ms_store["$id.script_version"]="$script_version"
     ms_store["$id.header"]="$header"
     ms_store["$id.readme_comment"]="$readme_comment"
     ms_store["$id.body"]="$body"
@@ -122,7 +130,7 @@ EOF
 
   printf '   2. Generating dist and meta files\n'
   header="$(sed \
-    ${readme_comment:+-e '\|// @description| s|$| See README for details.|'} \
+    -e '\|// @description| s|$|'"$([[ -n "$readme_comment$screenshots" ]] && printf '%s' ' See README for details.')"'|' \
     -e '\|// @namespace|d' \
     -e '\|// @author|d' \
     -e '\|// @license|d' \
@@ -154,20 +162,19 @@ EOF
   version_slug=$(sed 's|_|__|g; s|-|--|g' <<< "$script_version")
   loc_count=$(npx cloc --quiet --sum-one --stdin-name="$id.user.js" - <<< "$body" | grep -m 1 'SUM:' | awk '{print $5}')
   [[ "$id" != 'zzzzzzzz' ]] && ((loc_count_total += loc_count))
-  screenshots="$(find "$SCREENSHOTS_DIR" -type f -name "$id-*.*" -printf '%f\n' | sort)"
 
   install_badge="[![install standard](https://img.shields.io/badge/install-standard-006400)]($DOWNLOAD_URL_DIST)"
   install_min_badge="[![install minified](https://img.shields.io/badge/install-minified-64962a)]($DOWNLOAD_URL_DIST_MIN)"
   version_badge="[![version](https://img.shields.io/badge/version-$version_slug-blue)](../../../../blame/main/$DIST_DIR/$id.user.js)"
   loc_count_badge="[![lines of code](https://img.shields.io/badge/loc-$loc_count-orange)](../../$DIST_DIR/$id.user.js)"
 
-  ( printf '# %s\n%s\n\n' "$script_name" "$script_desc"
+  ( printf '# %s\n%s\n\n' "$script_name" "$script_description"
     printf '%s\n%s\n%s\n%s\n\n' "$install_badge" "$install_min_badge" "$version_badge" "$loc_count_badge"
     printf '%s' "${readme_comment:+$'## Info\n'"$(sed '1d;$d' <<< "$readme_comment")"$'\n\n'}"
     printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}"
   ) > "$DOCS_DIR/$id.md"
 
-  ( printf '%s' "${readme_comment:+"# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md)"$'\n\n'}"
+  ( [[ -n "$readme_comment$screenshots" ]] && printf '%s' "# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md)"$'\n\n'
     printf '%s\n' "Click [HERE]($BASE_URL#readme) for general info, requirements and a full list of all my Trakt.tv userscripts."
   ) > "$DOCS_DIR/$id-gf.md"
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Seasons
 // @description  Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.
-// @version      0.1.2
+// @version      0.1.4
 // @namespace    cs1u5z40
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -27,7 +27,7 @@
 
 'use strict';
 
-let $, trakt;
+let $, traktApiModule;
 let $grid, isSeasonChart, filterSpecials, labelsCallback, chart, datasetsData, firstRunDelay;
 
 Chart.defaults.borderColor = 'rgb(44 44 44 / 0.5)';
@@ -41,7 +41,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/shows\/[^/]+\/seasons\/[^/]+$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  trakt ??= unsafeWindow.userscriptTraktAPIModule?.isFulfilled ? await unsafeWindow.userscriptTraktAPIModule : null;
+  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
   if (!$) return;
 
   $grid = $('#seasons-episodes-sortable');
@@ -94,7 +94,7 @@ function initializeChart() {
 
     if (Math.abs(closestPoint.element.y - event.layerY) < 10) {
       const url = `${datasetsData[closestPoint.index].urlFull}${closestPoint.datasetIndex === 3 ? '/comments' : ''}`;
-      GM_openInTab(url, { active: true, insert: true });
+      GM_openInTab(url, { active: true });
     } else {
       if (chart.isZoomedOrPanned()) {
         chart.resetZoom('active');
@@ -133,8 +133,8 @@ function getDatasetsData() {
       itemData.comments = $(i.element).find('.episode-stats > a[data-original-title="Comments"]').text() || 0;
     } else {
       itemData.mainTitle = $(i.element).find('div[data-type="season"] .titles-link h3').text();
-      if (trakt) { // TODO
-        const respJSON = await trakt.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, pagination: true, limit: 1 });
+      if (traktApiModule) { // TODO
+        const respJSON = await traktApiModule.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, pagination: true, limit: 1 });
         itemData.comments = respJSON.pagination.item_count;
       } else {
         const resp = await fetch(i.element.dataset.url + '.json');
