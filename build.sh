@@ -158,7 +158,7 @@ EOF
   printf '%s%s%s' "$header_dist_min" "$middle_content" "$minified_body" > "$DIST_DIR/$id.min.user.js"
 
 
-  printf '   3. Generating doc file\n'
+  printf '   3. Generating doc files\n'
   version_slug=$(sed 's|_|__|g; s|-|--|g' <<< "$script_version")
   loc_count=$(npx cloc --quiet --sum-one --stdin-name="$id.user.js" - <<< "$body" | grep -m 1 'SUM:' | awk '{print $5}')
   [[ "$id" != 'zzzzzzzz' ]] && ((loc_count_total += loc_count))
@@ -174,15 +174,15 @@ EOF
     printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}"
   ) > "$DOCS_DIR/$id.md"
 
-  ( [[ -n "$readme_comment$screenshots" ]] && printf '%s' "# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md)"$'\n\n'
+  script_name_fragment="$(tr 'A-Z' 'a-z' <<< "$script_name" | sed -E 's|[^a-z0-9 -]||g; s| |-|g')"
+  script_name_markdown="$(sed 's#|#\\|#g' <<< "$script_name")"
+
+  ( [[ -n "$readme_comment$screenshots" ]] && printf '%s\n\n' "# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md#$script_name_fragment)"
     printf '%s\n' "Click [HERE]($BASE_URL#readme) for general info, requirements and a full list of all my Trakt.tv userscripts."
   ) > "$DOCS_DIR/$id-gf.md"
 
-
-  printf '   4. Adding row to README.md table\n'
-  escaped_script_name="$(sed 's#|#\\|#g' <<< "$script_name")"
-  install_links="[Standard]($DOWNLOAD_URL_DIST) // [Minified]($DOWNLOAD_URL_DIST_MIN)"
-  printf '| [%s](%s) | `%s` | `%s` | %s |\n' "$escaped_script_name" "$DOCS_DIR/$id.md" "$script_version" "$loc_count" "$install_links" >> "$TABLE_CONTENT_FILE"
+  printf '| [%s](%s) | `%s` | `%s` | [Standard](%s) // [Minified](%s) |\n' \
+    "$script_name_markdown" "$DOCS_DIR/$id.md#$script_name_fragment" "$script_version" "$loc_count" "$DOWNLOAD_URL_DIST" "$DOWNLOAD_URL_DIST_MIN" >> "$TABLE_CONTENT_FILE"
 done
 
 
