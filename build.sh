@@ -57,6 +57,7 @@ for file in "$SRC_DIR"/*.user.js; do
 // @name         Trakt.tv | Megascript
 // @description  All $((userscript_count - 1)) userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
 // @version      $(date '+%Y-%m-%d_%H-%M')
+// @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 $(grep -m 1 '// @icon' <<< "${ms_store["${ms_ids[0]}.header"]}")
 $(grep '// @match' <<< "${ms_store["${ms_ids[0]}.header"]}")
@@ -136,24 +137,26 @@ EOF
     -e '\|// @license|d' \
     -e '\|// @homepageURL|d' \
     -e '\|// @supportURL|d' \
-    -e '\|// @updateURL|d' \
     -e '\|// @downloadURL|d' \
     -e '\|// @version|a\
 // @namespace    '"${BASE_URL%/*}"'\
 // @author       '"${REPO_SLUG%/*}"'\
 // @license      GPL-3.0-or-later\
 // @homepageURL  '"$BASE_URL"'#readme\
-// @supportURL   '"$BASE_URL"'/issues\
+// @supportURL   '"$BASE_URL"'/issues' <<< "$header")"
+
+  grep -q '// @updateURL' <<< "$header" || header="$(sed '\|// @supportURL|a\
 // @updateURL    '"$BASE_URL_RAW/$META_DIR/$id.meta.js" <<< "$header")"
 
   DOWNLOAD_URL_DIST="$BASE_URL_RAW/$DIST_DIR/$id.user.js"
   DOWNLOAD_URL_DIST_MIN="$BASE_URL_RAW/$DIST_DIR/$id.min.user.js"
+  header_meta="$(sed '\|// @updateURL|d' <<< "$header")"
   header_dist="$(sed "\|// @updateURL|a\// @downloadURL  $DOWNLOAD_URL_DIST" <<< "$header")"
   header_dist_min="$(sed "\|// @updateURL|a\// @downloadURL  $DOWNLOAD_URL_DIST_MIN" <<< "$header")"
   middle_content="${readme_comment:+$'\n\n'"$readme_comment"}"$'\n\n\n'
   minified_body="$(npx esbuild --minify --loader=js <<< "$body")"
 
-  printf '%s' "$header" > "$META_DIR/$id.meta.js"
+  printf '%s' "$header_meta" > "$META_DIR/$id.meta.js"
   printf '%s%s%s' "$header_dist" "$middle_content" "$body" > "$DIST_DIR/$id.user.js"
   printf '%s%s%s' "$header_dist_min" "$middle_content" "$minified_body" > "$DIST_DIR/$id.min.user.js"
 
