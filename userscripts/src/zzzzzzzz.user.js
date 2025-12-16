@@ -1,7 +1,8 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
-// @version      2025-12-05_18-22
+// @version      2025-12-16_02-03
+// @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*

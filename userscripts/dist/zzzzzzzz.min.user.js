@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-12-05_18-22
+// @version      2025-12-16_02-03
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
 // @homepageURL  https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection#readme
 // @supportURL   https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/issues
-// @updateURL    https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/meta/zzzzzzzz.meta.js
+// @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @downloadURL  https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
