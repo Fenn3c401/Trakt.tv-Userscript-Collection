@@ -3,7 +3,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js)
-[![version](https://img.shields.io/badge/version-0.7.8-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js)
+[![version](https://img.shields.io/badge/version-0.7.9-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-756-orange)](../../userscripts/dist/wkt34fcz.user.js)
 
 ## Info

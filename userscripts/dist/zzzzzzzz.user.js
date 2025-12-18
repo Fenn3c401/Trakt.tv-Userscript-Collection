@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-12-18_04-02
+// @version      2025-12-18_05-04
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -4266,7 +4266,7 @@ const getItemDataFromSummaryPage = async (itemUrl) => {
   const type = itemUrl.split('/').filter(Boolean)[0],
         $notableSummary = $(itemDoc).find('.notable-summary'),
         $additionalStatsLi = $(itemDoc).find('.additional-stats > li'),
-        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : null,
+        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : undefined,
         filterStatsElemsByLabel = (labelText, $statsElems = $additionalStatsLi) => $statsElems.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
 
   const itemData = {

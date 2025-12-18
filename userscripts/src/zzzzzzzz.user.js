@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
-// @version      2025-12-18_04-02
+// @version      2025-12-18_05-04
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -4260,7 +4260,7 @@ const getItemDataFromSummaryPage = async (itemUrl) => {
   const type = itemUrl.split('/').filter(Boolean)[0],
         $notableSummary = $(itemDoc).find('.notable-summary'),
         $additionalStatsLi = $(itemDoc).find('.additional-stats > li'),
-        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : null,
+        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : undefined,
         filterStatsElemsByLabel = (labelText, $statsElems = $additionalStatsLi) => $statsElems.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
 
   const itemData = {
