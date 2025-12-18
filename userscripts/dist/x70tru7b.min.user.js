@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Trakt.tv | Partial VIP Unlock
 // @description  Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, faster page navigation and more. Also hides some vip buttons/banners. See README for details.
-// @version      1.1.4
+// @version      1.1.6
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
 // @homepageURL  https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection#readme
 // @supportURL   https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/issues
-// @updateURL    https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/meta/x70tru7b.meta.js
+// @updateURL    https://update.greasyfork.org/scripts/550079.meta.js
 // @downloadURL  https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -55,12 +55,19 @@ I didn't push it any further. The "copied from..." text is not added if you use 
 
 ***Example 2:***<br>
 Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
-Say `watchlist` has 100 items and `watchlist2` + `watchlist3` have 99 items. I can do a bulk move from `watchlist` to `watchlist2` which now has 199 items.
+Say `watchlist` has 100 items and `watchlist2` + `watchlist3` have 99 items each. I can do a bulk move from `watchlist` to `watchlist2` which now has 199 items.
 Then I do a bulk move from `watchlist2` to `watchlist3` which gets that one to 298 items, and then I can move it all back to `watchlist`.
 That's it. You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
 ***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
 
 Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
+
+### Semi-Private Notes in Comments
+Trakt supports markdown syntax in comments, including reference-style links which you can misuse as a semi-private notes container like `[//]: # (hidden text goes here)`.
+The raw markdown is of course still accessible to anyone through the Trakt api and the `/comments/<comment-id>.json` endpoint (you yourself can also see the raw version when editing),
+but the content is not rendered in the classic and new web versions, in fact a comment can appear to be completely empty this way. I found this interesting because it's a relatively elegant way to
+work around the max. limit for private notes (currently 100), as the note-comments are still stored directly on your Trakt account on a per-title basis and can easily be accessed on arbitrary
+platforms, including ones that don't support userscripts. It's probably advisable to disguise the note-comments by always adding some generic one-liner.
 */
 
 

@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation.
-// @version      0.7.3
+// @version      0.7.6
 // @namespace    brzmp0a9
+// @updateURL    https://update.greasyfork.org/scripts/557302.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*
@@ -16,13 +17,13 @@
 ### General
 - Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
 - Notably there are also a handful of feature patches included, all of them too minor to warrant a separate userscript:
-  - make the "add to list" buttons on grid pages (e.g. /trending) color-coded:
+  - make the "add to list" buttons on grid pages (e.g. /trending) color-coded:<br>
       [![light blue](https://img.shields.io/badge/%20-%20-008ada?style=flat-square&labelColor=008ada)](#) = is on watchlist,
       [![dark blue](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=0066a0)](#) = is on personal list,
       [![50/50](https://img.shields.io/badge/%20-%20-0066a0?style=flat-square&labelColor=008ada)](#) = is on both
   - change the default sorting on /people pages from "released" to "popularity"
   - grey out usernames of deleted profiles in the comments
-  - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name" that can be different from the username/slug. This becomes a problem in comment replies
+  - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name", separate from the username/slug. This becomes a problem in comment replies
       which always reference the person/comment they are replying to with an `@<userslug>` prefix, which sometimes turns long reply chains into a game of matching pairs..), currently not supported in FF
 - The sections below, with the exception of the custom hotkeys, are unrelated to this script, it's just general documentation of native features.
 
@@ -75,8 +76,125 @@ the `/progress` page and list pages. For some reason. The input is matched again
 
 'use strict';
 
+// TODO
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+// By default the .frame-wrapper sidenavs (category selection + advanced-filters modal) do not play well with window resizing. Based on the window size upon page load, several fixed height and min-height
+// inline styles get set, which can break the page layout in numerous ways, e.g. a large empty space above or below the .grid-item container after resizing. Then there's some quirky scrolling behavior
+// in the advanced-filters modal, the three "Votes" sliders at the bottom get cut off on the mobile-layout, the category sidenav's sticky positioning doesn't always work, there's some text overlap
+// and missing padding, the display prop of the sidenav links is not adaptive etc. The styles below hopefully tackle all of those issues.
+GM_addStyle(`
+.frame-wrapper :is(.sidenav, .sidenav-inner) {
+  height: revert !important;
+  min-height: revert !important;
+}
+.frame-wrapper #filter-fade-hide .dropdown-menu {
+  overflow-y: auto !important;
+  max-height: calc(100dvh - var(--header-height) - 55px) !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: #666 #333 !important;
+}
+
+@media (max-width: 1024px) {
+  .frame-wrapper .sidenav.advanced-filters {
+    padding: 10px 10px 0 !important;
+    top: 110px !important;
+    scrollbar-width: none !important;
+  }
+  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
+    padding-bottom: 80px !important;
+    max-height: revert !important;
+  }
+
+  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
+    display: inline !important;
+  }
+}
+
+@media (767px < width < 1025px) {
+  .frame-wrapper .sidenav-inner.sticky {
+    position: revert !important;
+    z-index: revert !important;
+  }
+}
+
+@media (991px < width < 1025px) {
+  .frame-wrapper #filter-fade-hide .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
+
+@media (min-width: 1025px) {
+  .frame-wrapper .sidenav {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+  }
+  .frame-wrapper .sidenav:has(.dropdown.open) {
+    z-index: 35 !important
+  }
+  .frame-wrapper .sidenav-inner {
+    height: 100dvh !important;
+    position: revert !important;
+  }
+  .frame-wrapper :not(.advanced-filters) > .sidenav-inner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .frame-wrapper .sidenav nav {
+    flex: 0 1 auto;
+    min-height: 40px;
+    overflow: auto !important;
+    scrollbar-width: none !important;
+    margin-top: 0 !important;
+  }
+  .frame-wrapper .sidenav nav h3 {
+    position: sticky !important;
+    top: 0 !important;
+    padding-top: 15px !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 0 !important;
+    background: linear-gradient(to top, transparent 0%, #1d1d1d 20%, #1d1d1d 100%) !important;
+    z-index: 50 !important;
+  }
+
+  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
+    display: block !important;
+  }
+
+  .frame-wrapper :not(.advanced-filters) > .sidenav-inner > span {
+    display: none !important;
+  }
+}
+`);
+
 // FINISHED
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+// swipe gestures prevent scrolling in title stats section (with external ratings, number of comments, etc.) on mobile layout because it's not set as excluded element
+((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
+  if (!unsafeWindow.jQuery) return;
+  const subDescs = Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),
+        desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'swipe'),
+        oldValue = desc.value;
+  desc.value = function(...args) {
+    if (this.attr('id') === 'summary-wrapper') args[0].excludedElements = '#summary-ratings-wrapper .stats';
+    return oldValue.apply(this, args);
+  };
+  Object.defineProperty(unsafeWindow.jQuery.fn, 'swipe', desc);
+  Object.entries(subDescs).forEach(([k, v]) => v.configurable && Object.defineProperty(unsafeWindow.jQuery.fn.swipe, k, v));
+});
+
+
+// hearts of rating popover can line-wrap on mobile-layout, which can result in an incorrect rating getting set
+GM_addStyle(`
+.popover .rating-hearts {
+  min-width: max-content;
+}
+`);
+
 
 // list-aware colors for list buttons of grid-items: "is on watchlist" (light blue) vs "is on personal list" (dark blue), 50/50 if both are true
 GM_addStyle(`
@@ -128,13 +246,15 @@ GM_addStyle(`
 // same with poster tooltips of progress grid-items on /dashboard and /progress pages when marking title as watched with auto-refresh turned on
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
   if (!unsafeWindow.jQuery) return;
-  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'tooltip'),
+  const subDescs = Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),
+        desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'tooltip'),
         oldValue = desc.value;
-  desc.value = function(options) {
-    if (options?.container && this.closest('.popover, #ondeck-wrapper, #progress-grid-wrapper').length) delete options.container;
-    return oldValue.apply(this, arguments);
+  desc.value = function(...args) {
+    if (args[0]?.container && this.closest('.popover, #ondeck-wrapper, #progress-grid-wrapper').length) delete args[0].container;
+    return oldValue.apply(this, args);
   };
   Object.defineProperty(unsafeWindow.jQuery.fn, 'tooltip', desc);
+  Object.entries(subDescs).forEach(([k, v]) => v.configurable && Object.defineProperty(unsafeWindow.jQuery.fn.tooltip, k, v));
 });
 
 
@@ -284,16 +404,33 @@ GM_addStyle(`
 `);
 
 
-// advanced-filters networks dropdown menu is too unresponsive (takes several seconds to load or to process query), can be fixed by tweaking chosen.js options
+// - advanced-filters networks dropdown menu is too unresponsive (takes several seconds to load or to process query), can be fixed by tweaking chosen.js options
+// - chosen.js (used for all dropdown menus of advanced filters) is not supported on mobile devices, seeing as there is no native fallback to the plugin and as it seems to (for the most part)
+//     work just fine on mobile devices, the least invasive way to restore function there is by spoofing the user agent during the chosen.js setup, to pass the browser_is_supported() check
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
   if (!unsafeWindow.jQuery) return;
-  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'chosen'),
+  const subDescs = Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),
+        desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'chosen'),
         oldValue = desc.value;
-  desc.value = function(options) {
-    if (this.attr('id') === 'filter-network_ids') options.max_shown_results = 200;
-    return oldValue.apply(this, arguments);
+  desc.value = function(...args) {
+    if (this.attr('id') === 'filter-network_ids') args[0].max_shown_results = 200;
+
+    if (/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)) {
+      Object.defineProperty(unsafeWindow.navigator, 'userAgent', { // shadowing works as real userAgent lives on prototype
+        get: () => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36',
+        configurable: true,
+      });
+      try {
+        return oldValue.apply(this, args);
+      } finally {
+        delete unsafeWindow.navigator.userAgent;
+      }
+    } else {
+      return oldValue.apply(this, args);
+    }
   };
   Object.defineProperty(unsafeWindow.jQuery.fn, 'chosen', desc);
+  Object.entries(subDescs).forEach(([k, v]) => v.configurable && Object.defineProperty(unsafeWindow.jQuery.fn.chosen, k, v));
 });
 
 
@@ -490,10 +627,7 @@ GM_addStyle(`
 }
 `);
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
-  if (!unsafeWindow.jQuery) return;
-  const desc = Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn, 'mCustomScrollbar');
-  desc.value = function(options) { return this; }; // malihu scrollbars are not used anywhere else
-  Object.defineProperty(unsafeWindow.jQuery.fn, 'mCustomScrollbar', desc);
+  if (unsafeWindow.jQuery) unsafeWindow.jQuery.fn.mCustomScrollbar = function() { return this; }; // malihu scrollbars are not used anywhere else
 });
 document.addEventListener('turbo:load', () => {
   document.querySelector('#info-wrapper .season-links .links .selected')?.scrollIntoView({ block: 'nearest', inline: 'start' });

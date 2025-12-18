@@ -3,6 +3,6 @@ A custom profile image for free users. Like the vip feature, except this one onl
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2dz6ub1t.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2dz6ub1t.min.user.js)
-[![version](https://img.shields.io/badge/version-1.1.1-blue)](../../../../blame/main/userscripts/dist/2dz6ub1t.user.js)
-[![lines of code](https://img.shields.io/badge/loc-150-orange)](../../userscripts/dist/2dz6ub1t.user.js)
+[![version](https://img.shields.io/badge/version-1.1.3-blue)](../../../../blame/main/userscripts/dist/2dz6ub1t.user.js)
+[![lines of code](https://img.shields.io/badge/loc-153-orange)](../../userscripts/dist/2dz6ub1t.user.js)
 

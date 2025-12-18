@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Scheduled E-Mail Data Exports
 // @description  Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
-// @version      1.0.3
+// @version      1.1.0
 // @namespace    2hc6zfyy
+// @updateURL    https://update.greasyfork.org/scripts/550078.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*
@@ -26,56 +27,67 @@
 
 'use strict';
 
-let $, toastr,
-    userslug, cron;
+let $, toastr, userslug;
 
 const gmStorage = { toastOnSuccess: true, cronExpr: '@weekly', lastRun: {}, ...(GM_getValue('scheduledEmailDataExports')) };
 GM_setValue('scheduledEmailDataExports', gmStorage);
 
-const Logger = Object.freeze({
-  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
-  _DEFAULT_TOAST: true,
-  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
-    msg = prefix + msg;
-    console[fnConsole](msg, (data ? data : ''));
-    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+const logger = {
+  _defaults: {
+    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
   },
-  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
-  success: (msg, opt) => Logger._printMsg('info', 'success', msg, { ...opt, toast: gmStorage.toastOnSuccess }),
-  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
-  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
-});
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', toast: gmStorage.toastOnSuccess, ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
+
+let cron;
+try {
+  cron = new Cron(gmStorage.cronExpr, {
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  });
+} catch (err) {
+  logger.error('Invalid cron expression. Exiting..', { data: err });
+}
 
 
-window.addEventListener('turbo:load', () => {
+cron && window.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
   toastr ??= unsafeWindow.toastr;
   userslug ??= unsafeWindow.Cookies?.get('trakt_userslug');
   if (!$ || !toastr || !userslug) return;
 
-  try {
-    cron ??= new Cron(gmStorage.cronExpr, {
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    });
-  } catch (err) {
-    Logger.error('Invalid cron expression. Aborting..', { data: err });
-    return;
-  }
-
   const dateNow = new Date();
 
   if (!gmStorage.lastRun[userslug] || cron.nextRun(gmStorage.lastRun[userslug]) <= dateNow) {
+    const realLastRun = await fetch('/settings/data').then((r) => r.text())
+      .then((r) => $(new DOMParser().parseFromString(r, 'text/html')).find('#exporters .alert-success .format-date').attr('data-date'));
+
+    if (realLastRun && cron.nextRun(realLastRun) > dateNow) {
+      gmStorage.lastRun[userslug] = realLastRun;
+      GM_setValue('scheduledEmailDataExports', gmStorage);
+      return;
+    }
+
     $.post('/settings/export_data').done(() => {
       gmStorage.lastRun[userslug] = dateNow.toISOString();
       GM_setValue('scheduledEmailDataExports', gmStorage);
-      Logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.');
+      logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.');
     }).fail((xhr) => {
       if (xhr.status === 409) {
         gmStorage.lastRun[userslug] = dateNow.toISOString();
         GM_setValue('scheduledEmailDataExports', gmStorage);
-        Logger.warning('Failed. Cooldown from previous export is still active. Will retry on next scheduled data export.');
+        logger.warning(`Failed. Cooldown from previous export is still active. Will retry on next scheduled data export at: ${cron.nextRun(gmStorage.lastRun[userslug]).toISOString()}`);
       } else {
-        Logger.error(`Failed with status: ${xhr.status}. Reload page to try again.`, { data: xhr });
+        logger.error(`Failed with status: ${xhr.status}. Reload page to try again.`, { data: xhr });
       }
     });
   }

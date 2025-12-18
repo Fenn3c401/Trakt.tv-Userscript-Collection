@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Seasons
 // @description  Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.
-// @version      0.1.4
+// @version      0.1.5
 // @namespace    cs1u5z40
+// @updateURL    https://update.greasyfork.org/scripts/550072.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*

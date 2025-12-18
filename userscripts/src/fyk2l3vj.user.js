@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
 // @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels.
-// @version      0.8.16
+// @version      0.8.18
 // @namespace    fyk2l3vj
+// @updateURL    https://update.greasyfork.org/scripts/550076.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*
@@ -37,19 +38,22 @@
 
 let $, toastr, traktApiModule;
 
-const Logger = Object.freeze({
-  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
-  _DEFAULT_TOAST: true,
-  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
-    msg = prefix + msg;
-    console[fnConsole](msg, (data ? data : ''));
-    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+const logger = {
+  _defaults: {
+    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
   },
-  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
-  success: (msg, opt) => Logger._printMsg('info', 'success', msg, opt),
-  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
-  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
-});
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
 
 const gmStorage = { ...(GM_getValue('enhancedTitleMetadata')) };
 GM_setValue('enhancedTitleMetadata', gmStorage);
@@ -113,7 +117,7 @@ document.addEventListener('turbo:load', async () => {
     } else {
       gmStorage.allCountriesMap = null;
       GM_setValue('enhancedTitleMetadata', gmStorage);
-      Logger.error(`Failed to match title country. Cached countries have been cleared. Reload page to try again.`);
+      logger.error(`Failed to match title country. Cached countries have been cleared. Reload page to try again.`);
     }
   }
 
@@ -148,7 +152,7 @@ document.addEventListener('turbo:load', async () => {
     } else {
       gmStorage.allLanguagesArrSorted = null;
       GM_setValue('enhancedTitleMetadata', gmStorage);
-      Logger.error(`Failed to match all title languages (ORIGINAL: ${$languages.contents().get(-1).textContent} REMAINDER: ${languagesText.trim()}). ` +
+      logger.error(`Failed to match all title languages (ORIGINAL: ${$languages.contents().get(-1).textContent} REMAINDER: ${languagesText.trim()}). ` +
                    `Cached languages have been cleared. Reload page to try again.`);
     }
   }
@@ -197,7 +201,7 @@ document.addEventListener('turbo:load', async () => {
     } else {
       gmStorage.allNetworksArrSorted = null;
       GM_setValue('enhancedTitleMetadata', gmStorage);
-      Logger.error(`Failed to match all title networks (ORIGINAL: ${$networks.contents().get(-1).textContent} REMAINDER: ${networksText.trim()}). ` +
+      logger.error(`Failed to match all title networks (ORIGINAL: ${$networks.contents().get(-1).textContent} REMAINDER: ${networksText.trim()}). ` +
                    `Cached networks have been cleared. Reload page to try again.`);
     }
   } else if ($networkAlt.text().includes(' on ') && pathSplit[3] !== 'all') {
@@ -219,7 +223,7 @@ document.addEventListener('turbo:load', async () => {
     } else {
       gmStorage.allNetworksArrSorted = null;
       GM_setValue('enhancedTitleMetadata', gmStorage);
-      Logger.error(`Failed to match title network (${networkText}). Cached networks have been cleared. Reload page to try again.`);
+      logger.error(`Failed to match title network (${networkText}). Cached networks have been cleared. Reload page to try again.`);
     }
   }
 
@@ -299,7 +303,7 @@ document.addEventListener('turbo:load', async () => {
           }
           $(this).attr('href', url);
         } else {
-          Logger.error('Failed to match title studio: ' + studioName, { data: queryResult });
+          logger.error('Failed to match title studio: ' + studioName, { data: queryResult });
         }
       };
 
@@ -328,7 +332,7 @@ document.addEventListener('turbo:load', async () => {
             matchingStudios.add(longestMatch[1]);
             return `, <a href="/search/${pathSplit[0]}?studio_ids=${longestMatch[1]}">${longestMatch[0]}</a>`;
           } else {
-            Logger.error('Failed to match all title studios. Could not match: ' + partsQueryResults[i][0], { data: results });
+            logger.error('Failed to match all title studios. Could not match: ' + partsQueryResults[i][0], { data: results });
             throw new Error('Failed to match all title studios.'); // don't mutate original elem
           }
         }).join(''));
