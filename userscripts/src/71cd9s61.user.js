@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Actor Pronunciation Helper
 // @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
-// @version      0.4.5
+// @version      1.0.0
 // @namespace    71cd9s61
+// @updateURL    https://update.greasyfork.org/scripts/550069.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*
@@ -18,31 +19,32 @@
 
 let $, toastr;
 
-const Logger = Object.freeze({
-  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
-  _DEFAULT_TOAST: true,
-  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
-    msg = prefix + msg;
-    console[fnConsole](msg, (data ? data : ''));
-    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+const logger = {
+  _defaults: {
+    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
   },
-  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
-  success: (msg, opt) => Logger._printMsg('info', 'success', msg, opt),
-  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
-  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
-});
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
 
 
 addStyles();
 
 document.addEventListener('turbo:load', () => {
-  if (!/^\/people\/[^\/]+$/.test(location.pathname)) return;
+  if (!/^\/people\/[^\/]+(\/lists.*)?$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
   toastr ??= unsafeWindow.toastr;
   if (!$ || !toastr) return;
-
-  let audio;
 
   $(`<button id="btn-pronounce-name">` +
       `<div class="audio-animation fade">` +
@@ -57,45 +59,59 @@ document.addEventListener('turbo:load', () => {
     container: 'body',
     placement: 'top',
     html: true,
-  }).on('click', async function() {
+  }).one('click', async function() {
     $(this).tooltip('hide');
 
-    if (!audio) {
-      unsafeWindow.showLoading?.();
-      const name = $('body > [itemtype$="Person"] > meta[itemprop="name"]').attr('content'), // doesn't exist on /people/<slug>/lists pages
-            resp = await GM.xmlHttpRequest({ url: `https://forvo.com/search/${encodeURIComponent(name)}` }),
-            doc = new DOMParser().parseFromString(resp.responseText, 'text/html'),
-            audioHttpHost = $(doc).find('body > script').text().match(/_AUDIO_HTTP_HOST='(.+?)'/)?.[1],
-            audioVariantsPaths = $(doc).find('[onclick^="Play"]').attr('onclick')?.match(/Play\([0-9]+,'(.*?)','(.*?)',(?:true|false),'(.*?)','(.*?)'/)?.slice(1).map(atob);
-      unsafeWindow.hideLoading?.();
+    const $btnPronounceName = $(this),
+          name = $('body > [itemtype$="Person"] > meta[itemprop="name"]').attr('content') ?? $('#summary-wrapper .mobile-title > :last-child').text(); // fallback for /people/<slug>/lists pages
 
-      if (!audioVariantsPaths?.length) {
-        Logger.error(`Could not find a pronunciation for ${name} on forvo.com.`);
-        return;
-      }
+    unsafeWindow.showLoading?.();
+    let audios = [await fetchAudio(name)];
+    if (!audios[0]) audios = await Promise.all(name.split(/\s+/).map((namePart) => fetchAudio(namePart).then((res) => res ?? new SpeechSynthesisUtterance(namePart))));
+    unsafeWindow.hideLoading?.();
 
-      const mp3Path = audioVariantsPaths[0] ? `/mp3/${audioVariantsPaths[0]}` : null,
-            oggPath = audioVariantsPaths[1] ? `/ogg/${audioVariantsPaths[1]}` : null,
-            mp3HighPath = audioVariantsPaths[2] ? `/audios/mp3/${audioVariantsPaths[2]}` : null,
-            oggHighPath = audioVariantsPaths[3] ? `/audios/ogg/${audioVariantsPaths[3]}` : null;
-
-      audio ??= new Audio('https://' + audioHttpHost + (oggHighPath ?? mp3HighPath ?? oggPath ?? mp3Path));
-      $(audio).off('ended').on('ended', () => {
-        setTimeout(() => {
-          $(this).find('.audio-animation').removeClass('in')
-          setTimeout(() => $(this).find('.fa').addClass('in'), 100);
-        }, 100);
-      });
+    if (audios.some((audio) => audio instanceof SpeechSynthesisUtterance)) {
+      audios.forEach((audio) => { if (audio instanceof SpeechSynthesisUtterance) audio.lang = 'en-US'; });
+      logger.warning(`Could not find a full pronunciation for "${name}" on <a href="https://forvo.com/search/${encodeURIComponent(name)}" target="_blank"><b>forvo.com</b></a>. Falling back to TTS..`);
     }
 
-    $(this).find('.fa').removeClass('in');
-    setTimeout(() => {
-      $(this).find('.audio-animation').addClass('in');
-      audio.load();
-      audio.play();
-    }, 200);
+    ['ended', 'end'].forEach((type) => {
+      audios.slice(1).forEach((audio, i) => {
+        audios[i]?.addEventListener(type, () => audio.play ? audio.play() : speechSynthesis.speak(audio));
+      });
+      audios.at(-1).addEventListener(type, () => {
+        $btnPronounceName.find('.audio-animation').removeClass('in');
+        setTimeout(() => $btnPronounceName.find('.fa').addClass('in'), 150);
+      });
+    });
+
+    playAudios(audios, $btnPronounceName);
+    $btnPronounceName.on('click', () => playAudios(audios, $btnPronounceName));
   });
 }, { capture: true });
+
+
+async function fetchAudio(query) {
+  const resp = await GM.xmlHttpRequest({ url: `https://forvo.com/search/${encodeURIComponent(query)}` }),
+        doc = new DOMParser().parseFromString(resp.responseText, 'text/html'),
+        audioHttpHost = $(doc).find('body > script').text().match(/_AUDIO_HTTP_HOST='(.+?)'/)?.[1],
+        audioPathsRaw = $(doc).find('[onclick^="Play"]').attr('onclick')?.match(/Play\([0-9]+,'(.*?)','(.*?)',(?:true|false),'(.*?)','(.*?)'/)?.slice(1),
+        audioPaths = audioPathsRaw?.map((pathRaw, i) => pathRaw && ['/mp3/', '/ogg/', '/audios/mp3/', '/audios/ogg/'][i] + atob(pathRaw)).filter(Boolean).reverse();
+
+  return audioPaths?.length ? $('<audio>' + audioPaths.map((path) => {
+    return `<source src="https://${audioHttpHost}${path}" type="${path.endsWith('mp3') ? 'audio/mpeg' : 'audio/ogg; codecs=vorbis'}" />`;
+  }).join('') + '</audio>')[0] : null;
+}
+
+function playAudios(audios, $btnPronounceName) {
+  $btnPronounceName.find('.fa').removeClass('in');
+  setTimeout(() => {
+    $btnPronounceName.find('.audio-animation').addClass('in');
+    audios.forEach((audio) => audio.load?.()); // for repeated playback; currentTime = 0 doesn't work for some audio files
+    speechSynthesis.cancel();
+    audios[0].play ? audios[0].play() : speechSynthesis.speak(audios[0]);
+  }, 150);
+}
 
 
 function addStyles() {
