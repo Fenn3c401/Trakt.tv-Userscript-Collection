@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-12-18_05-04
+// @version      2025-12-18_05-20
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -137,92 +137,7 @@ body:is(.dashboard, .settings, .authorized_applications, .applications) #results
 @keyframes lineWave-1 { from { transform: scaleY(0.24); } to { transform: scaleY(0.85); } }
 @keyframes lineWave-2 { from { transform: scaleY(0.27); } to { transform: scaleY(0.98); } }
 @keyframes lineWave-3 { from { transform: scaleY(0.24); } to { transform: scaleY(0.80); } }
-  `)}})(),gmStorage.brzmp0a9&&(async()=>{"use strict";GM_addStyle(`
-.frame-wrapper :is(.sidenav, .sidenav-inner) {
-  height: revert !important;
-  min-height: revert !important;
-}
-.frame-wrapper #filter-fade-hide .dropdown-menu {
-  overflow-y: auto !important;
-  max-height: calc(100dvh - var(--header-height) - 55px) !important;
-  scrollbar-width: thin !important;
-  scrollbar-color: #666 #333 !important;
-}
-
-@media (max-width: 1024px) {
-  .frame-wrapper .sidenav.advanced-filters {
-    padding: 10px 10px 0 !important;
-    top: 110px !important;
-    scrollbar-width: none !important;
-  }
-  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
-    padding-bottom: 80px !important;
-    max-height: revert !important;
-  }
-
-  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
-    display: inline !important;
-  }
-}
-
-@media (767px < width < 1025px) {
-  .frame-wrapper .sidenav-inner.sticky {
-    position: revert !important;
-    z-index: revert !important;
-  }
-}
-
-@media (991px < width < 1025px) {
-  .frame-wrapper #filter-fade-hide .dropdown-menu {
-    right: 0;
-    left: auto;
-  }
-}
-
-@media (min-width: 1025px) {
-  .frame-wrapper .sidenav {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 20 !important;
-  }
-  .frame-wrapper .sidenav:has(.dropdown.open) {
-    z-index: 35 !important
-  }
-  .frame-wrapper .sidenav-inner {
-    height: 100dvh !important;
-    position: revert !important;
-  }
-  .frame-wrapper :not(.advanced-filters) > .sidenav-inner {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .frame-wrapper .sidenav nav {
-    flex: 0 1 auto;
-    min-height: 40px;
-    overflow: auto !important;
-    scrollbar-width: none !important;
-    margin-top: 0 !important;
-  }
-  .frame-wrapper .sidenav nav h3 {
-    position: sticky !important;
-    top: 0 !important;
-    padding-top: 15px !important;
-    padding-bottom: 10px !important;
-    margin-bottom: 0 !important;
-    background: linear-gradient(to top, transparent 0%, #1d1d1d 20%, #1d1d1d 100%) !important;
-    z-index: 50 !important;
-  }
-
-  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
-    display: block !important;
-  }
-
-  .frame-wrapper :not(.advanced-filters) > .sidenav-inner > span {
-    display: none !important;
-  }
-}
-`),(r=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",r):r())(()=>{if(!unsafeWindow.jQuery)return;const r=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),m=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),f=m.value;m.value=function(...n){return this.attr("id")==="summary-wrapper"&&(n[0].excludedElements="#summary-ratings-wrapper .stats"),f.apply(this,n)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",m),Object.entries(r).forEach(([n,y])=>y.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,n,y))}),GM_addStyle(`
+  `)}})(),gmStorage.brzmp0a9&&(async()=>{"use strict";(r=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",r):r())(()=>{if(!unsafeWindow.jQuery)return;const r=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),m=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),f=m.value;m.value=function(...n){return this.attr("id")==="summary-wrapper"&&(n[0].excludedElements="#summary-ratings-wrapper .stats"),f.apply(this,n)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",m),Object.entries(r).forEach(([n,y])=>y.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,n,y))}),GM_addStyle(`
 .popover .rating-hearts {
   min-width: max-content;
 }

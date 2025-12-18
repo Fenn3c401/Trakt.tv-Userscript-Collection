@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation. See README for details.
-// @version      0.7.6
+// @version      0.7.7
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -81,100 +81,6 @@ the `/progress` page and list pages. For some reason. The input is matched again
 
 
 'use strict';
-
-// TODO
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-// By default the .frame-wrapper sidenavs (category selection + advanced-filters modal) do not play well with window resizing. Based on the window size upon page load, several fixed height and min-height
-// inline styles get set, which can break the page layout in numerous ways, e.g. a large empty space above or below the .grid-item container after resizing. Then there's some quirky scrolling behavior
-// in the advanced-filters modal, the three "Votes" sliders at the bottom get cut off on the mobile-layout, the category sidenav's sticky positioning doesn't always work, there's some text overlap
-// and missing padding, the display prop of the sidenav links is not adaptive etc. The styles below hopefully tackle all of those issues.
-GM_addStyle(`
-.frame-wrapper :is(.sidenav, .sidenav-inner) {
-  height: revert !important;
-  min-height: revert !important;
-}
-.frame-wrapper #filter-fade-hide .dropdown-menu {
-  overflow-y: auto !important;
-  max-height: calc(100dvh - var(--header-height) - 55px) !important;
-  scrollbar-width: thin !important;
-  scrollbar-color: #666 #333 !important;
-}
-
-@media (max-width: 1024px) {
-  .frame-wrapper .sidenav.advanced-filters {
-    padding: 10px 10px 0 !important;
-    top: 110px !important;
-    scrollbar-width: none !important;
-  }
-  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
-    padding-bottom: 80px !important;
-    max-height: revert !important;
-  }
-
-  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
-    display: inline !important;
-  }
-}
-
-@media (767px < width < 1025px) {
-  .frame-wrapper .sidenav-inner.sticky {
-    position: revert !important;
-    z-index: revert !important;
-  }
-}
-
-@media (991px < width < 1025px) {
-  .frame-wrapper #filter-fade-hide .dropdown-menu {
-    right: 0;
-    left: auto;
-  }
-}
-
-@media (min-width: 1025px) {
-  .frame-wrapper .sidenav {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 20 !important;
-  }
-  .frame-wrapper .sidenav:has(.dropdown.open) {
-    z-index: 35 !important
-  }
-  .frame-wrapper .sidenav-inner {
-    height: 100dvh !important;
-    position: revert !important;
-  }
-  .frame-wrapper :not(.advanced-filters) > .sidenav-inner {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .frame-wrapper .sidenav nav {
-    flex: 0 1 auto;
-    min-height: 40px;
-    overflow: auto !important;
-    scrollbar-width: none !important;
-    margin-top: 0 !important;
-  }
-  .frame-wrapper .sidenav nav h3 {
-    position: sticky !important;
-    top: 0 !important;
-    padding-top: 15px !important;
-    padding-bottom: 10px !important;
-    margin-bottom: 0 !important;
-    background: linear-gradient(to top, transparent 0%, #1d1d1d 20%, #1d1d1d 100%) !important;
-    z-index: 50 !important;
-  }
-
-  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
-    display: block !important;
-  }
-
-  .frame-wrapper :not(.advanced-filters) > .sidenav-inner > span {
-    display: none !important;
-  }
-}
-`);
 
 // FINISHED
 /////////////////////////////////////////////////////////////////////////////////////////////

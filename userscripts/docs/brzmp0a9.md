@@ -3,8 +3,8 @@ A large collection of bug fixes and optimizations for trakt.tv, organized into ~
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/brzmp0a9.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/brzmp0a9.min.user.js)
-[![version](https://img.shields.io/badge/version-0.7.6-blue)](../../../../blame/main/userscripts/dist/brzmp0a9.user.js)
-[![lines of code](https://img.shields.io/badge/loc-614-orange)](../../userscripts/dist/brzmp0a9.user.js)
+[![version](https://img.shields.io/badge/version-0.7.7-blue)](../../../../blame/main/userscripts/dist/brzmp0a9.user.js)
+[![lines of code](https://img.shields.io/badge/loc-536-orange)](../../userscripts/dist/brzmp0a9.user.js)
 
 ## Info
 ### General

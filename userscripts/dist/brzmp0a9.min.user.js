@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation. See README for details.
-// @version      0.7.6
+// @version      0.7.7
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -61,92 +61,7 @@ the `/progress` page and list pages. For some reason. The input is matched again
 */
 
 
-"use strict";GM_addStyle(`
-.frame-wrapper :is(.sidenav, .sidenav-inner) {
-  height: revert !important;
-  min-height: revert !important;
-}
-.frame-wrapper #filter-fade-hide .dropdown-menu {
-  overflow-y: auto !important;
-  max-height: calc(100dvh - var(--header-height) - 55px) !important;
-  scrollbar-width: thin !important;
-  scrollbar-color: #666 #333 !important;
-}
-
-@media (max-width: 1024px) {
-  .frame-wrapper .sidenav.advanced-filters {
-    padding: 10px 10px 0 !important;
-    top: 110px !important;
-    scrollbar-width: none !important;
-  }
-  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
-    padding-bottom: 80px !important;
-    max-height: revert !important;
-  }
-
-  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
-    display: inline !important;
-  }
-}
-
-@media (767px < width < 1025px) {
-  .frame-wrapper .sidenav-inner.sticky {
-    position: revert !important;
-    z-index: revert !important;
-  }
-}
-
-@media (991px < width < 1025px) {
-  .frame-wrapper #filter-fade-hide .dropdown-menu {
-    right: 0;
-    left: auto;
-  }
-}
-
-@media (min-width: 1025px) {
-  .frame-wrapper .sidenav {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 20 !important;
-  }
-  .frame-wrapper .sidenav:has(.dropdown.open) {
-    z-index: 35 !important
-  }
-  .frame-wrapper .sidenav-inner {
-    height: 100dvh !important;
-    position: revert !important;
-  }
-  .frame-wrapper :not(.advanced-filters) > .sidenav-inner {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .frame-wrapper .sidenav nav {
-    flex: 0 1 auto;
-    min-height: 40px;
-    overflow: auto !important;
-    scrollbar-width: none !important;
-    margin-top: 0 !important;
-  }
-  .frame-wrapper .sidenav nav h3 {
-    position: sticky !important;
-    top: 0 !important;
-    padding-top: 15px !important;
-    padding-bottom: 10px !important;
-    margin-bottom: 0 !important;
-    background: linear-gradient(to top, transparent 0%, #1d1d1d 20%, #1d1d1d 100%) !important;
-    z-index: 50 !important;
-  }
-
-  .frame-wrapper .sidenav nav .link:not([style="display: none;"]) {
-    display: block !important;
-  }
-
-  .frame-wrapper :not(.advanced-filters) > .sidenav-inner > span {
-    display: none !important;
-  }
-}
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),a=t.value;t.value=function(...r){return this.attr("id")==="summary-wrapper"&&(r[0].excludedElements="#summary-ratings-wrapper .stats"),a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",t),Object.entries(e).forEach(([r,n])=>n.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,r,n))}),GM_addStyle(`
+"use strict";(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),a=t.value;t.value=function(...r){return this.attr("id")==="summary-wrapper"&&(r[0].excludedElements="#summary-ratings-wrapper .stats"),a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",t),Object.entries(e).forEach(([r,o])=>o.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,r,o))}),GM_addStyle(`
 .popover .rating-hearts {
   min-width: max-content;
 }
@@ -181,7 +96,7 @@ the `/progress` page and list pages. For some reason. The input is matched again
 .comment-wrapper[data-user-slug] .user-name .type + strong {
   color: #aaa !important;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),a=t.value;t.value=function(...r){return r[0]?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r[0].container,a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",t),Object.entries(e).forEach(([r,n])=>n.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.tooltip,r,n))}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),a=t.value;t.value=function(...r){return r[0]?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r[0].container,a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",t),Object.entries(e).forEach(([r,o])=>o.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.tooltip,r,o))}),GM_addStyle(`
 @media (width <= 767px) {
   #info-wrapper .sticky-wrapper {
     display: block !important;
@@ -204,11 +119,11 @@ the `/progress` page and list pages. For some reason. The input is matched again
     transform: translateX(0);
   }
 }
-`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,a,r,n,o,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,a,r,n,o,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&(e(document).on("auxclick",".btn-watch .view-all",function(t){t.preventDefault(),GM_openInTab(location.origin+e(this).attr("data-url"),{setParent:!0})}),e(document).on("mousedown mouseup","#header-search-autocomplete-results .selected",function(t){t.which===2&&!e(t.target).closest("a").length&&(t.type==="mousedown"?t.preventDefault():(unsafeWindow.searchModifierKey=!0,e(this).trigger("click")))}))}),document.addEventListener("keydown",e=>{e.ctrlKey&&e.key==="Enter"&&e.target.closest?.("#header-search-query")&&(e.preventDefault(),e.stopPropagation(),e.target.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",keyCode:13,metaKey:!0,bubbles:!0,cancelable:!0})))},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSuccess",(t,a,r)=>{if(r.url.endsWith("/rate")){const n=new URLSearchParams(r.data),[o,i,s]=["type","trakt_id","stars"].map(d=>n.get(d));unsafeWindow[o+"s"].ratings[i]=s,unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}else if(r.url.endsWith("/rate/remove")){const n=new URLSearchParams(r.data),o=n.get("type");unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}})}),GM_addStyle(`
+`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,a,r,o,n,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,a,r,o,n,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&(e(document).on("auxclick",".btn-watch .view-all",function(t){t.preventDefault(),GM_openInTab(location.origin+e(this).attr("data-url"),{setParent:!0})}),e(document).on("mousedown mouseup","#header-search-autocomplete-results .selected",function(t){t.which===2&&!e(t.target).closest("a").length&&(t.type==="mousedown"?t.preventDefault():(unsafeWindow.searchModifierKey=!0,e(this).trigger("click")))}))}),document.addEventListener("keydown",e=>{e.ctrlKey&&e.key==="Enter"&&e.target.closest?.("#header-search-query")&&(e.preventDefault(),e.stopPropagation(),e.target.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",keyCode:13,metaKey:!0,bubbles:!0,cancelable:!0})))},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSuccess",(t,a,r)=>{if(r.url.endsWith("/rate")){const o=new URLSearchParams(r.data),[n,i,s]=["type","trakt_id","stars"].map(d=>o.get(d));unsafeWindow[n+"s"].ratings[i]=s,unsafeWindow.compressedCache.set(`ratings_${n}s`,unsafeWindow[n+"s"].ratings),unsafeWindow.addOverlays()}else if(r.url.endsWith("/rate/remove")){const o=new URLSearchParams(r.data),n=o.get("type");unsafeWindow.compressedCache.set(`ratings_${n}s`,unsafeWindow[n+"s"].ratings),unsafeWindow.addOverlays()}})}),GM_addStyle(`
 .personal-list .list-description {
   overflow-wrap: anywhere;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),a=t.value;t.value=function(...r){if(this.attr("id")==="filter-network_ids"&&(r[0].max_shown_results=200),/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)){Object.defineProperty(unsafeWindow.navigator,"userAgent",{get:()=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",configurable:!0});try{return a.apply(this,r)}finally{delete unsafeWindow.navigator.userAgent}}else return a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",t),Object.entries(e).forEach(([r,n])=>n.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.chosen,r,n))}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,a,r)=>{if(/\/lists\/[\d]+\/like/.test(r.url)){const n=new URLSearchParams(r.data).get("trakt_id"),o=e(`[data-list-id="${n}"] > .like .count-number`),i=o.text(),s=r.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{r.url===p.url&&o.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),a=t.value;t.value=function(...r){if(this.attr("id")==="filter-network_ids"&&(r[0].max_shown_results=200),/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)){Object.defineProperty(unsafeWindow.navigator,"userAgent",{get:()=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",configurable:!0});try{return a.apply(this,r)}finally{delete unsafeWindow.navigator.userAgent}}else return a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",t),Object.entries(e).forEach(([r,o])=>o.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.chosen,r,o))}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,a,r)=>{if(/\/lists\/[\d]+\/like/.test(r.url)){const o=new URLSearchParams(r.data).get("trakt_id"),n=e(`[data-list-id="${o}"] > .like .count-number`),i=n.text(),s=r.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{r.url===p.url&&n.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
 #activity .users-wrapper {
   width: 100%;
   padding-bottom: 15px !important;
