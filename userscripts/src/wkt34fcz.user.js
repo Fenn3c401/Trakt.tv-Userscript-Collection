@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Links (Watch-Now + External)
 // @description  Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.
-// @version      0.7.8
+// @version      0.7.9
 // @namespace    wkt34fcz
 // @updateURL    https://update.greasyfork.org/scripts/550074.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -679,7 +679,7 @@ const getItemDataFromSummaryPage = async (itemUrl) => {
   const type = itemUrl.split('/').filter(Boolean)[0],
         $notableSummary = $(itemDoc).find('.notable-summary'),
         $additionalStatsLi = $(itemDoc).find('.additional-stats > li'),
-        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : null,
+        $additionalStatsLi2 = itemDoc2 ? $(itemDoc2).find('.additional-stats > li') : undefined,
         filterStatsElemsByLabel = (labelText, $statsElems = $additionalStatsLi) => $statsElems.filter((_, e) => $(e).find('label').text().toLowerCase() === labelText);
 
   const itemData = {
