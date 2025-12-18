@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Profile Image
 // @description  A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
-// @version      1.1.1
+// @version      1.1.3
 // @namespace    2dz6ub1t
+// @updateURL    https://update.greasyfork.org/scripts/557303.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*
@@ -19,19 +20,22 @@
 
 let $, toastr;
 
-const Logger = Object.freeze({
-  _DEFAULT_PREFIX: GM_info.script.name.replace('Trakt.tv', 'Userscript') + ': ',
-  _DEFAULT_TOAST: true,
-  _printMsg(fnConsole, fnToastr, msg, { data, prefix = Logger._DEFAULT_PREFIX, toast = Logger._DEFAULT_TOAST } = {}) {
-    msg = prefix + msg;
-    console[fnConsole](msg, (data ? data : ''));
-    if (toast) toastr[fnToastr](msg + (data ? ' See console for details.' : ''));
+const logger = {
+  _defaults: {
+    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
   },
-  info: (msg, opt) => Logger._printMsg('info', 'info', msg, opt),
-  success: (msg, opt) => Logger._printMsg('info', 'success', msg, opt),
-  warning: (msg, opt) => Logger._printMsg('warn', 'warning', msg, opt),
-  error: (msg, opt) => Logger._printMsg('error', 'error', msg, opt),
-});
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
 
 const gmStorage = { ...(GM_getValue('customProfileImage')) };
 GM_setValue('customProfileImage', gmStorage);
@@ -102,7 +106,7 @@ function addUserPageElems($coverWrapper, $btnSetProfileImage) {
     ['imgUrl', 'info'].forEach((prop) => delete gmStorage[prop]);
     GM_setValue('customProfileImage', gmStorage);
     styles?.remove();
-    Logger.success('Custom profile image has been reset.');
+    logger.success('Custom profile image has been reset.');
 
     $btnSetProfileImage.popover('destroy').popover({
       trigger: 'hover',
@@ -162,7 +166,7 @@ function addTitlePageElems($fullScreenshot) {
       GM_setValue('customProfileImage', gmStorage);
       styles?.remove();
       styles = addStyles();
-      Logger.success('Fanart is now set as custom profile image.');
+      logger.success('Fanart is now set as custom profile image. Click here to see how it looks.', { toastrOpt: { onclick() { location.href = '/users/me'; } } });
     });
   }
 }
