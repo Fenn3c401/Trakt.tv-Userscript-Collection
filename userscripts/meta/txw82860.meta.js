@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Nested Header Navigation Menus
 // @description  Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website. See README for details.
-// @version      1.0.7
+// @version      1.0.8
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

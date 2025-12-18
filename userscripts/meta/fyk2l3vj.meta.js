@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
 // @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels. See README for details.
-// @version      0.8.16
+// @version      0.8.18
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

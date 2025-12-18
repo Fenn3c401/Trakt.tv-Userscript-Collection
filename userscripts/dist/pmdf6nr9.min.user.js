@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Ratings Distribution
 // @description  Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart. See README for details.
-// @version      1.0.6
+// @version      1.0.7
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
 // @homepageURL  https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection#readme
 // @supportURL   https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/issues
-// @updateURL    https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/meta/pmdf6nr9.meta.js
+// @updateURL    https://update.greasyfork.org/scripts/550071.meta.js
 // @downloadURL  https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/pmdf6nr9.min.user.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
@@ -17,6 +17,7 @@
 // @grant        unsafeWindow
 // @grant        GM_info
 // @grant        GM_addStyle
+// @grant        GM_setValue
 // @grant        GM.xmlHttpRequest
 // @connect      walter-r2.trakt.tv
 // ==/UserScript==

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Actor Pronunciation Helper
 // @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
-// @version      0.4.5
+// @version      1.0.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

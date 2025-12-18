@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced List Preview Posters
 // @description  Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles. See README for details.
-// @version      1.0.3
+// @version      1.0.5
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

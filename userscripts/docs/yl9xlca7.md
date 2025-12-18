@@ -3,7 +3,7 @@ Shows the average general and personal rating of the seasons of a show and the e
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/yl9xlca7.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/yl9xlca7.min.user.js)
-[![version](https://img.shields.io/badge/version-1.0.3-blue)](../../../../blame/main/userscripts/dist/yl9xlca7.user.js)
+[![version](https://img.shields.io/badge/version-1.0.4-blue)](../../../../blame/main/userscripts/dist/yl9xlca7.user.js)
 [![lines of code](https://img.shields.io/badge/loc-94-orange)](../../userscripts/dist/yl9xlca7.user.js)
 
 ## Info

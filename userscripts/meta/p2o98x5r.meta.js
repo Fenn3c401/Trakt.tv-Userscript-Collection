@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | All-in-One Lists View
 // @description  Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
-// @version      1.0.6
+// @version      1.0.7
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

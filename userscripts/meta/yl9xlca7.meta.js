@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Average Season And Episode Ratings
 // @description  Shows the average general and personal rating of the seasons of a show and the episodes of a season. You can see the averages for all episodes of a show on its /seasons/all page. See README for details.
-// @version      1.0.3
+// @version      1.0.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
