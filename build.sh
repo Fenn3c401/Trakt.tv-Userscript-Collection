@@ -85,7 +85,7 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 | *NAME* | *SCRIPT_ID* |
 | :----- | :---------- |
-$(for id in "${ms_ids[@]}"; do printf '| [%s](%s) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id.md" "$id"; done | sort)
+$(for id in "${ms_ids[@]}"; do printf '| [%s](%s#StickyHeader) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id.md" "$id"; done | sort)
 */
 
 $(for id in "${ms_ids[@]}"; do
@@ -177,15 +177,12 @@ EOF
     printf '%s' "${screenshots:+$'## Screenshots\n<p align="center">\n'"$(sed -E 's|(.*)|  <img src="screenshots/\1" alt="screenshot" align="middle">|' <<< "$screenshots")"$'\n</p>'}"
   ) > "$DOCS_DIR/$id.md"
 
-  script_name_fragment="$(tr 'A-Z' 'a-z' <<< "$script_name" | sed -E 's|[^a-z0-9 -]||g; s| |-|g')"
-  script_name_markdown="$(sed 's#|#\\|#g' <<< "$script_name")"
-
-  ( [[ -n "$readme_comment$screenshots" ]] && printf '%s\n\n' "# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md#$script_name_fragment)"
+  ( [[ -n "$readme_comment$screenshots" ]] && printf '%s\n\n' "# [README]($BASE_URL/blob/main/$DOCS_DIR/$id.md#StickyHeader)"
     printf '%s\n' "Click [HERE]($BASE_URL#readme) for general info, requirements and a full list of all my Trakt.tv userscripts."
   ) > "$DOCS_DIR/$id-gf.md"
 
   printf '| [%s](%s) | `%s` | `%s` | [Standard](%s) // [Minified](%s) |\n' \
-    "$script_name_markdown" "$DOCS_DIR/$id.md#$script_name_fragment" "$script_version" "$loc_count" "$DOWNLOAD_URL_DIST" "$DOWNLOAD_URL_DIST_MIN" >> "$TABLE_CONTENT_FILE"
+    "$(sed 's#|#\\|#g' <<< "$script_name")" "$DOCS_DIR/$id.md#StickyHeader" "$script_version" "$loc_count" "$DOWNLOAD_URL_DIST" "$DOWNLOAD_URL_DIST_MIN" >> "$TABLE_CONTENT_FILE"
 done
 
 
