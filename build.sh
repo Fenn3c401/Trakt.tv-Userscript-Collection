@@ -57,7 +57,7 @@ for file in "$SRC_DIR"/*.user.js; do
 // @name         Trakt.tv | Megascript
 // @description  All $((userscript_count - 1)) userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
 // @version      $(date '+%Y-%m-%d_%H-%M')
-// @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
+// @updateURL    https://update.greasyfork.org/scripts/557305/Trakttv%20%7C%20Megascript.meta.js
 // @namespace    zzzzzzzz
 $(grep -m 1 '// @icon' <<< "${ms_store["${ms_ids[0]}.header"]}")
 $(grep '// @match' <<< "${ms_store["${ms_ids[0]}.header"]}")
