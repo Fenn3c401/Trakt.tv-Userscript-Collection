@@ -57,7 +57,7 @@ for file in "$SRC_DIR"/*.user.js; do
 // @name         Trakt.tv | Megascript
 // @description  All $((userscript_count - 1)) userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
 // @version      $(date '+%Y-%m-%d_%H-%M')
-// @updateURL    https://update.greasyfork.org/scripts/557305/Trakttv%20%7C%20Megascript.meta.js
+// @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 $(grep -m 1 '// @icon' <<< "${ms_store["${ms_ids[0]}.header"]}")
 $(grep '// @match' <<< "${ms_store["${ms_ids[0]}.header"]}")
@@ -80,7 +80,7 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 ### General
 - You can disable individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
 - Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
-- As VIP user you should disable: \`2dz6ub1t\`, \`h8vh5z16\`, \`fyk2l3vj\`, \`x70tru7b\`, \`2hc6zfyy\`
+- As VIP user you should disable: \`2dz6ub1t\`, \`fyk2l3vj\`, \`x70tru7b\`, \`2hc6zfyy\`
 - This userscript is automatically generated. YMMV.
 
 | *NAME* | *SCRIPT_ID* |
