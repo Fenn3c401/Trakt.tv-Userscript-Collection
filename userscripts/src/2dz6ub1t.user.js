@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Profile Image
 // @description  A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
-// @version      1.1.3
+// @version      1.1.4
 // @namespace    2dz6ub1t
 // @updateURL    https://update.greasyfork.org/scripts/557303.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -24,12 +24,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
