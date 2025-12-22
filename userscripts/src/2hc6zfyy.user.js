@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Scheduled E-Mail Data Exports
 // @description  Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
-// @version      1.1.1
+// @version      1.1.2
 // @namespace    2hc6zfyy
 // @updateURL    https://update.greasyfork.org/scripts/550078.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -18,7 +18,7 @@
 /* README
 ### General
 - You might want to consider the use of an e-mail filter, so as to e.g. automatically move the data export e-mails to a dedicated trakt-tv-data-exports folder.
-- If you don't like the success toasts, you can turn them off by setting `toastOnSuccess` to false in the userscript storage tab *(note: only displayed after first run)*, there you can
+- If you don't like the success toasts, you can turn them off by setting `toastOnSuccess` to `false` in the userscript storage tab *(note: only displayed after first run)*, there you can
     also specify your own [cron expression](https://crontab.guru/examples.html). E-Mail data exports have a cooldown period of 24 hours, there is no point in going below that with your cron expression.
 */
 
