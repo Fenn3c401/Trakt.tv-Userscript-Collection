@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Actor Pronunciation Helper
-// @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
-// @version      1.0.0
+// @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com
+// @version      1.0.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -28,12 +28,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -71,13 +73,16 @@ document.addEventListener('turbo:load', () => {
           name = $('body > [itemtype$="Person"] > meta[itemprop="name"]').attr('content') ?? $('#summary-wrapper .mobile-title > :last-child').text(); // fallback for /people/<slug>/lists pages
 
     unsafeWindow.showLoading?.();
-    let audios = [await fetchAudio(name)];
-    if (!audios[0]) audios = await Promise.all(name.split(/\s+/).map((namePart) => fetchAudio(namePart).then((res) => res ?? new SpeechSynthesisUtterance(namePart))));
+    const fullNameAudio = await fetchAudio(name);
+    const audios = fullNameAudio ? [fullNameAudio] : await Promise.all(name.split(/\s+/).map((namePart) => {
+      return /^\w\.?$/.test(namePart) ? new SpeechSynthesisUtterance(namePart) : fetchAudio(namePart).then((res) => res ?? new SpeechSynthesisUtterance(namePart));
+    }));
     unsafeWindow.hideLoading?.();
 
     if (audios.some((audio) => audio instanceof SpeechSynthesisUtterance)) {
       audios.forEach((audio) => { if (audio instanceof SpeechSynthesisUtterance) audio.lang = 'en-US'; });
-      logger.warning(`Could not find a full pronunciation for "${name}" on <a href="https://forvo.com/search/${encodeURIComponent(name)}" target="_blank"><b>forvo.com</b></a>. Falling back to TTS..`);
+      logger.warning(`Could not find a full pronunciation for "${name}" on ` +
+                     `<a href="https://forvo.com/search/${encodeURIComponent(name)}" target="_blank"><strong>forvo.com</strong></a>. Falling back to TTS..`);
     }
 
     ['ended', 'end'].forEach((type) => {

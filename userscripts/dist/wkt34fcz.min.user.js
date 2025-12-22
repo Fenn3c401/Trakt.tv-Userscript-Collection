@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Custom Links (Watch-Now + External)
 // @description  Adds custom links to all the "Watch-Now" and "External" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable. See README for details.
-// @version      0.7.9
+// @version      1.0.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -72,9 +72,9 @@
 - [EXT](https://ext.to) [Torrent Aggregator]
 - [Stremio](https://www.stremio.com) [Debrid]
 - [Kuroiru](https://kuroiru.co) [Anime Aggregator]
-- [Miruro](https://www.miruro.to) [Anime Streaming]
-- [AniDap](https://anidap.se) [Anime Streaming]
 - [GOJO.LIVE](https://animetsu.cc) [Anime Streaming]
+- [AniDap](https://anidap.se) [Anime Streaming]
+- [Miruro](https://www.miruro.to) [Anime Streaming]
 - [Knaben Database](https://knaben.org) [Torrent Aggregator]
 - [P-Stream](https://pstream.mov) [Streaming]
 - [Cineby](https://www.cineby.gd) [Streaming]
@@ -98,6 +98,8 @@
 - [LiveChart](https://www.livechart.me) (anime tracking site)
 - [TheTVDB](https://thetvdb.com) (similar to TMDB and IMDb)
 - [TVmaze](https://www.tvmaze.com) (tv show tracking site)
+- [YouTube Trailer](https://www.youtube.com) (season trailers are preferred)
+- [YouTube Interviews](https://www.youtube.com) (e.g. actors in talkshows)
 - [Rotten Tomatoes](https://www.rottentomatoes.com) (ratings/reviews from professional critics)
 - [Metacritic](https://www.metacritic.com) (ratings/reviews from professional critics)
 - [Spotify](https://open.spotify.com) (soundtracks)

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
-// @description  All 14 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
-// @version      2025-12-18_05-20
+// @description  All 13 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. See README for details.
+// @version      2025-12-22_01-31
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -50,25 +50,24 @@
 ### General
 - You can disable individual modules by setting the corresponding script-id to `false` in the userscript storage tab *(note: only displayed after first run)*.
 - Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
-- As VIP user you should disable: `2dz6ub1t`, `h8vh5z16`, `fyk2l3vj`, `x70tru7b`, `2hc6zfyy`
+- As VIP user you should disable: `2dz6ub1t`, `fyk2l3vj`, `x70tru7b`, `2hc6zfyy`
 - This userscript is automatically generated. YMMV.
 
 | *NAME* | *SCRIPT_ID* |
 | :----- | :---------- |
-| [Trakt.tv \| Actor Pronunciation Helper](71cd9s61.md) | `71cd9s61` |
-| [Trakt.tv \| All-in-One Lists View](p2o98x5r.md) | `p2o98x5r` |
-| [Trakt.tv \| Average Season And Episode Ratings](yl9xlca7.md) | `yl9xlca7` |
-| [Trakt.tv \| Bug Fixes and Optimizations](brzmp0a9.md) | `brzmp0a9` |
-| [Trakt.tv \| Charts - Ratings Distribution](pmdf6nr9.md) | `pmdf6nr9` |
-| [Trakt.tv \| Charts - Seasons](cs1u5z40.md) | `cs1u5z40` |
-| [Trakt.tv \| Custom Links (Watch-Now + External)](wkt34fcz.md) | `wkt34fcz` |
-| [Trakt.tv \| Custom Profile Image](2dz6ub1t.md) | `2dz6ub1t` |
-| [Trakt.tv \| Director Badge](h8vh5z16.md) | `h8vh5z16` |
-| [Trakt.tv \| Enhanced List Preview Posters](kji85iek.md) | `kji85iek` |
-| [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md) | `fyk2l3vj` |
-| [Trakt.tv \| Nested Header Navigation Menus](txw82860.md) | `txw82860` |
-| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md) | `x70tru7b` |
-| [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) | `2hc6zfyy` |
+| [Trakt.tv \| Actor Pronunciation Helper](71cd9s61.md#StickyHeader) | `71cd9s61` |
+| [Trakt.tv \| All-in-One Lists View](p2o98x5r.md#StickyHeader) | `p2o98x5r` |
+| [Trakt.tv \| Average Season And Episode Ratings](yl9xlca7.md#StickyHeader) | `yl9xlca7` |
+| [Trakt.tv \| Bug Fixes and Optimizations](brzmp0a9.md#StickyHeader) | `brzmp0a9` |
+| [Trakt.tv \| Charts - Ratings Distribution](pmdf6nr9.md#StickyHeader) | `pmdf6nr9` |
+| [Trakt.tv \| Charts - Seasons](cs1u5z40.md#StickyHeader) | `cs1u5z40` |
+| [Trakt.tv \| Custom Links (Watch-Now + External)](wkt34fcz.md#StickyHeader) | `wkt34fcz` |
+| [Trakt.tv \| Custom Profile Image](2dz6ub1t.md#StickyHeader) | `2dz6ub1t` |
+| [Trakt.tv \| Enhanced List Preview Posters](kji85iek.md#StickyHeader) | `kji85iek` |
+| [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md#StickyHeader) | `fyk2l3vj` |
+| [Trakt.tv \| Nested Header Navigation Menus](txw82860.md#StickyHeader) | `txw82860` |
+| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader) | `x70tru7b` |
+| [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md#StickyHeader) | `2hc6zfyy` |
 */
 
 
@@ -86,11 +85,11 @@ Automatic trakt.tv backups for free users. On every trakt.tv visit a background 
 */
 
 /* [Trakt.tv | Actor Pronunciation Helper]
-Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from forvo.com.
+Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com
 */
 
 /* [Trakt.tv | Bug Fixes and Optimizations]
-A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation.
+A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
 
 ### General
 - Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
@@ -103,9 +102,9 @@ A large collection of bug fixes and optimizations for trakt.tv, organized into ~
   - grey out usernames of deleted profiles in the comments
   - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name", separate from the username/slug. This becomes a problem in comment replies
       which always reference the person/comment they are replying to with an `@<userslug>` prefix, which sometimes turns long reply chains into a game of matching pairs..), currently not supported in FF
-- The sections below, with the exception of the custom hotkeys, are unrelated to this script, it's just general documentation of native features.
+  - some custom hotkeys and gestures as displayed below
 
-### Hotkeys and Gestures
+### Hotkeys/Gestures (Custom and Native)
 - ***[CUSTOM]*** `alt + 1/2/3/4/5/6/7`: change header-search-category, 1 for "Shows & Movies", 2 for "Shows", ..., 7 for "Users", also expands header-search if collapsed
 - ***[CUSTOM]*** `swipe in from left edge`: display title sidebar on mobile devices
 - `meta(win)/ctrl + left click`: open in new tab instead of redirect (applies to header search results + "view watched history" button on title summary pages)
@@ -120,17 +119,6 @@ A large collection of bug fixes and optimizations for trakt.tv, organized into ~
 - `ctrl + enter`: save note, submit comment
 - `arrow-left/right OR p/n OR swipe right/left on fanart`: page navigation (e.g. prev/next episode, prev/next results page)
 - `arrow-up/down`: header-search results navigation
-
-### Filter-By-Terms Regex
-The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
-The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
-All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
-the `/progress` page and list pages. For some reason. The input is matched against:
-- list title and description for `/users/<userslug>/lists` pages
-- episode title for `/seasons` pages
-- title and character name for `/people` pages
-- episode and show title for `/progress` pages
-- title name for list pages
 */
 
 /* [Trakt.tv | Charts - Seasons]
@@ -153,17 +141,13 @@ Adds links of filtered search results to the metadata section (languages, genres
     ORed for networks and studios. For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
 - The writers label search was mostly added as an example of how to search for filmography intersections with trakt's search engine (there's no official tutorial about this,
     just some vague one liner in the api docs about how `+ - && || ! ( ) { } [ ] ^ " ~ * ? : /` have "special meaning" when used in a query).
-    It's much more intersting with actors e.g. [Movies with Will Smith and Alan Tudyk](https://trakt.tv/search/movies?query=%22Will%20Smith%22+%22Alan%20Tudyk%22&fields=people).
+    It's much more interesting with actors e.g. [Movies with Will Smith and Alan Tudyk](https://trakt.tv/search/movies?query=%22Will%20Smith%22+%22Alan%20Tudyk%22&fields=people).
 - The title's certification links to the respective `/parentalguide` imdb page (which contains descriptions of nude scenes, graphic content etc.).
 - The title's year links to the search page for other titles from the same year.
 - The search results default to either the "movies" or "shows" search category depending on the type of the current title.
 - A "+ n more" button is added for networks when needed (some anime have more than a dozen listed).
 - Installing the [Trakt.tv | Partial VIP Unlock](x70tru7b.md) userscript will allow free users to further modify the applied advanced filters on the linked search pages.
 - This script won't work for vip users.
-*/
-
-/* [Trakt.tv | Director Badge]
-Appends a special "Director" badge to your username because you deserve it. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.
 */
 
 /* [Trakt.tv | Enhanced List Preview Posters]
@@ -175,6 +159,11 @@ Makes the posters of list preview stacks/shelves link to the respective title su
 
 /* [Trakt.tv | All-in-One Lists View]
 Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
+
+### General
+- Sorting, filtering and list actions (unlike, delete etc.) should work as usual. Also works on /lists pages of other users.
+- The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript contains an improved/fixed `renderReadmore()` function (for "Read more/less..." buttons of long list descriptions),
+    which greatly speeds up the rendering of the appended lists.
 */
 
 /* [Trakt.tv | Charts - Ratings Distribution]
@@ -185,6 +174,9 @@ Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) 
 Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.
 
 > Based on sergeyhist's [Trakt.tv Hidden Items](https://github.com/sergeyhist/trakt-scripts/blob/main/Legacy/trakt-hidden.user.js) userscript.
+
+### General
+- Amongst the added submenus is one called "Quick Actions" which allows for clearing the search history and re-caching progress and browser data. Usually those options are hidden in the advanced settings menu.
 */
 
 /* [Trakt.tv | Custom Links (Watch-Now + External)]
@@ -221,9 +213,9 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [EXT](https://ext.to) [Torrent Aggregator]
 - [Stremio](https://www.stremio.com) [Debrid]
 - [Kuroiru](https://kuroiru.co) [Anime Aggregator]
-- [Miruro](https://www.miruro.to) [Anime Streaming]
-- [AniDap](https://anidap.se) [Anime Streaming]
 - [GOJO.LIVE](https://animetsu.cc) [Anime Streaming]
+- [AniDap](https://anidap.se) [Anime Streaming]
+- [Miruro](https://www.miruro.to) [Anime Streaming]
 - [Knaben Database](https://knaben.org) [Torrent Aggregator]
 - [P-Stream](https://pstream.mov) [Streaming]
 - [Cineby](https://www.cineby.gd) [Streaming]
@@ -247,6 +239,8 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [LiveChart](https://www.livechart.me) (anime tracking site)
 - [TheTVDB](https://thetvdb.com) (similar to TMDB and IMDb)
 - [TVmaze](https://www.tvmaze.com) (tv show tracking site)
+- [YouTube Trailer](https://www.youtube.com) (season trailers are preferred)
+- [YouTube Interviews](https://www.youtube.com) (e.g. actors in talkshows)
 - [Rotten Tomatoes](https://www.rottentomatoes.com) (ratings/reviews from professional critics)
 - [Metacritic](https://www.metacritic.com) (ratings/reviews from professional critics)
 - [Spotify](https://open.spotify.com) (soundtracks)
@@ -259,28 +253,37 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, faster page navigation and more. Also hides some vip buttons/banners.
 
 ### Full Unlock
-- filter-by-terms
 - "more" buttons on dashboard
 - rewatching
-- watch-now modal country selection
+- all vip settings from the `/settings` page: calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings
 - bulk list actions: reset ranks, copy, move, delete (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
     In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
-- all vip settings from the `/settings` page: calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings
-- ~2x faster page navigation with Hotwire's Turbo (allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this)
+- ~2x faster page navigation with Hotwire's Turbo (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
+    Also imo it's nothing short of embarassing for them to think it's good idea to intentionally slow down their website for free users. There's a reason they don't have it listed amongst the vip perks..)
+- vip badge (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
+- filter-by-terms
+- watch-now modal country selection
 
 ### Partial Unlock
+- adding an item to maxed-out lists (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
+    you can now directly add a new item to it using the regular ui elems. How long that takes depends on the size of that list, if it's 1000 items you're looking at about 45s until completion..
+    Hefty, but it works. Mind you that this is very much experimental and I can only emphasize the importance of backups here.)
+- advanced filters (no saved filters, though you can always just save the url of a search with its specific parameters as a bookmark.. works all them same)
 - custom calendars (get generated and work, but are not listed in sidebar and can't be deleted, so you have to save the url of the custom calendar or "regenerate" it on the `/lists` page)
-- advanced filters (no saved filters)
-- ~~ical/atom feeds + csv exports~~ [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)<br>
+- advanced list progress (From my understanding the idea is to filter your `/progress/watched` and `/progress/dropped` pages by the shows on a specific list. As this script also unlocks
+    the filter-by-terms function which on the `/progress` pages happens to have regex support, it's possible to just OR all titles of watched shows on a list to get the same result.
+    Drawbacks of this are that you can't use filter-by-terms anymore, active filters are turned off in the process (e.g. hide completed), and that shows with the same name can lead to incorrect results.)
+- ~~ical/rss feeds + csv exports~~ => [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)<br>
     (Makes their [privacy policy](https://trakt.tv/privacy) and "You're not the product. We never sell your data." mantra read like a bad joke, nevermind the fact that they failed to make any sort of public
     announcement about this, didn't notify the affected users and didn't produce an incident report, so god knowns on what scale this was exploited. And all I got in return was getting ghosted. Twice.)
 
 ### Related Userscripts
-Of the ~15 Trakt.tv userscripts I've got, there are another four which don't unlock an actual vip feature but instead replicate one in some way:
+Of the ~14 Trakt.tv userscripts I've got, there are another four which (in part) replicate a vip feature in some way:
 - [Trakt.tv \| Custom Profile Image](2dz6ub1t.md)
-- [Trakt.tv \| Director Badge](h8vh5z16.md)
 - [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md)
 - [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
+
+Though you can always just install the [Trakt.tv \| Megascript](zzzzzzzz.md) instead.
 
 ### List Limits Bypass
 Credit for this one goes to [SET19724](https://github.com/SET19724) who pointed out some inconsistencies with the unlocked bulk list actions in an issue.
@@ -294,9 +297,9 @@ I didn't push it any further. The "copied from..." text is not added if you use 
 
 ***Example 2:***<br>
 Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
-Say `watchlist` has 100 items and `watchlist2` + `watchlist3` have 99 items each. I can do a bulk move from `watchlist` to `watchlist2` which now has 199 items.
-Then I do a bulk move from `watchlist2` to `watchlist3` which gets that one to 298 items, and then I can move it all back to `watchlist`.
-That's it. You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
+Let's say `watchlist` + `watchlist2` have 99 items each and `watchlist3` has 100 items. I can now do a bulk move from `watchlist3` to `watchlist2`,
+followed by a bulk move from `watchlist2` to `watchlist`, to accumulate all 298 items on that list. Ranks are preserved this way as the new items always get appeded.
+You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
 ***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
 
 Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
@@ -307,6 +310,17 @@ The raw markdown is of course still accessible to anyone through the Trakt api a
 but the content is not rendered in the classic and new web versions, in fact a comment can appear to be completely empty this way. I found this interesting because it's a relatively elegant way to
 work around the max. limit for private notes (currently 100), as the note-comments are still stored directly on your Trakt account on a per-title basis and can easily be accessed on arbitrary
 platforms, including ones that don't support userscripts. It's probably advisable to disguise the note-comments by always adding some generic one-liner.
+
+### Filter-By-Terms Regex
+The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
+The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
+All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
+the `/progress` page and list pages. The input is matched against:
+- list title and description for `/users/<userslug>/lists` pages
+- episode title for `/seasons` pages
+- title and character name for `/people` pages
+- episode and show title for `/progress` pages
+- title name for list pages
 */
 
 /* [Trakt.tv | Average Season And Episode Ratings]
@@ -323,7 +337,7 @@ Shows the average general and personal rating of the seasons of a show and the e
 
 'use strict';
 
-const gmStorage = { '2dz6ub1t': true, '2hc6zfyy': true, '71cd9s61': true, 'brzmp0a9': true, 'cs1u5z40': true, 'fyk2l3vj': true, 'h8vh5z16': true, 'kji85iek': true, 'p2o98x5r': true, 'pmdf6nr9': true, 'txw82860': true, 'wkt34fcz': true, 'x70tru7b': true, 'yl9xlca7': true, ...(GM_getValue('megascript')) };
+const gmStorage = { '2dz6ub1t': true, '2hc6zfyy': true, '71cd9s61': true, 'brzmp0a9': true, 'cs1u5z40': true, 'fyk2l3vj': true, 'kji85iek': true, 'p2o98x5r': true, 'pmdf6nr9': true, 'txw82860': true, 'wkt34fcz': true, 'x70tru7b': true, 'yl9xlca7': true, ...(GM_getValue('megascript')) };
 GM_setValue('megascript', gmStorage);
 
 
@@ -336,12 +350,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -523,12 +539,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', toast: gmStorage.toastOnSuccess, ...opt }) },
@@ -591,12 +609,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -634,13 +654,16 @@ document.addEventListener('turbo:load', () => {
           name = $('body > [itemtype$="Person"] > meta[itemprop="name"]').attr('content') ?? $('#summary-wrapper .mobile-title > :last-child').text(); // fallback for /people/<slug>/lists pages
 
     unsafeWindow.showLoading?.();
-    let audios = [await fetchAudio(name)];
-    if (!audios[0]) audios = await Promise.all(name.split(/\s+/).map((namePart) => fetchAudio(namePart).then((res) => res ?? new SpeechSynthesisUtterance(namePart))));
+    const fullNameAudio = await fetchAudio(name);
+    const audios = fullNameAudio ? [fullNameAudio] : await Promise.all(name.split(/\s+/).map((namePart) => {
+      return /^\w\.?$/.test(namePart) ? new SpeechSynthesisUtterance(namePart) : fetchAudio(namePart).then((res) => res ?? new SpeechSynthesisUtterance(namePart));
+    }));
     unsafeWindow.hideLoading?.();
 
     if (audios.some((audio) => audio instanceof SpeechSynthesisUtterance)) {
       audios.forEach((audio) => { if (audio instanceof SpeechSynthesisUtterance) audio.lang = 'en-US'; });
-      logger.warning(`Could not find a full pronunciation for "${name}" on <a href="https://forvo.com/search/${encodeURIComponent(name)}" target="_blank"><b>forvo.com</b></a>. Falling back to TTS..`);
+      logger.warning(`Could not find a full pronunciation for "${name}" on ` +
+                     `<a href="https://forvo.com/search/${encodeURIComponent(name)}" target="_blank"><strong>forvo.com</strong></a>. Falling back to TTS..`);
     }
 
     ['ended', 'end'].forEach((type) => {
@@ -772,7 +795,7 @@ gmStorage['brzmp0a9'] && (async () => {
     return oldValue.apply(this, args);
   };
   Object.defineProperty(unsafeWindow.jQuery.fn, 'swipe', desc);
-  Object.entries(subDescs).forEach(([k, v]) => v.configurable && Object.defineProperty(unsafeWindow.jQuery.fn.swipe, k, v));
+  Object.entries(subDescs).forEach(([k, v]) => !['length', 'name', 'prototype'].includes(k) && Object.defineProperty(unsafeWindow.jQuery.fn.swipe, k, v));
 });
 
 
@@ -842,7 +865,7 @@ GM_addStyle(`
     return oldValue.apply(this, args);
   };
   Object.defineProperty(unsafeWindow.jQuery.fn, 'tooltip', desc);
-  Object.entries(subDescs).forEach(([k, v]) => v.configurable && Object.defineProperty(unsafeWindow.jQuery.fn.tooltip, k, v));
+  Object.entries(subDescs).forEach(([k, v]) => !['length', 'name', 'prototype'].includes(k) && Object.defineProperty(unsafeWindow.jQuery.fn.tooltip, k, v));
 });
 
 
@@ -1018,7 +1041,7 @@ GM_addStyle(`
     }
   };
   Object.defineProperty(unsafeWindow.jQuery.fn, 'chosen', desc);
-  Object.entries(subDescs).forEach(([k, v]) => v.configurable && Object.defineProperty(unsafeWindow.jQuery.fn.chosen, k, v));
+  Object.entries(subDescs).forEach(([k, v]) => !['length', 'name', 'prototype'].includes(k) && Object.defineProperty(unsafeWindow.jQuery.fn.chosen, k, v));
 });
 
 
@@ -1889,12 +1912,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -2294,66 +2319,6 @@ function addStyles() {
 })();
 
 
-gmStorage['h8vh5z16'] && (async () => {
-'use-strict';
-
-const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1];
-
-if (userslug) {
-  GM_addStyle(`
-:is(#avatar-wrapper h1, .comment-wrapper .user-name) [href="/users/${userslug}"]::after,
-#results-top-wrapper [href="/users/${userslug}"] + h1::after {
-  content: "DIRECTOR" !important; /* competes with " (@userslug)" suffix from other script */
-  font-weight: var(--headings-font-weight);
-  font-family: var(--headings-font-family);
-  background-color: var(--brand-vip);
-  display: inline-block;
-  text-shadow: none;
-  line-height: 1;
-  vertical-align: middle;
-  color: #fff;
-}
-#avatar-wrapper h1 [href="/users/${userslug}"]::after,
-#results-top-wrapper [href="/users/${userslug}"] + h1::after {
-  margin: 0px 0px 5px 10px;
-  padding: 5px 6px 5px 28px;
-  font-size: 16px;
-  letter-spacing: 1px;
-  border-radius: 20px 0px 0px 20px;
-  background-image: url("/assets/logos/logomark.circle.white-8541834d655f22f06c0e1707bf263e8d5be59657dba152298297dffffb1f0a11.svg");
-  background-size: 20px;
-  background-repeat: no-repeat;
-  background-position: 3px center;
-}
-.comment-wrapper .user-name [href="/users/${userslug}"]::after {
-  margin: -3px 0 0 5px;
-  padding: 2px 4px;
-  font-size: 11px;
-  letter-spacing: 0;
-  border-radius: 2px;
-}
-@media (width <= 767px) and (orientation: portrait) {
-  #avatar-wrapper h1 [href="/users/${userslug}"]::after,
-  #results-top-wrapper [href="/users/${userslug}"] + h1::after {
-    margin: 0px 0px 3px 7px;
-    padding: 3px 5px 3px 23px;
-    font-size: 14px;
-    background-size: 14px;
-  }
-}
-
-
-.personal-list .comment-wrapper .user-name [href="/users/${userslug}"] {
-  white-space: nowrap;
-}
-:is(#avatar-wrapper h1, #results-top-wrapper, .comment-wrapper .user-name) [href="/users/${userslug}"] ~ .label-vip {
-  display: none !important;
-}
-  `);
-}
-})();
-
-
 gmStorage['kji85iek'] && (async () => {
 'use strict';
 
@@ -2422,14 +2387,6 @@ function addStyles() {
 
 
 gmStorage['p2o98x5r'] && (async () => {
-/*
-### General
-- Sorting, filtering and list actions (unlike, delete etc.) should work as usual. Also works on /lists pages of other users.
-- The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript contains an improved/fixed `renderReadmore()` function (for "Read more/less..." buttons of long list descriptions),
-    which greatly speeds up the rendering of the appended lists.
-*/
-
-
 'use strict';
 
 addStyles();
@@ -2947,9 +2904,9 @@ const menuTemplates = {
       { text: 'Trakt Percentage', href: 'percentage' },
       { text: 'Trakt Votes', href: 'votes' },
       ...(/\/watchlist\?sort=/.test(hrefPrefix) && userslug ? [
-        { text: 'Rotten Tomatoes <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=rtomatoes&sortorder=desc`, useHrefPrefix: false },
-        { text: 'Metacritic <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=metacritic&sortorder=desc`, useHrefPrefix: false },
-        { text: 'MyAnimeList <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=myanimelist&sortorder=desc`, useHrefPrefix: false },
+        { text: 'Rotten Tomatoes <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=rtomatoes&sortorder=asc`, useHrefPrefix: false },
+        { text: 'Metacritic <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=metacritic&sortorder=asc`, useHrefPrefix: false },
+        { text: 'MyAnimeList <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=myanimelist&sortorder=asc`, useHrefPrefix: false },
       ] : []),
       {},
       { text: 'My Rating', href: 'my_rating' },
@@ -3294,6 +3251,19 @@ const menus = {
   ':is(.btn-mobile-links, .btn-tablet-links, .links-wrapper) a[href="https://forums.trakt.tv"]': {
     hrefPrefix: 'https://forums.trakt.tv',
     entries: [
+      { text: 'Latest', href: '/latest' },
+      { text: 'Top', href: '/top', submenu: {
+        hrefPrefix: 'https://forums.trakt.tv/top?period=',
+        entries: [
+          { text: 'PERIOD' },
+          { text: 'Day', href: 'daily', anchor: true },
+          { text: 'Week', href: 'weekly' },
+          { text: 'Month', href: 'monthly' },
+          { text: 'Quarter', href: 'quarterly' },
+          { text: 'Year', href: 'yearly' },
+          { text: 'All Time', href: 'all' },
+        ],
+      }},
       { text: 'Categories', href: '/categories', submenu: {
         hrefPrefix: 'https://forums.trakt.tv',
         entries: [
@@ -3310,11 +3280,13 @@ const menus = {
           { text: 'Trakt', href: '/c/trakt', submenu: {
             hrefPrefix: 'https://forums.trakt.tv/c/trakt',
             entries: [
+              { text: 'Product Updates', href: '/product-updates' },
               { text: 'Questions & Help', href: '/questions' },
               { text: 'Feature Requests', href: '/feature-requests' },
-              { text: 'Lite', href: '/trakt-lite' },
+              { text: 'Lite', href: '/trakt-lite', anchor: true },
               { text: 'Release Notes', href: '/release-notes' },
               { text: 'VIP Beta Features', href: '/vip-beta-features' },
+              { text: 'How To', href: '/how-to' },
             ],
           }},
           { text: '3rd Party', href: '/c/3rd-party', submenu: {
@@ -3322,7 +3294,7 @@ const menus = {
             entries: [
               { text: 'Media Centers', href: '/media-centers' },
               { text: 'Mobile Apps', href: '/mobile-apps' },
-              { text: 'Other', href: '/other' },
+              { text: 'Other', href: '/other', anchor: true },
             ],
           }},
           { text: 'Support', href: '/c/support', submenu: {
@@ -3331,23 +3303,9 @@ const menus = {
               { text: 'Tutorials', href: '/tutorials' },
               { text: 'VIP Features', href: '/vip-features' },
               { text: 'Features', href: '/support-features' },
-              { text: 'FAQ', href: '/faq' },
+              { text: 'FAQ', href: '/faq', anchor: true },
             ],
           }},
-        ],
-      }},
-      { text: 'Latest', href: '/latest' },
-      { text: 'New', href: '/new' },
-      { text: 'Top', href: '/top', submenu: {
-        hrefPrefix: 'https://forums.trakt.tv/top?period=',
-        entries: [
-          { text: 'PERIOD' },
-          { text: 'Day', href: 'daily', anchor: true },
-          { text: 'Week', href: 'weekly' },
-          { text: 'Month', href: 'monthly' },
-          { text: 'Quarter', href: 'quarterly' },
-          { text: 'Year', href: 'yearly' },
-          { text: 'All Time', href: 'all' },
         ],
       }},
       {},
@@ -3365,10 +3323,10 @@ const menus = {
               { text: 'PERIOD' },
               { text: 'Hour', href: 'hour' },
               { text: 'Day', href: 'day' },
-              { text: 'Week', href: 'week' },
+              { text: 'Week', href: 'week', anchor: true },
               { text: 'Month', href: 'month' },
               { text: 'Year', href: 'year' },
-              { text: 'All Time', href: 'all', anchor: true },
+              { text: 'All Time', href: 'all' },
             ],
           }},
           { text: 'Rising', href: '/rising', anchor: true },
@@ -4426,32 +4384,60 @@ ${customWatchNowLinks.concat(customExternalLinks).map((l) => l.addStyles).filter
 gmStorage['x70tru7b'] && (async () => {
 'use strict';
 
-let $, compressedCache;
-// const token = atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?) -->/)[1];
+let $, compressedCache, Cookies, toastr;
+const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1],
+      token = null; // atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?) -->/)[1];
+
+const gmStorage = { ...(GM_getValue('vipUnlock')) };
+GM_setValue('vipUnlock', gmStorage);
+
+const logger = {
+  _defaults: {
+    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
+  },
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
 
 
 addStyles();
 
-document.addEventListener('turbo:load', () => {
+document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
   compressedCache ??= unsafeWindow.compressedCache;
-  if (!$ || !compressedCache) return; // || !token) return;
+  Cookies ??= unsafeWindow.Cookies;
+  toastr ??= unsafeWindow.toastr;
+  if (!$ || !compressedCache || !Cookies || !toastr) return;
+
+
+  $('body').removeAttr('data-turbo');
+  unsafeWindow.actionList = addToListPopupOverride;
+  document.querySelectorAll('.quick-icons .list, .btn-summary.btn-list, .btn-summary.btn-list .side-btn .icon-add').forEach((el) => el.addEventListener('click', addToListBtnOverride));
 
   patchUserSettings();
+  if (token) $('body:not(.dashboard) .feed-icon.csv').attr('href', location.pathname + '.csv?slurm=' + token + location.search.replace('?', '&'));
 
   $(document).off('ajaxSuccess.userscript38793').on('ajaxSuccess.userscript38793', (_evt, _xhr, opt) => {
     if (opt.url.endsWith('/settings.json')) patchUserSettings();
 
-    // if (/\/dashboard\/(on_deck|recently_watched)$/.test(opt.url)) {
-    //   $('.feed-icon.csv[href="/vip/csv"]').attr('href', function() {
-    //     return $(this).prev().attr('data-path') + '.csv?' + ['slurm=' + token, $(this).prev().attr('data-query')].join('&');
-    //   });
-    // }
+    if (token && /\/dashboard\/(on_deck|recently_watched)$/.test(opt.url)) {
+      $('.feed-icon.csv[href="/vip/csv"]').attr('href', function() {
+        return $(this).prev().attr('data-path') + '.csv?' + ['slurm=' + token, $(this).prev().attr('data-query')].join('&');
+      });
+    }
   });
 
-  // $('body:not(.dashboard) .feed-icon.csv').attr('href', location.pathname + '.csv?slurm=' + token + location.search.replace('?', '&'));
-
-  $('body').removeAttr('data-turbo');
 
   $('.frame-wrapper .sidenav.advanced-filters .buttons')
     .addClass('vip')
@@ -4460,20 +4446,169 @@ document.addEventListener('turbo:load', () => {
     .addClass('disabled disabled-init').attr('id', 'filter-apply').attr('data-apply-text', 'Apply Filters')
     .before('<a class="btn btn-close-2024" id="filter-close" style="display: inline-block !important; visibility: visible !important;">Close</a>')
     .append('<span class="text">Configure Filters</span><span class="icon fa-solid fa-check"></span>');
+
+
+  if (/^\/users\/[^\/]+\/progress(?!\/playback)/.test(location.pathname) && /list=\d+/.test(location.search) && !location.search.includes('terms=')) {
+    unsafeWindow.showLoading?.();
+    const searchParams = new URLSearchParams(location.search),
+          listId = searchParams.get('list'),
+          listDoc = await fetch('/lists/' + listId).then((r) => fetch(r.url + '?display=show&hide=unwatched&limit=10000')).then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html')),
+          watchedShowsOnListTitles = [...listDoc.querySelectorAll('.grid-item')].map((e) => e.querySelector('.titles-link')?.textContent).filter(Boolean);
+
+    searchParams.append('terms', `^${watchedShowsOnListTitles.join('$|^')}$`);
+    ['airing', 'completed', 'ended', 'not-completed', 'rewatching'].forEach((cookieSuffix) => {
+      Cookies.remove('filter-hide-progress-' + cookieSuffix, { path: '/' });
+      Cookies.remove('filter-hide-progress-' + cookieSuffix, { path: '/users/' + Cookies.get('trakt_userslug') });
+    });
+    location.search = searchParams.toString();
+  }
 }, { capture: true });
 
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 function patchUserSettings() {
   const userSettings = compressedCache.get('settings');
 
-  if (userSettings && (!userSettings.user.vip)) { // || userSettings.account.token !== token)) {
+  if (userSettings && (!userSettings.user.vip || (token && userSettings.account.token !== token))) {
     userSettings.user.vip = true;
-    // userSettings.account.token = token;
+    if (token) userSettings.account.token = token;
     compressedCache.set('settings', userSettings);
     if (unsafeWindow.userSettings) unsafeWindow.userSettings = userSettings;
   }
 }
 
+const getTempListId = async () => { // would need a second one for some bulk copy/move actions
+  if (!gmStorage.tempList1Id || !compressedCache.get('lists')[gmStorage.tempList1Id]) {
+    const favsListId = Object.values(compressedCache.get('lists')).find((l) => l.name === 'Favorites').ids.trakt;
+    const resp1 = await fetch(`/lists/${favsListId}/copy_items/0`, {
+      method: 'POST',
+      headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+      body: new URLSearchParams({ 'order[]': '', sort_by: 'rank', sort_how: 'asc' }),
+    });
+    if (!resp1.ok) { logger.error('Failed to create temp list.', { data: resp1 }); return; }
+    const tempListId = (await resp1.json()).id;
+    logger.info(`Created temp list: id=${tempListId}.`, { data: resp1 });
+
+    const resp2 = await fetch('/lists/' + tempListId, {
+      method: 'POST',
+      headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+      body: new URLSearchParams({
+        authenticity_token: unsafeWindow.csrfToken,
+        _method: 'put',
+        name: `temp1_${tempListId}`,
+        description: 'Needed for the list limits bypass of the "Partial VIP Unlock" userscript. Keep it empty. You can edit the list title and description if you want. ' +
+                     'If you delete it another one will be created on the next attempted list limits bypass.',
+        privacy_hidden: 'private',
+        privacy: 'private',
+        existing_collaborator_ids: '',
+        allow_comments_hidden: 1,
+        allow_comments: 1,
+        display_numbers_hidden: 1,
+        display_numbers: 1,
+        default_sort_by: 'rank',
+        default_sort_how: 'asc',
+      }),
+    });
+    if (!resp2.ok) { logger.error('Failed to update temp list metadata.', { data: resp2 }); return; }
+    logger.info('Updated temp list metadata.', { data: resp2 });
+
+    gmStorage.tempList1Id = tempListId;
+    GM_setValue('vipUnlock', gmStorage);
+  }
+  return gmStorage.tempList1Id;
+}
+
+async function addToListPopupOverride($gridItem, $li, isRemoval) {
+  $li.addClass('spinner').find('.icon').addClass('fa-spin');
+  const itemUrl = $gridItem.attr('data-url'),
+        itemType = $gridItem.attr('data-type'),
+        itemId = +$gridItem.attr(`data-${itemType}-id`),
+        targetListId = +$li.attr('data-list-id') || Object.values(compressedCache.get('lists')).find((l) => l.name === 'Watchlist').ids.trakt,
+        targetListType = $li.attr('data-list-type'),
+        targetListItemCount = +$li.attr('data-item-count');
+
+  try {
+    if ($li.hasClass('maxed-out') && !isRemoval) {
+      const durationEstimate = (45 / 1000) * targetListItemCount;
+      logger.info(`Target list is maxed-out, attempting bypass.. This will take about <strong>${~~(durationEstimate / 60)}m${~~(durationEstimate % 60)}s</strong>.`,
+                  { toastrOpt: { timeOut: durationEstimate * 1000 } });
+
+      const tempListId = await getTempListId(),
+            cachedLists = compressedCache.get('lists');
+      if (cachedLists[tempListId] && cachedLists[tempListId].item_count > 0) { logger.error(`Temp list is not empty. Aborting..`, { data: cachedLists[tempListId] }); return; }
+      const resp1 = await fetch(itemUrl + '/list', {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+        body: new URLSearchParams({ type: itemType, trakt_id: itemId, list_id: tempListId }),
+      });
+      if (!resp1.ok) { logger.error(`Failed to add item to temp list: id=${tempListId}.`, { data: resp1 }); return; }
+      logger.info('Added item to temp list.');
+
+      for (const [list1Id, list2Id] of [[targetListId, tempListId], [tempListId, targetListId]]) {
+        const list1AllItemIds = await fetch('/lists/' + list1Id).then((r) => r.text())
+          .then((r) => new DOMParser().parseFromString(r, 'text/html').querySelector('#listable-all-item-ids').value.split(',').map(Number));
+        if (!list1AllItemIds || !list1AllItemIds.length) { logger.error(`Failed to fetch all list item ids for list: id=${list1Id}.`); return; }
+
+        const resp2 = await fetch(`/lists/${list1Id}/move_items/${list2Id}`, {
+          method: 'POST',
+          headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+          body: ((usp) => { list1AllItemIds.forEach((id) => usp.append('order[]', id)); return usp; })(new URLSearchParams({ sort_by: 'rank', sort_how: 'asc' })),
+        });
+        if (!resp2.ok) { logger.error(`Failed to move all items from ${list1Id === targetListId ? 'target to temp' : 'temp to target'} list.`, { data: resp2 }); return; }
+        logger.info(`Moved all items from ${list1Id === targetListId ? 'target to temp' : 'temp to target'} list.`);
+      }
+
+      logger.success(`Success. Item was added to <a href="/lists/${targetListId}"><strong>target list</strong></a>.`);
+    } else {
+      const resp = await fetch(`${itemUrl}/${/(watchlist|favorites|recommendations)/.test(targetListType) ? targetListType : 'list'}${isRemoval ? '/remove' : ''}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+        body: new URLSearchParams({ type: itemType, trakt_id: itemId, list_id: targetListId }),
+      });
+      if (!resp.ok) { await resp.json().then((r) => logger.error('Failed to add item to list.' + (r.message ? ' Response: ' + r.message : ''), { data: resp })); return; }
+      logger.success('Success. ' + (await resp.json()).message);
+    }
+
+    $li.toggleClass('selected');
+    return true;
+  } finally {
+    $li.removeClass('spinner').find('.icon').removeClass('fa-spin');
+  }
+}
+
+async function addToListBtnOverride(evt) {
+  evt.stopImmediatePropagation();
+  evt.preventDefault();
+  if(unsafeWindow.listPopupPressed) { unsafeWindow.listPopupPressed = false; return; }
+
+  const isSideBtn = $(this).hasClass('side-btn') || $(this).parent().hasClass('side-btn'),
+        isSummaryMode = $(this).hasClass('btn-list'),
+        $gridItem = isSideBtn ? $(this).closest('.btn-summary') : isSummaryMode ? $(this) : $(this).closest('.grid-item'),
+        itemUrl = $gridItem.attr('data-url'),
+        itemType = $gridItem.attr('data-type'),
+        itemId = +$gridItem.attr(`data-${itemType}-id`),
+        hasLists = Object.values(compressedCache.get('lists') ?? {}).some((l) => l.type === 'list'),
+        listPopupAction = (unsafeWindow.isPersonPage && isSummaryMode || $gridItem.attr('data-type') === 'person') ? 'list' : unsafeWindow.userSettings.browsing.list_popup_action;
+
+  if(unsafeWindow.isPersonPage && isSummaryMode || hasLists && (listPopupAction !== 'watchlist' || $(this).hasClass('selected')) || isSideBtn) {
+    unsafeWindow.actionListPopup(isSideBtn ? $gridItem : $(this));
+  } else {
+    $gridItem.find('.loading').show();
+    const isRemoval = $(this).hasClass('selected'),
+          watchListData = Object.values(compressedCache.get('lists')).find((l) => l.name === 'Watchlist'),
+          $pseudoLi = $(`<li class="${watchListData.item_count >= unsafeWindow.userSettings.limits.watchlist.item_count ? 'maxed-out' : ''} ${isRemoval ? 'selected' : ''}" ` +
+                        `data-list-id="${watchListData.ids.trakt}" data-list-type="watchlist" data-item-count="${watchListData.item_count}"></li>`);
+
+    const wasSuccessful = await addToListPopupOverride($gridItem, $pseudoLi, isRemoval);
+    if (wasSuccessful) {
+      $(`[data-${itemType}-id="${itemId}"]:is(.btn-summary.btn-list, [data-type="${itemType}"]) .list`)[isRemoval ? 'removeClass' : 'addClass']('selected');
+      unsafeWindow.cacheUserData();
+    };
+    $gridItem.find('.loading').hide();
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 function addStyles() {
   GM_addStyle(`
@@ -4482,7 +4617,60 @@ function addStyles() {
 .alert-vip-required {
   display: none !important;
 }
+
+.popover:not(.copy-list) ul.lists li.maxed-out:not(.selected) {
+  text-decoration: line-through dashed 2px;
+}
   `);
+
+  if (userslug) {
+    GM_addStyle(`
+:is(#avatar-wrapper h1, .comment-wrapper .user-name) [href="/users/${userslug}"]::after,
+#results-top-wrapper [href="/users/${userslug}"] + h1::after {
+  content: "DIRECTOR" !important; /* competes with " (@userslug)" suffix from other script */
+  font-weight: var(--headings-font-weight);
+  font-family: var(--headings-font-family);
+  background-color: var(--brand-vip);
+  display: inline-block;
+  text-shadow: none;
+  line-height: 1;
+  vertical-align: middle;
+  color: #fff;
+}
+#avatar-wrapper h1 [href="/users/${userslug}"]::after,
+#results-top-wrapper [href="/users/${userslug}"] + h1::after {
+  margin: 0px 0px 5px 10px;
+  padding: 5px 6px 5px 28px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  border-radius: 20px 0px 0px 20px;
+  background-image: url("/assets/logos/logomark.circle.white-8541834d655f22f06c0e1707bf263e8d5be59657dba152298297dffffb1f0a11.svg");
+  background-size: 20px;
+  background-repeat: no-repeat;
+  background-position: 3px center;
+}
+.comment-wrapper .user-name [href="/users/${userslug}"]::after {
+  margin: -3px 0 0 5px;
+  padding: 2px 4px;
+  font-size: 11px;
+  letter-spacing: 0;
+  border-radius: 2px;
+}
+@media (width <= 767px) and (orientation: portrait) {
+  #avatar-wrapper h1 [href="/users/${userslug}"]::after,
+  #results-top-wrapper [href="/users/${userslug}"] + h1::after {
+    margin: 0px 0px 3px 7px;
+    padding: 3px 5px 3px 23px;
+    font-size: 14px;
+    background-size: 14px;
+  }
+}
+
+.personal-list .comment-wrapper .user-name [href="/users/${userslug}"] {
+  white-space: nowrap;
+}
+    `);
+  }
 }
 })();
 

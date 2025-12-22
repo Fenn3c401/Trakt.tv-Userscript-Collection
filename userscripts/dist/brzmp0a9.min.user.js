@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes and Optimizations
-// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches and general documentation. See README for details.
-// @version      0.7.7
+// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
+// @version      0.7.8
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -30,9 +30,9 @@
   - grey out usernames of deleted profiles in the comments
   - append `(@<userslug>)` to usernames in comments (Trakt allows users to set a "Display Name", separate from the username/slug. This becomes a problem in comment replies
       which always reference the person/comment they are replying to with an `@<userslug>` prefix, which sometimes turns long reply chains into a game of matching pairs..), currently not supported in FF
-- The sections below, with the exception of the custom hotkeys, are unrelated to this script, it's just general documentation of native features.
+  - some custom hotkeys and gestures as displayed below
 
-### Hotkeys and Gestures
+### Hotkeys/Gestures (Custom and Native)
 - ***[CUSTOM]*** `alt + 1/2/3/4/5/6/7`: change header-search-category, 1 for "Shows & Movies", 2 for "Shows", ..., 7 for "Users", also expands header-search if collapsed
 - ***[CUSTOM]*** `swipe in from left edge`: display title sidebar on mobile devices
 - `meta(win)/ctrl + left click`: open in new tab instead of redirect (applies to header search results + "view watched history" button on title summary pages)
@@ -47,21 +47,10 @@
 - `ctrl + enter`: save note, submit comment
 - `arrow-left/right OR p/n OR swipe right/left on fanart`: page navigation (e.g. prev/next episode, prev/next results page)
 - `arrow-up/down`: header-search results navigation
-
-### Filter-By-Terms Regex
-The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
-The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
-All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
-the `/progress` page and list pages. For some reason. The input is matched against:
-- list title and description for `/users/<userslug>/lists` pages
-- episode title for `/seasons` pages
-- title and character name for `/people` pages
-- episode and show title for `/progress` pages
-- title name for list pages
 */
 
 
-"use strict";(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),a=t.value;t.value=function(...r){return this.attr("id")==="summary-wrapper"&&(r[0].excludedElements="#summary-ratings-wrapper .stats"),a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",t),Object.entries(e).forEach(([r,o])=>o.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,r,o))}),GM_addStyle(`
+"use strict";(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),a=t.value;t.value=function(...r){return this.attr("id")==="summary-wrapper"&&(r[0].excludedElements="#summary-ratings-wrapper .stats"),a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",t),Object.entries(e).forEach(([r,o])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,r,o))}),GM_addStyle(`
 .popover .rating-hearts {
   min-width: max-content;
 }
@@ -96,7 +85,7 @@ the `/progress` page and list pages. For some reason. The input is matched again
 .comment-wrapper[data-user-slug] .user-name .type + strong {
   color: #aaa !important;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),a=t.value;t.value=function(...r){return r[0]?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r[0].container,a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",t),Object.entries(e).forEach(([r,o])=>o.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.tooltip,r,o))}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),a=t.value;t.value=function(...r){return r[0]?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r[0].container,a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",t),Object.entries(e).forEach(([r,o])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.tooltip,r,o))}),GM_addStyle(`
 @media (width <= 767px) {
   #info-wrapper .sticky-wrapper {
     display: block !important;
@@ -123,7 +112,7 @@ the `/progress` page and list pages. For some reason. The input is matched again
 .personal-list .list-description {
   overflow-wrap: anywhere;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),a=t.value;t.value=function(...r){if(this.attr("id")==="filter-network_ids"&&(r[0].max_shown_results=200),/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)){Object.defineProperty(unsafeWindow.navigator,"userAgent",{get:()=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",configurable:!0});try{return a.apply(this,r)}finally{delete unsafeWindow.navigator.userAgent}}else return a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",t),Object.entries(e).forEach(([r,o])=>o.configurable&&Object.defineProperty(unsafeWindow.jQuery.fn.chosen,r,o))}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,a,r)=>{if(/\/lists\/[\d]+\/like/.test(r.url)){const o=new URLSearchParams(r.data).get("trakt_id"),n=e(`[data-list-id="${o}"] > .like .count-number`),i=n.text(),s=r.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{r.url===p.url&&n.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),a=t.value;t.value=function(...r){if(this.attr("id")==="filter-network_ids"&&(r[0].max_shown_results=200),/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)){Object.defineProperty(unsafeWindow.navigator,"userAgent",{get:()=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",configurable:!0});try{return a.apply(this,r)}finally{delete unsafeWindow.navigator.userAgent}}else return a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",t),Object.entries(e).forEach(([r,o])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.chosen,r,o))}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,a,r)=>{if(/\/lists\/[\d]+\/like/.test(r.url)){const o=new URLSearchParams(r.data).get("trakt_id"),n=e(`[data-list-id="${o}"] > .like .count-number`),i=n.text(),s=r.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{r.url===p.url&&n.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
 #activity .users-wrapper {
   width: 100%;
   padding-bottom: 15px !important;

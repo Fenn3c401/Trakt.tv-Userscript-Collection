@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | All-in-One Lists View
-// @description  Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
-// @version      1.0.7
+// @description  Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu. See README for details.
+// @version      1.0.8
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -16,6 +16,13 @@
 // @grant        unsafeWindow
 // @grant        GM_addStyle
 // ==/UserScript==
+
+/* README
+### General
+- Sorting, filtering and list actions (unlike, delete etc.) should work as usual. Also works on /lists pages of other users.
+- The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript contains an improved/fixed `renderReadmore()` function (for "Read more/less..." buttons of long list descriptions),
+    which greatly speeds up the rendering of the appended lists.
+*/
 
 
 "use strict";addStyles(),document.addEventListener("turbo:load",()=>{if(!/^\/users\/[^\/]+\/lists$/.test(location.pathname))return;const i=unsafeWindow.jQuery;if(!i)return;const s=i("#sortable-grid"),r=s.children().length?i('<hr id="all-in-one-lists-view-spacer">').insertAfter(s):void 0,a=i('<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>').insertAfter(r??s);a.on("click",async()=>{a.text("Loading...").prop("disabled",!0);const l=async n=>fetch(location.pathname+n).then(t=>t.text()).then(t=>i(new DOMParser().parseFromString(t,"text/html")).find(".personal-list"));let e=i((await Promise.all(["/collaborations","/liked","/liked/official"].map(l))).flatMap(n=>n.get()));const d=i(".personal-list"),c=d.map((n,t)=>i(t).attr("data-list-id")).get();if(e=e.filter((n,t)=>!c.includes(i(t).attr("data-list-id"))),!e.length){a.text("No other lists found.");return}const f=+d.last().attr("data-rank");e.each((n,t)=>i(t).attr("data-rank",f+n+1)),e.find(".btn-list-progress").click(function(){unsafeWindow.showLoading();const n=i(this).attr("data-list-id");n&&unsafeWindow.userSettings?.user.vip?unsafeWindow.redirect(unsafeWindow.userURL("progress?list="+n)):unsafeWindow.redirect("/vip/list-progress")}).end().find(".btn-list-subscribe").click(function(){unsafeWindow.showLoading();const n=i(this).attr("data-list-id");n&&unsafeWindow.userSettings?.user.vip?i.post(`/lists/${n}/subscribe`,function(t){unsafeWindow.redirect(t.url)}).fail(function(){unsafeWindow.hideLoading(),unsafeWindow.toastr.error("Doh! We ran into some sort of error.")}):unsafeWindow.redirect("/vip/calendars")}).end().find(".collaborations-deny").on("ajax:success",function(n,t){i("#collaborations-deny-"+t.id).children().addClass("trakt-icon-delete-thick"),i("#collaborations-approve-"+t.id).addClass("off"),i("#collaborations-block-"+t.id).addClass("off")});const o=i("#btn-list-edit-lists");o.hasClass("active")&&o.trigger("click"),o.hide(),s.append(e),r?.remove(),a.remove(),unsafeWindow.genericTooltips(),unsafeWindow.vipTooltips(),unsafeWindow.shareIcons(),unsafeWindow.convertEmojis(),unsafeWindow.userscriptAddLinksToListPreviewPosters?.(),unsafeWindow.addOverlays(),unsafeWindow.$grid?.isotope("insert",e),unsafeWindow.updateListsCount(),unsafeWindow.lazyLoadImages(),unsafeWindow.renderReadmore()})},{capture:!0});function addStyles(){GM_addStyle(`

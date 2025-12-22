@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Nested Header Navigation Menus
 // @description  Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website. See README for details.
-// @version      1.0.8
+// @version      1.1.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -19,6 +19,9 @@
 
 /* README
 > Based on sergeyhist's [Trakt.tv Hidden Items](https://github.com/sergeyhist/trakt-scripts/blob/main/Legacy/trakt-hidden.user.js) userscript.
+
+### General
+- Amongst the added submenus is one called "Quick Actions" which allows for clearing the search history and re-caching progress and browser data. Usually those options are hidden in the advanced settings menu.
 */
 
 
@@ -146,9 +149,9 @@ const menuTemplates = {
       { text: 'Trakt Percentage', href: 'percentage' },
       { text: 'Trakt Votes', href: 'votes' },
       ...(/\/watchlist\?sort=/.test(hrefPrefix) && userslug ? [
-        { text: 'Rotten Tomatoes <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=rtomatoes&sortorder=desc`, useHrefPrefix: false },
-        { text: 'Metacritic <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=metacritic&sortorder=desc`, useHrefPrefix: false },
-        { text: 'MyAnimeList <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=myanimelist&sortorder=desc`, useHrefPrefix: false },
+        { text: 'Rotten Tomatoes <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=rtomatoes&sortorder=asc`, useHrefPrefix: false },
+        { text: 'Metacritic <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=metacritic&sortorder=asc`, useHrefPrefix: false },
+        { text: 'MyAnimeList <em>(mdb)</em>', href: `https://mdblist.com/watchlist/${userslug}?sort=myanimelist&sortorder=asc`, useHrefPrefix: false },
       ] : []),
       {},
       { text: 'My Rating', href: 'my_rating' },
@@ -493,6 +496,19 @@ const menus = {
   ':is(.btn-mobile-links, .btn-tablet-links, .links-wrapper) a[href="https://forums.trakt.tv"]': {
     hrefPrefix: 'https://forums.trakt.tv',
     entries: [
+      { text: 'Latest', href: '/latest' },
+      { text: 'Top', href: '/top', submenu: {
+        hrefPrefix: 'https://forums.trakt.tv/top?period=',
+        entries: [
+          { text: 'PERIOD' },
+          { text: 'Day', href: 'daily', anchor: true },
+          { text: 'Week', href: 'weekly' },
+          { text: 'Month', href: 'monthly' },
+          { text: 'Quarter', href: 'quarterly' },
+          { text: 'Year', href: 'yearly' },
+          { text: 'All Time', href: 'all' },
+        ],
+      }},
       { text: 'Categories', href: '/categories', submenu: {
         hrefPrefix: 'https://forums.trakt.tv',
         entries: [
@@ -509,11 +525,13 @@ const menus = {
           { text: 'Trakt', href: '/c/trakt', submenu: {
             hrefPrefix: 'https://forums.trakt.tv/c/trakt',
             entries: [
+              { text: 'Product Updates', href: '/product-updates' },
               { text: 'Questions & Help', href: '/questions' },
               { text: 'Feature Requests', href: '/feature-requests' },
-              { text: 'Lite', href: '/trakt-lite' },
+              { text: 'Lite', href: '/trakt-lite', anchor: true },
               { text: 'Release Notes', href: '/release-notes' },
               { text: 'VIP Beta Features', href: '/vip-beta-features' },
+              { text: 'How To', href: '/how-to' },
             ],
           }},
           { text: '3rd Party', href: '/c/3rd-party', submenu: {
@@ -521,7 +539,7 @@ const menus = {
             entries: [
               { text: 'Media Centers', href: '/media-centers' },
               { text: 'Mobile Apps', href: '/mobile-apps' },
-              { text: 'Other', href: '/other' },
+              { text: 'Other', href: '/other', anchor: true },
             ],
           }},
           { text: 'Support', href: '/c/support', submenu: {
@@ -530,23 +548,9 @@ const menus = {
               { text: 'Tutorials', href: '/tutorials' },
               { text: 'VIP Features', href: '/vip-features' },
               { text: 'Features', href: '/support-features' },
-              { text: 'FAQ', href: '/faq' },
+              { text: 'FAQ', href: '/faq', anchor: true },
             ],
           }},
-        ],
-      }},
-      { text: 'Latest', href: '/latest' },
-      { text: 'New', href: '/new' },
-      { text: 'Top', href: '/top', submenu: {
-        hrefPrefix: 'https://forums.trakt.tv/top?period=',
-        entries: [
-          { text: 'PERIOD' },
-          { text: 'Day', href: 'daily', anchor: true },
-          { text: 'Week', href: 'weekly' },
-          { text: 'Month', href: 'monthly' },
-          { text: 'Quarter', href: 'quarterly' },
-          { text: 'Year', href: 'yearly' },
-          { text: 'All Time', href: 'all' },
         ],
       }},
       {},
@@ -564,10 +568,10 @@ const menus = {
               { text: 'PERIOD' },
               { text: 'Hour', href: 'hour' },
               { text: 'Day', href: 'day' },
-              { text: 'Week', href: 'week' },
+              { text: 'Week', href: 'week', anchor: true },
               { text: 'Month', href: 'month' },
               { text: 'Year', href: 'year' },
-              { text: 'All Time', href: 'all', anchor: true },
+              { text: 'All Time', href: 'all' },
             ],
           }},
           { text: 'Rising', href: '/rising', anchor: true },

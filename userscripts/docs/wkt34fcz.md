@@ -3,7 +3,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js)
-[![version](https://img.shields.io/badge/version-0.7.9-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js)
+[![version](https://img.shields.io/badge/version-1.0.0-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-756-orange)](../../userscripts/dist/wkt34fcz.user.js)
 
 ## Info
@@ -38,9 +38,9 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [EXT](https://ext.to) [Torrent Aggregator]
 - [Stremio](https://www.stremio.com) [Debrid]
 - [Kuroiru](https://kuroiru.co) [Anime Aggregator]
-- [Miruro](https://www.miruro.to) [Anime Streaming]
-- [AniDap](https://anidap.se) [Anime Streaming]
 - [GOJO.LIVE](https://animetsu.cc) [Anime Streaming]
+- [AniDap](https://anidap.se) [Anime Streaming]
+- [Miruro](https://www.miruro.to) [Anime Streaming]
 - [Knaben Database](https://knaben.org) [Torrent Aggregator]
 - [P-Stream](https://pstream.mov) [Streaming]
 - [Cineby](https://www.cineby.gd) [Streaming]
@@ -64,6 +64,8 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [LiveChart](https://www.livechart.me) (anime tracking site)
 - [TheTVDB](https://thetvdb.com) (similar to TMDB and IMDb)
 - [TVmaze](https://www.tvmaze.com) (tv show tracking site)
+- [YouTube Trailer](https://www.youtube.com) (season trailers are preferred)
+- [YouTube Interviews](https://www.youtube.com) (e.g. actors in talkshows)
 - [Rotten Tomatoes](https://www.rottentomatoes.com) (ratings/reviews from professional critics)
 - [Metacritic](https://www.metacritic.com) (ratings/reviews from professional critics)
 - [Spotify](https://open.spotify.com) (soundtracks)

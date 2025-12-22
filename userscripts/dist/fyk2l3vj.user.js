@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
 // @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels. See README for details.
-// @version      0.8.18
+// @version      1.0.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -29,7 +29,7 @@
     ORed for networks and studios. For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
 - The writers label search was mostly added as an example of how to search for filmography intersections with trakt's search engine (there's no official tutorial about this,
     just some vague one liner in the api docs about how `+ - && || ! ( ) { } [ ] ^ " ~ * ? : /` have "special meaning" when used in a query).
-    It's much more intersting with actors e.g. [Movies with Will Smith and Alan Tudyk](https://trakt.tv/search/movies?query=%22Will%20Smith%22+%22Alan%20Tudyk%22&fields=people).
+    It's much more interesting with actors e.g. [Movies with Will Smith and Alan Tudyk](https://trakt.tv/search/movies?query=%22Will%20Smith%22+%22Alan%20Tudyk%22&fields=people).
 - The title's certification links to the respective `/parentalguide` imdb page (which contains descriptions of nude scenes, graphic content etc.).
 - The title's year links to the search page for other titles from the same year.
 - The search results default to either the "movies" or "shows" search category depending on the type of the current title.
@@ -47,12 +47,14 @@ const logger = {
   _defaults: {
     title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
     toast: true,
-    toastrOpt: { positionClass: 'toast-top-right', timeOut: 8000, progressBar: true },
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
   },
   _print(fnConsole, fnToastr, msg = '', opt = {}) {
-    const { data, title = this._defaults.title, consoleStyles, toast = this._defaults.toast, toastrOpt } = opt;
-    console[fnConsole](`%c${title}: ${msg}`, consoleStyles ?? '', ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](msg + (data !== undefined ? ' See console for details.' : ''), title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
