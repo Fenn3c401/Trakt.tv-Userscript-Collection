@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | All-in-One Lists View
 // @description  Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
-// @version      1.0.7
+// @version      1.0.8
 // @namespace    p2o98x5r
 // @updateURL    https://update.greasyfork.org/scripts/550073.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -12,7 +12,7 @@
 // @grant        GM_addStyle
 // ==/UserScript==
 
-/*
+/* README
 ### General
 - Sorting, filtering and list actions (unlike, delete etc.) should work as usual. Also works on /lists pages of other users.
 - The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript contains an improved/fixed `renderReadmore()` function (for "Read more/less..." buttons of long list descriptions),
