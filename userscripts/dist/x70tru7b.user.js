@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Partial VIP Unlock
-// @description  Unlocks some vip features: advanced filters, filter-by-terms, "more" buttons on dashboard, rewatching, bulk list management, faster page navigation and more. Also hides some vip buttons/banners. See README for details.
-// @version      2.0.0
+// @description  Unlocks some vip features: adding titles to maxed-out lists, advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements. See README for details.
+// @version      2.0.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -23,13 +23,13 @@
 /* README
 ### Full Unlock
 - "more" buttons on dashboard
-- rewatching
-- all vip settings from the `/settings` page: calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings
-- bulk list actions: reset ranks, copy, move, delete (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
-    In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
 - ~2x faster page navigation with Hotwire's Turbo (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
     Also imo it's nothing short of embarassing for them to think it's good idea to intentionally slow down their website for free users. There's a reason they don't have it listed amongst the vip perks..)
+- bulk list actions: reset ranks, copy, move, delete (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
+    In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
+- rewatching
 - vip badge (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
+- all vip settings from the `/settings` page: calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings
 - filter-by-terms
 - watch-now modal country selection
 
@@ -47,7 +47,7 @@
     announcement about this, didn't notify the affected users and didn't produce an incident report, so god knowns on what scale this was exploited. And all I got in return was getting ghosted. Twice.)
 
 ### Related Userscripts
-Of the ~14 Trakt.tv userscripts I've got, there are another four which (in part) replicate a vip feature in some way:
+Of the ~14 Trakt.tv userscripts I've got, there are another three which (in part) replicate a vip feature in some way:
 - [Trakt.tv \| Custom Profile Image](2dz6ub1t.md)
 - [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md)
 - [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
