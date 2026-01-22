@@ -40,7 +40,7 @@ end_line=$(tail -n +$((start_line + 1)) README.md | grep -n -m 1 -v '^|' | cut -
 
 
 printf 'Starting to process userscripts in %s...\n' "$SRC_DIR"
-declare -i userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)
+declare -i userscript_count=$(find "$SRC_DIR" -name "*.user.js" | wc -l)-1
 declare -i loc_count_total=0
 declare -a ms_ids
 declare -A ms_store
@@ -52,10 +52,12 @@ for file in "$SRC_DIR"/*.user.js; do
 
   if [[ "$id" = 'zzzzzzzz' ]]; then
     printf '   0. Generating src file for megascript\n'
+    ms_old=$(< "$file")
     cat > "$file" << EOF
 // ==UserScript==
 // @name         Trakt.tv | Megascript
-// @description  All $((userscript_count - 1)) userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience.
+// @description  All $userscript_count userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. Namely:\
+$(for id in "${ms_ids[@]}"; do sed 's#^Trakt.tv | ##; s|.*| "&"|' <<< "${ms_store["$id.script_name"]}"; done | sort | paste -sd, -).
 // @version      $(date '+%Y-%m-%d_%H-%M')
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
@@ -78,14 +80,18 @@ $(for id in "${ms_ids[@]}"; do printf '%s\n' "${ms_store["$id.header"]}"; done \
 
 /* README
 ### General
-- You can disable individual modules by setting the corresponding script-id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding id to \`false\` in the userscript storage tab *(note: only displayed after first run)*.
 - Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
 - As VIP user you should disable: \`2dz6ub1t\`, \`fyk2l3vj\`, \`x70tru7b\`, \`2hc6zfyy\`
 - This userscript is automatically generated. YMMV.
 
-| *NAME* | *SCRIPT_ID* |
+| *NAME* | *ID* |
 | :----- | :---------- |
-$(for id in "${ms_ids[@]}"; do printf '| [%s](%s#StickyHeader) | `%s` |\n' "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id.md" "$id"; done | sort)
+$(for id in "${ms_ids[@]}"; do
+  printf '| [%s](%s#StickyHeader "%s") | `%s` |\n' \
+    "$(sed 's#|#\\|#g' <<< "${ms_store["$id.script_name"]}")" "$id.md" "$(sed 's#|#\\|#g; s|"|\\"|g' <<< "${ms_store["$id.script_description"]}")" \
+    "$id"
+done | sort)
 */
 
 $(for id in "${ms_ids[@]}"; do
@@ -102,6 +108,9 @@ const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; 
 GM_setValue('megascript', gmStorage);
 $(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async () => {\n%s\n})();\n" "$id" "${ms_store["$id.body"]}"; done)
 EOF
+    if diff <(printf '%s\n' "$ms_old" | grep -v '^// @version') <(grep -v '^// @version' "$file") > /dev/null; then
+      printf '%s\n' "$ms_old" > "$file"
+    fi
   fi
 
 
@@ -181,8 +190,11 @@ EOF
     printf '%s\n' "Click [HERE]($BASE_URL#readme) for general info, requirements and a full list of all my Trakt.tv userscripts."
   ) > "$DOCS_DIR/$id-gf.md"
 
-  printf '| [%s](%s) | `%s` | `%s` | [Standard](%s) // [Minified](%s) |\n' \
-    "$(sed 's#|#\\|#g' <<< "$script_name")" "$DOCS_DIR/$id.md#StickyHeader" "$script_version" "$loc_count" "$DOWNLOAD_URL_DIST" "$DOWNLOAD_URL_DIST_MIN" >> "$TABLE_CONTENT_FILE"
+  printf '| [%s](%s "%s") | `%s` | `%s` | [Standard](%s) // [Minified](%s) |\n' \
+    "$(sed 's#|#\\|#g' <<< "$script_name")" "$DOCS_DIR/$id.md#StickyHeader" "$(sed 's#|#\\|#g; s|"|\\"|g' <<< "$script_description")" \
+    "$(sed $'s|_|_\u200b|' <<< "$script_version")" \
+    "$loc_count" \
+    "$DOWNLOAD_URL_DIST" "$DOWNLOAD_URL_DIST_MIN" >> "$TABLE_CONTENT_FILE"
 done
 
 
