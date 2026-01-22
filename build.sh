@@ -52,7 +52,7 @@ for file in "$SRC_DIR"/*.user.js; do
 
   if [[ "$id" = 'zzzzzzzz' ]]; then
     printf '   0. Generating src file for megascript\n'
-    ms_old=$(< "$file")
+    ms_old="$(< "$file")"
     cat > "$file" << EOF
 // ==UserScript==
 // @name         Trakt.tv | Megascript
@@ -108,7 +108,7 @@ const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; 
 GM_setValue('megascript', gmStorage);
 $(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async () => {\n%s\n})();\n" "$id" "${ms_store["$id.body"]}"; done)
 EOF
-    if diff <(printf '%s\n' "$ms_old" | grep -v '^// @version') <(grep -v '^// @version' "$file") > /dev/null; then
+    if diff <(grep -v '^// @version' <<< "$ms_old") <(grep -v '^// @version' "$file") > /dev/null; then
       printf '%s\n' "$ms_old" > "$file"
     fi
   fi
