@@ -56,8 +56,8 @@ for file in "$SRC_DIR"/*.user.js; do
     cat > "$file" << EOF
 // ==UserScript==
 // @name         Trakt.tv | Megascript
-// @description  All $userscript_count userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. Namely:\
-$(for id in "${ms_ids[@]}"; do sed 's#^Trakt.tv | ##; s|.*| "&"|' <<< "${ms_store["$id.script_name"]}"; done | sort | paste -sd, -).
+// @description  My $userscript_count trakt.tv userscripts merged into one for convenience. Namely:\
+$(for id in "${ms_ids[@]}"; do sed 's#^Trakt.tv |##' <<< "${ms_store["$id.script_name"]}"; done | sort | paste -sd, -).
 // @version      $(date '+%Y-%m-%d_%H-%M')
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
