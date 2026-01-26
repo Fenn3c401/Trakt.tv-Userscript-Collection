@@ -1,9 +1,9 @@
 # Trakt.tv | Megascript
-All 13 userscripts from my "Trakt.tv Userscript Collection" repo merged into one for convenience. Namely: "Actor Pronunciation Helper", "All-in-One Lists View", "Average Season And Episode Ratings", "Bug Fixes and Optimizations", "Charts - Ratings Distribution", "Charts - Seasons", "Custom Links (Watch-Now + External)", "Custom Profile Image", "Enhanced List Preview Posters", "Enhanced Title Metadata", "Nested Header Navigation Menus", "Partial VIP Unlock", "Scheduled E-Mail Data Exports".
+My 13 trakt.tv userscripts merged into one for convenience. Namely: Actor Pronunciation Helper, All-in-One Lists View, Average Season And Episode Ratings, Bug Fixes and Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Scheduled E-Mail Data Exports.
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2026--01--22__19--08-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2026--01--26__05--34-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-3802-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
