@@ -3,7 +3,7 @@ My 13 trakt.tv userscripts merged into one for convenience. Namely: Actor Pronun
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2026--01--26__05--34-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2026--01--27__17--27-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-3802-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
