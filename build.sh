@@ -106,7 +106,7 @@ done)
 
 const gmStorage = { $(for id in "${ms_ids[@]}"; do printf "'%s': true, " "$id"; done)...(GM_getValue('megascript')) };
 GM_setValue('megascript', gmStorage);
-$(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async () => {\n%s\n})();\n" "$id" "${ms_store["$id.body"]}"; done)
+$(for id in "${ms_ids[@]}"; do printf "\n\ngmStorage['%s'] && (async (moduleName) => {\n%s\n})('%s');\n" "$id" "${ms_store["$id.body"]}" "${ms_store["$id.script_name"]}"; done)
 EOF
     if diff <(grep -v '^// @version' <<< "$ms_old") <(grep -v '^// @version' "$file") > /dev/null; then
       printf '%s\n' "$ms_old" > "$file"
