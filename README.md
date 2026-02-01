@@ -8,9 +8,6 @@ An extensive userscript collection for trakt.tv. Please report any bugs you enco
 [![number of userscripts](https://img.shields.io/badge/userscripts-15-f25e1d)](#userscripts)
 [![total lines of code](https://img.shields.io/badge/loc-4718-orange)](#userscripts)
 
-> [!WARNING]
-> This project is currently in active development. Features, structure, and documentation may be incomplete and/or change at any time. This especially applies to userscripts with versions below 1.0.0.
-
 ## Userscripts
 | *NAME* | *VERSION* | *LOC* | *INSTALL* |
 |:---|:---|:---|:---|
