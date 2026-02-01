@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Scheduled E-Mail Data Exports
 // @description  Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
-// @version      1.1.2
+// @version      1.1.5
 // @namespace    2hc6zfyy
 // @updateURL    https://update.greasyfork.org/scripts/550078.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -23,18 +23,15 @@
 */
 
 
-/* global Cron */
+/* global moduleName, Cron */
 
 'use strict';
 
-let $, toastr, userslug;
-
-const gmStorage = { toastOnSuccess: true, cronExpr: '@weekly', lastRun: {}, ...(GM_getValue('scheduledEmailDataExports')) };
-GM_setValue('scheduledEmailDataExports', gmStorage);
+let $, userslug;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -43,13 +40,16 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
-  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', toast: gmStorage.toastOnSuccess, ...opt }) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
   warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
   error(msg, opt) { this._print('error', 'error', msg, opt) },
 };
+
+const gmStorage = { cronExpr: '@weekly', toastOnSuccess: true, lastRun: {}, ...(GM_getValue('scheduledEmailDataExports')) };
+GM_setValue('scheduledEmailDataExports', gmStorage);
 
 let cron;
 try {
@@ -63,9 +63,8 @@ try {
 
 cron && window.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
   userslug ??= unsafeWindow.Cookies?.get('trakt_userslug');
-  if (!$ || !toastr || !userslug) return;
+  if (!$ || !userslug) return;
 
   const dateNow = new Date();
 
@@ -82,7 +81,7 @@ cron && window.addEventListener('turbo:load', async () => {
     $.post('/settings/export_data').done(() => {
       gmStorage.lastRun[userslug] = dateNow.toISOString();
       GM_setValue('scheduledEmailDataExports', gmStorage);
-      logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.');
+      logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.', { toast: gmStorage.toastOnSuccess });
     }).fail((xhr) => {
       if (xhr.status === 409) {
         gmStorage.lastRun[userslug] = dateNow.toISOString();
