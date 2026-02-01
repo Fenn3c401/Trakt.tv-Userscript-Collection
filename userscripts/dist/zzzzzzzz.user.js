@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
-// @description  My 15 trakt.tv userscripts merged into one for convenience. Namely: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper. See README for details.
-// @version      2026-02-01_02-41
+// @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper. See README for details.
+// @version      2026-02-01_07-46
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -154,7 +154,7 @@ Exposes an authenticated Trakt API Wrapper. Intended to run alongside other user
 
 ### Usage
 - The wrapper is exposed through `window.userscriptTraktApiWrapper` and can be used like:<br>
-    `const data = await userscriptTraktApiWrapper.search.id({ id_type: 'trakt', id: 1234, type: 'episode', extended: 'full', _auth: true });`<br>
+    `const data = await userscriptTraktApiWrapper.search.id({ id_type: 'trakt', id: 1234, type: 'episode', extended: 'full', _auth: true, _meta: true, _revalidate: true });`<br>
     There are two types of props you can pass to a method, parameters corresponding to those listed in the Trakt API docs and options (denoted by a leading `_`) for the wrapper itself.
 - ***Parameters***<br>
     There are three categories: path parameters, search parameters, and the props for the request's body. First the mandatory and optional parameters for the path
@@ -167,13 +167,15 @@ Exposes an authenticated Trakt API Wrapper. Intended to run alongside other user
     - `_meta` - Whether to wrap the response's data in an object with the supplied trakt header metadata like: `{ data: returned_data, meta: { pagination_page: 3 } }`.
         `meta` includes all the trakt `x-`-prefixed headers and a couple select others in a normalized form to allow for dot-syntax access. Type coercion is done for numbers and booleans.
         It's also included as `parsedTraktHeaders` with the raw response object which get's thrown in case of a failed request.
-    - `_revalidate` - Whether to revalidate the data instead of directly pulling it from the disk cache. Defaults to `false`.
+    - `_revalidate` - Whether to revalidate the data instead of directly pulling it from the disk cache when possible.
     - `_retry` - Configuration for a basic exponential backoff based retry mechanism. By default only activated for authed `POST`/`PUT`/`DELETE` requests.
         Doesn't use the `ratelimit` and `retry_after` trakt headers. Takes a config object like `{ limit: 5, req_delay: 1000, resp_delay: 0 }`, with each retry
         `limit` gets decremented (= 5 retries) and `req_delay` doubled. If you want to turn it off you can just override it with `_retry: null`.
 - In the userscript storage tab you can change the `apiUrl` to `https://api-staging.trakt.tv` for a sandbox environment
     and you can activate console logging of all api requests with `logApiRequests`.
-- There's built-in rate-limiting for authed `POST`/`PUT`/`DELETE` requests (1 / sec).
+- There's built-in rate-limiting for authed `POST`/`PUT`/`DELETE` requests (1/sec), which is complemented by the default `_retry` config, so you can just make a bunch of these
+    requests at once and they'll be queued up and executed one by one in the same order in which you made them. This is complemented by the default `_retry` config where in this case
+    a retried request delays all other queued requests.
 */
 
 /* [Trakt.tv | Enhanced Title Metadata]
@@ -225,10 +227,12 @@ Adds playback progress badges to in-progress movies/episodes and allows for sett
 > Inspired by sharkykh's [Trakt.tv Playback Progress Manager](https://sharkykh.github.io/tppm/).
 
 ### General
-- This script does not work without the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript, so you'll need to install that one as well (or the [Trakt.tv | Megascript](zzzzzzzz.md)).
+- This script does not work without the [Trakt API Wrapper](f785bub0.md) userscript, so you'll need to install that one as well (or the [Megascript](zzzzzzzz.md)).
 - By clicking on a playback progress badge, you can access options to either set a new playback progress state or remove it entirely.
-- There are three context menu actions. "Set New" is only available on movie and episode summary pages and allows for setting a new playback progress state for that title.
+- There are three context menu commands. "Set New" is only available on movie and episode summary pages and allows for setting a new playback progress state for that title.
     "Delete All" and "Renew All" are only available on the [Playback Progress - All Types](https://trakt.tv/users/me/progress/playback) page as those affect all stored playback progress states.
+    From my testing the context menu commands are added reliably in Chrome, but not so much in Firefox. Fortunately Tampermonkey allows for triggering context menu commands via its
+    extension popup window as well (see the screenshots below), so you can just use that as alternative.
 - Playback progress states are automatically removed by Trakt after 6 months. Renewing them postpones the auto-removal by first removing and then setting the
     playback progress states again, while preserving the current order.
 - Marking an in-progress movie or episode as watched will also remove the corresponding playback progress state.
@@ -240,8 +244,8 @@ or use sharkykh's [TPPM](https://sharkykh.github.io/tppm/).
 
 This has changed now, they've finally added native support for this to the new lite version of the website. Specifically on the "continue watching" page you can now see and remove
 the playback progress states of movies. From what I can tell there's no episode support, no bulk actions, no option to set a new state and most importantly there are no
-playback progress indicators on movie summary pages or any of the other grid views outside of the /progress page. It's a rather lackluster implementation, though at least it's in line with
-the rest of their new version.
+playback progress indicators on movie summary pages or any of the other grid views outside of the "continue watching" page. It's a rather lackluster implementation,
+though at least it's in line with the rest of their new version.
 */
 
 /* [Trakt.tv | Nested Header Navigation Menus]

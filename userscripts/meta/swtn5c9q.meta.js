@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Playback Progress Manager
 // @description  Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the "Progress" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE "TRAKT API WRAPPER" USERSCRIPT! See README for details.
-// @version      1.0.0
+// @version      1.0.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
