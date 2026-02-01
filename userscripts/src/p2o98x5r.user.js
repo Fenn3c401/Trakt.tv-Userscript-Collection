@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | All-in-One Lists View
+// @name         Trakt.tv | All-In-One Lists View
 // @description  Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
-// @version      1.0.8
+// @version      1.0.10
 // @namespace    p2o98x5r
 // @updateURL    https://update.greasyfork.org/scripts/550073.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -33,7 +33,7 @@ document.addEventListener('turbo:load', () => {
 
   const $sortableGrid = $('#sortable-grid'),
         $spacer = $sortableGrid.children().length ? $(`<hr id="all-in-one-lists-view-spacer">`).insertAfter($sortableGrid) : undefined,
-        $btn = $(`<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>`).insertAfter($spacer ?? $sortableGrid);
+        $btn = $(`<button id="all-in-one-lists-view-btn" type="button">All-In-One Lists View</button>`).insertAfter($spacer ?? $sortableGrid);
 
   $btn.on('click', async () => {
     $btn.text('Loading...').prop('disabled', true);
