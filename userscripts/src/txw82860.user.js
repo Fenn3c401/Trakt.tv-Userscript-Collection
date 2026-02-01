@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Nested Header Navigation Menus
 // @description  Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.
-// @version      1.1.0
+// @version      1.1.1
 // @namespace    txw82860
 // @updateURL    https://update.greasyfork.org/scripts/550077.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -229,13 +229,11 @@ const menus = {
       { text: 'Watched', href: '/watched', anchor: true, submenu: menuTemplates.progressSorting('/users/me/progress/watched') },
       { text: 'Dropped', href: '/dropped', submenu: menuTemplates.progressSorting('/users/me/progress/dropped') },
       { text: 'Library', href: '/library', submenu: menuTemplates.progressSorting('/users/me/progress/library') },
-      ...(unsafeWindow.userscriptPlaybackProgressManager ? [
-        {},
-        { text: 'PLAYBACK' },
-        { text: 'All Types', href: '/playback' },
-        { text: 'Movies', href: '/playback/movies' },
-        { text: 'Episodes', href: '/playback/episodes' },
-      ] : []),
+      {},
+      { text: 'PLAYBACK' },
+      { text: 'All Types', href: '/playback' },
+      { text: 'Movies', href: '/playback/movies' },
+      { text: 'Episodes', href: '/playback/episodes' },
     ],
   },
   '.btn-profile a[href$="/ratings"]': {
