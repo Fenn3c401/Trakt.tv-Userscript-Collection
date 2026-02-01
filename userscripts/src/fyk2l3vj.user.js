@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Enhanced Title Metadata
 // @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels.
-// @version      1.0.0
+// @version      1.0.5
 // @namespace    fyk2l3vj
 // @updateURL    https://update.greasyfork.org/scripts/550076.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -20,6 +20,7 @@
 > Based on sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
 
 ### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the studios data fetching.
 - By clicking on the label for languages, genres, networks, studios and writers, you can make a search for all their respective values combined, ANDed for genres, languages and writers,
     ORed for networks and studios. For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
 - The writers label search was mostly added as an example of how to search for filmography intersections with trakt's search engine (there's no official tutorial about this,
@@ -34,13 +35,15 @@
 */
 
 
+/* global moduleName */
+
 'use strict';
 
-let $, toastr, traktApiModule;
+let $, traktApiWrapper;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -49,7 +52,7 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -67,9 +70,8 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/(shows|movies)\//.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
-  if (!$ || !toastr) return;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
+  if (!$) return;
 
   const $additionalStatsLi = $('#overview .additional-stats > li'),
         pathSplit = location.pathname.split('/').filter(Boolean);
@@ -234,7 +236,7 @@ document.addEventListener('turbo:load', async () => {
   // STUDIOS
   const $studios = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase().startsWith('studio'));
   if ($studios.length) {
-    if (traktApiModule) {
+    if (traktApiWrapper) {
       let hasRun = false;
 
       const matchStudioFromElemContext = async function(evt) {
@@ -243,8 +245,8 @@ document.addEventListener('turbo:load', async () => {
         evt?.preventDefault();
 
         unsafeWindow.showLoading?.();
-        const dataStudios = await traktApiModule[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
-              allStudioIdsJoined = dataStudios.map((studio) => studio.ids.trakt).join();
+        const dataStudios = await traktApiWrapper[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
+              allStudioIdsJoined = dataStudios.map((dataStudio) => dataStudio.ids.trakt).join();
         unsafeWindow.hideLoading?.();
 
         if (evt) {
@@ -255,7 +257,7 @@ document.addEventListener('turbo:load', async () => {
 
         $studios.children().eq(0).attr('href', `/search/${pathSplit[0]}?studio_ids=${allStudioIdsJoined}`);
         $studios.children().eq(1).attr('href', `/search/${pathSplit[0]}?studio_ids=${dataStudios[0].ids.trakt}`);
-        $studios.find('.studios-more').html(dataStudios.slice(1).map((studio) => `, <a href="${studio.ids.trakt}">${studio.name}</a>`));
+        $studios.find('.studios-more').html(dataStudios.slice(1).map((dataStudio) => `, <a href="/search/${pathSplit[0]}?studio_ids=${dataStudio.ids.trakt}">${dataStudio.name}</a>`));
       }
 
       // wrap names with unresolved anchor tags to minimize api requests
