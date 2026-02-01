@@ -21,8 +21,10 @@
 ### General
 - This script does not work without the [Trakt API Wrapper](f785bub0.md) userscript, so you'll need to install that one as well (or the [Megascript](zzzzzzzz.md)).
 - By clicking on a playback progress badge, you can access options to either set a new playback progress state or remove it entirely.
-- There are three context menu actions. "Set New" is only available on movie and episode summary pages and allows for setting a new playback progress state for that title.
+- There are three context menu commands. "Set New" is only available on movie and episode summary pages and allows for setting a new playback progress state for that title.
     "Delete All" and "Renew All" are only available on the [Playback Progress - All Types](https://trakt.tv/users/me/progress/playback) page as those affect all stored playback progress states.
+    From my testing the context menu commands are added reliably in Chrome, but not so much in Firefox. Fortunately Tampermonkey allows for triggering context menu commands via its
+    extension popup window as well (see the screenshots below), so you can just use that as alternative.
 - Playback progress states are automatically removed by Trakt after 6 months. Renewing them postpones the auto-removal by first removing and then setting the
     playback progress states again, while preserving the current order.
 - Marking an in-progress movie or episode as watched will also remove the corresponding playback progress state.
