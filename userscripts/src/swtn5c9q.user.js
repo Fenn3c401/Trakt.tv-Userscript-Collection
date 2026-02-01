@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name         Trakt.tv | Playback Progress Manager
 // @description  Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the "Progress" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE "TRAKT API WRAPPER" USERSCRIPT!
-// @version      1.0.0
+// @version      1.0.1
 // @namespace    swtn5c9q
+// @updateURL    https://update.greasyfork.org/scripts/564749.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
 // @match        https://trakt.tv/*
 // @match        https://classic.trakt.tv/*
@@ -18,7 +19,7 @@
 > Inspired by sharkykh's [Trakt.tv Playback Progress Manager](https://sharkykh.github.io/tppm/).
 
 ### General
-- This script does not work without the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript, so you'll need to install that one as well (or the [Trakt.tv | Megascript](zzzzzzzz.md)).
+- This script does not work without the [Trakt API Wrapper](f785bub0.md) userscript, so you'll need to install that one as well (or the [Megascript](zzzzzzzz.md)).
 - By clicking on a playback progress badge, you can access options to either set a new playback progress state or remove it entirely.
 - There are three context menu actions. "Set New" is only available on movie and episode summary pages and allows for setting a new playback progress state for that title.
     "Delete All" and "Renew All" are only available on the [Playback Progress - All Types](https://trakt.tv/users/me/progress/playback) page as those affect all stored playback progress states.
@@ -33,8 +34,8 @@ or use sharkykh's [TPPM](https://sharkykh.github.io/tppm/).
 
 This has changed now, they've finally added native support for this to the new lite version of the website. Specifically on the "continue watching" page you can now see and remove
 the playback progress states of movies. From what I can tell there's no episode support, no bulk actions, no option to set a new state and most importantly there are no
-playback progress indicators on movie summary pages or any of the other grid views outside of the /progress page. It's a rather lackluster implementation, though at least it's in line with
-the rest of their new version.
+playback progress indicators on movie summary pages or any of the other grid views outside of the "continue watching" page. It's a rather lackluster implementation,
+though at least it's in line with the rest of their new version.
 */
 
 
