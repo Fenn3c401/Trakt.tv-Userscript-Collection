@@ -3,8 +3,8 @@ Automatic trakt.tv backups for free users. On every trakt.tv visit a background 
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/2hc6zfyy.min.user.js)
-[![version](https://img.shields.io/badge/version-1.1.2-blue)](../../../../blame/main/userscripts/dist/2hc6zfyy.user.js)
-[![lines of code](https://img.shields.io/badge/loc-59-orange)](../../userscripts/dist/2hc6zfyy.user.js)
+[![version](https://img.shields.io/badge/version-1.1.5-blue)](../../../../blame/main/userscripts/dist/2hc6zfyy.user.js)
+[![lines of code](https://img.shields.io/badge/loc-58-orange)](../../userscripts/dist/2hc6zfyy.user.js)
 
 ## Info
 ### General

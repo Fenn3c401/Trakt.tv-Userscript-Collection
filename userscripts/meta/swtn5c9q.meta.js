@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Enhanced Title Metadata
-// @description  Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels. See README for details.
-// @version      1.0.5
+// @name         Trakt.tv | Playback Progress Manager
+// @description  Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the "Progress" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE "TRAKT API WRAPPER" USERSCRIPT! See README for details.
+// @version      1.0.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -14,7 +14,6 @@
 // @grant        unsafeWindow
 // @grant        GM_info
 // @grant        GM_addStyle
-// @grant        GM_openInTab
-// @grant        GM_getValue
-// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
 // ==/UserScript==

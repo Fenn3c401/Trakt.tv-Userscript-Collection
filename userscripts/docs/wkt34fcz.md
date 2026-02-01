@@ -3,7 +3,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/wkt34fcz.min.user.js)
-[![version](https://img.shields.io/badge/version-1.0.0-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js)
+[![version](https://img.shields.io/badge/version-1.0.7-blue)](../../../../blame/main/userscripts/dist/wkt34fcz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-756-orange)](../../userscripts/dist/wkt34fcz.user.js)
 
 ## Info
@@ -12,6 +12,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 > sergeyhist's [Watch Now Alternative](https://github.com/sergeyhist/trakt-watch-now-alternative) and Tanase Gabriel's [Trakt.tv Universal Search](https://greasyfork.org/en/scripts/508020) userscripts.
 
 ### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the item data fetching.
 - `maxSidebarWnLinks` controls how many watch-now links are visible in the watch-now preview of the sidebar. The default is `4` and can be modfied
     in the userscript storage tab *(note: only displayed after first run)*. There you can also modify `torrentResolution` which defaults to `1080p` and
     is used for the query of the torrent and usenet links. Additionally `includeNsfwLinks` controls the visibility of the NSFW links and defaults to `false`.
@@ -38,7 +39,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [EXT](https://ext.to) [Torrent Aggregator]
 - [Stremio](https://www.stremio.com) [Debrid]
 - [Kuroiru](https://kuroiru.co) [Anime Aggregator]
-- [GOJO.LIVE](https://animetsu.cc) [Anime Streaming]
+- [Animetsu](https://animetsu.cc) [Anime Streaming]
 - [AniDap](https://anidap.se) [Anime Streaming]
 - [Miruro](https://www.miruro.to) [Anime Streaming]
 - [Knaben Database](https://knaben.org) [Torrent Aggregator]

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Ratings Distribution
 // @description  Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart. See README for details.
-// @version      1.0.7
+// @version      1.0.8
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -22,12 +22,17 @@
 // @connect      walter-r2.trakt.tv
 // ==/UserScript==
 
+/* README
+### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the ratings distribution data fetching.
+*/
+
 
 /* global Chart */
 
 'use strict';
 
-let $, traktApiModule;
+let $, traktApiWrapper;
 const numFormatCompact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
 numFormatCompact.formatTLC = (n) => numFormatCompact.format(n).toLowerCase();
 
@@ -38,7 +43,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/(shows|movies)\//.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
   if (!$) return;
 
   const $summaryWrapper = $('#summary-wrapper'),
@@ -65,10 +70,10 @@ document.addEventListener('turbo:load', async () => {
 
 async function getRatingsData(statsPath) {
   let ratingsData;
-  if (traktApiModule) {
+  if (traktApiWrapper) {
     const statsPathSplit = statsPath.split('/').slice(1, -1),
           id = isNaN(statsPathSplit[1]) ? statsPathSplit[1] : $('.summary-user-rating').attr(`data-${statsPathSplit[0].slice(0, -1)}-id`), // /shows/1883 numeric slugs are interpreted as trakt-id by api
-          resp = await traktApiModule[(statsPathSplit[4] ?? statsPathSplit[2] ?? statsPathSplit[0])].ratings({ id, season: statsPathSplit[3], episode: statsPathSplit[5] });
+          resp = await traktApiWrapper[(statsPathSplit[4] ?? statsPathSplit[2] ?? statsPathSplit[0])].ratings({ id, season: statsPathSplit[3], episode: statsPathSplit[5] });
     ratingsData = { distribution: Object.values(resp.distribution), votes: resp.votes };
   } else {
     const resp = await fetch(statsPath),

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Nested Header Navigation Menus
 // @description  Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website. See README for details.
-// @version      1.1.0
+// @version      1.1.1
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -234,13 +234,11 @@ const menus = {
       { text: 'Watched', href: '/watched', anchor: true, submenu: menuTemplates.progressSorting('/users/me/progress/watched') },
       { text: 'Dropped', href: '/dropped', submenu: menuTemplates.progressSorting('/users/me/progress/dropped') },
       { text: 'Library', href: '/library', submenu: menuTemplates.progressSorting('/users/me/progress/library') },
-      ...(unsafeWindow.userscriptPlaybackProgressManager ? [
-        {},
-        { text: 'PLAYBACK' },
-        { text: 'All Types', href: '/playback' },
-        { text: 'Movies', href: '/playback/movies' },
-        { text: 'Episodes', href: '/playback/episodes' },
-      ] : []),
+      {},
+      { text: 'PLAYBACK' },
+      { text: 'All Types', href: '/playback' },
+      { text: 'Movies', href: '/playback/movies' },
+      { text: 'Episodes', href: '/playback/episodes' },
     ],
   },
   '.btn-profile a[href$="/ratings"]': {

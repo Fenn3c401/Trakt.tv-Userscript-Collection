@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Custom Profile Image
-// @description  A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
-// @version      1.1.4
+// @name         Trakt.tv | Custom Profile Header Image
+// @description  A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well. See README for details.
+// @version      1.1.8
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -21,13 +21,15 @@
 // ==/UserScript==
 
 
+/* global moduleName */
+
 'use strict';
 
-let $, toastr;
+let $;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -36,7 +38,7 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -54,8 +56,7 @@ window.addEventListener('turbo:load', () => {
   if (!/^\/(shows|movies|users|dashboard|settings|oauth\/(authorized_)?applications)/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
-  if (!$ || !toastr) return;
+  if (!$) return;
 
   const $coverWrapper = $('body.is-self #cover-wrapper'),
         $btnSetProfileImage = $('body.is-self #btn-set-profile-image'),

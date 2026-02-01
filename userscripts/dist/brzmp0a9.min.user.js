@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Bug Fixes and Optimizations
+// @name         Trakt.tv | Bug Fixes And Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
-// @version      0.7.8
+// @version      1.0.0
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -94,7 +94,7 @@
     position: fixed;
     top: 0 !important;
     left: 0;
-    z-index: 20;
+    z-index: 30;
     width: 40%;
     padding: calc(10px + var(--header-height)) 10px 0;
     height: 100%;

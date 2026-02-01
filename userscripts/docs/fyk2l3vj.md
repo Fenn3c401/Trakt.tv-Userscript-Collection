@@ -3,13 +3,14 @@ Adds links of filtered search results to the metadata section (languages, genres
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/fyk2l3vj.min.user.js)
-[![version](https://img.shields.io/badge/version-1.0.0-blue)](../../../../blame/main/userscripts/dist/fyk2l3vj.user.js)
-[![lines of code](https://img.shields.io/badge/loc-322-orange)](../../userscripts/dist/fyk2l3vj.user.js)
+[![version](https://img.shields.io/badge/version-1.0.5-blue)](../../../../blame/main/userscripts/dist/fyk2l3vj.user.js)
+[![lines of code](https://img.shields.io/badge/loc-321-orange)](../../userscripts/dist/fyk2l3vj.user.js)
 
 ## Info
 > Based on sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
 
 ### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the studios data fetching.
 - By clicking on the label for languages, genres, networks, studios and writers, you can make a search for all their respective values combined, ANDed for genres, languages and writers,
     ORed for networks and studios. For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
 - The writers label search was mostly added as an example of how to search for filmography intersections with trakt's search engine (there's no official tutorial about this,

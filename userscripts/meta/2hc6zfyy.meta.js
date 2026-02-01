@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Scheduled E-Mail Data Exports
 // @description  Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly). See README for details.
-// @version      1.1.2
+// @version      1.1.5
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Actor Pronunciation Helper
 // @description  Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com
-// @version      1.0.4
+// @version      1.0.6
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -20,13 +20,15 @@
 // ==/UserScript==
 
 
+/* global moduleName */
+
 'use strict';
 
-let $, toastr;
+let $;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -35,7 +37,7 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -50,8 +52,7 @@ document.addEventListener('turbo:load', () => {
   if (!/^\/people\/[^\/]+(\/lists.*)?$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
-  if (!$ || !toastr) return;
+  if (!$) return;
 
   $(`<button id="btn-pronounce-name">` +
       `<div class="audio-animation fade">` +

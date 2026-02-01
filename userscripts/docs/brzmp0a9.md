@@ -1,9 +1,9 @@
-# Trakt.tv | Bug Fixes and Optimizations
+# Trakt.tv | Bug Fixes And Optimizations
 A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/brzmp0a9.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/brzmp0a9.min.user.js)
-[![version](https://img.shields.io/badge/version-0.7.8-blue)](../../../../blame/main/userscripts/dist/brzmp0a9.user.js)
+[![version](https://img.shields.io/badge/version-1.0.0-blue)](../../../../blame/main/userscripts/dist/brzmp0a9.user.js)
 [![lines of code](https://img.shields.io/badge/loc-536-orange)](../../userscripts/dist/brzmp0a9.user.js)
 
 ## Info

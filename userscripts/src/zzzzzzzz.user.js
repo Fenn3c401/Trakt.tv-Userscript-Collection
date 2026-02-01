@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
-// @description  My 13 trakt.tv userscripts merged into one for convenience. Namely: Actor Pronunciation Helper, All-in-One Lists View, Average Season And Episode Ratings, Bug Fixes and Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Scheduled E-Mail Data Exports.
-// @version      2026-01-27_17-27
+// @description  My 15 trakt.tv userscripts merged into one for convenience. Namely: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper.
+// @version      2026-02-01_02-41
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -9,9 +9,9 @@
 // @match        https://classic.trakt.tv/*
 // @run-at       document-start
 // @resource     anidap         https://anidap.se/logo.png
+// @resource     animetsu       https://db.onlinewebfonts.com/t/65e1ae41ad95e8bed2ac45adc765795a.woff2
 // @resource     cineby         https://www.cineby.gd/logo.png
 // @resource     dmm            https://raw.githubusercontent.com/debridmediamanager/debrid-media-manager/main/dmm-logo.svg
-// @resource     gojolive       https://db.onlinewebfonts.com/t/65e1ae41ad95e8bed2ac45adc765795a.woff2
 // @resource     hexa           https://hexa.su/hexa-logo.png
 // @resource     knaben         data:image/svg+xml,%3Csvg%20onmouseenter%3D%22this.querySelectorAll('%3Anth-child(-n%2B9)').forEach((c%2Ci)%3D%26gt%3B%7Bc.style.transition%3D'none'%3Bc.style.transform%3D'translate(0%2C-70%25)'%3BsetTimeout(()%3D%26gt%3B%7Bc.style.transition%3D'transform%201s%20cubic-bezier(.5%2C.25%2C.27%2C.1)'%3Bc.style.transform%3D'translate(0%2C0)'%7D%2C50*(i%253%2B~~(i%2F3)))%7D)%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201862%20804%22%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M1470.91%20273.76h280.14v100.1h-280.14z%22%2F%3E%3Cpath%20fill%3D%22%23bababa%22%20d%3D%22M955.67%20273.76h499.85v100.1H955.67z%22%2F%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M653.56%20273.76h285.63v100.1H653.56z%22%2F%3E%3Cpath%20fill%3D%22%23bababa%22%20d%3D%22M1470.91%20160.32h280.14v96.76h-280.14z%22%2F%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M955.67%20160.32h499.85v96.76H955.67z%22%2F%3E%3Cpath%20fill%3D%22%23bababa%22%20d%3D%22M653.56%20160.32h285.63v96.76H653.56z%22%2F%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M1362.54%2040.2h281.94v101.77h-281.94z%22%2F%3E%3Cpath%20fill%3D%22%23bababa%22%20d%3D%22M1062.98%2040.2h281.94v101.77h-281.94z%22%2F%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M763.42%2040.2h281.94v101.77H763.42z%22%2F%3E%3Cpath%20fill%3D%22%23bababa%22%20d%3D%22M74.48%200h413.36v62.95H74.48zm0%2062.95h60.35v72.75H74.48zm136.41%200h37.2v72.75h-37.2zm107.47%200h37.2v72.75h-37.2zm111.61%200h57.87v72.75h-57.87zM74.48%20135.47h413.36v97.93H74.48z%22%2F%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M74.48%20233.16h502.74v140.7H74.48z%22%2F%3E%3Cpath%20fill%3D%22%23bababa%22%20d%3D%22M0%20391.991v.078L106.988%20644.12H1713.04v-2.908L1862%20492.251V391.95H.097Z%22%2F%3E%3Cpath%20fill%3D%22%237a7a7a%22%20d%3D%22M1713.489%20642.07H105.417l67.882%20159.92h1380.269Z%22%2F%3E%3C%2Fsvg%3E
 // @resource     kuroiru        https://kuroiru.co/logo/stuff/letter-small.png
@@ -31,13 +31,16 @@
 // @grant        GM_getValue
 // @grant        GM_info
 // @grant        GM_openInTab
+// @grant        GM_registerMenuCommand
 // @grant        GM_setValue
+// @grant        GM_unregisterMenuCommand
 // @grant        GM.xmlHttpRequest
 // @connect      celeb.gate.cc
 // @connect      fanart.tv
 // @connect      forvo.com
 // @connect      kuroiru.co
 // @connect      moviemaps.org
+// @connect      trakt.tv
 // @connect      walter-r2.trakt.tv
 // ==/UserScript==
 
@@ -51,21 +54,23 @@
 | *NAME* | *ID* |
 | :----- | :---------- |
 | [Trakt.tv \| Actor Pronunciation Helper](71cd9s61.md#StickyHeader "Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com") | `71cd9s61` |
-| [Trakt.tv \| All-in-One Lists View](p2o98x5r.md#StickyHeader "Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main \"Personal Lists\" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.") | `p2o98x5r` |
+| [Trakt.tv \| All-In-One Lists View](p2o98x5r.md#StickyHeader "Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main \"Personal Lists\" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.") | `p2o98x5r` |
 | [Trakt.tv \| Average Season And Episode Ratings](yl9xlca7.md#StickyHeader "Shows the average general and personal rating of the seasons of a show and the episodes of a season. You can see the averages for all episodes of a show on its /seasons/all page.") | `yl9xlca7` |
-| [Trakt.tv \| Bug Fixes and Optimizations](brzmp0a9.md#StickyHeader "A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.") | `brzmp0a9` |
+| [Trakt.tv \| Bug Fixes And Optimizations](brzmp0a9.md#StickyHeader "A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.") | `brzmp0a9` |
 | [Trakt.tv \| Charts - Ratings Distribution](pmdf6nr9.md#StickyHeader "Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart.") | `pmdf6nr9` |
 | [Trakt.tv \| Charts - Seasons](cs1u5z40.md#StickyHeader "Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.") | `cs1u5z40` |
 | [Trakt.tv \| Custom Links (Watch-Now + External)](wkt34fcz.md#StickyHeader "Adds custom links to all the \"Watch-Now\" and \"External\" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.") | `wkt34fcz` |
-| [Trakt.tv \| Custom Profile Image](2dz6ub1t.md#StickyHeader "A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.") | `2dz6ub1t` |
+| [Trakt.tv \| Custom Profile Header Image](2dz6ub1t.md#StickyHeader "A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.") | `2dz6ub1t` |
 | [Trakt.tv \| Enhanced List Preview Posters](kji85iek.md#StickyHeader "Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles.") | `kji85iek` |
 | [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md#StickyHeader "Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for \"combined\" searches by clicking on the labels.") | `fyk2l3vj` |
 | [Trakt.tv \| Nested Header Navigation Menus](txw82860.md#StickyHeader "Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.") | `txw82860` |
 | [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: adding titles to maxed-out lists, advanced filters, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
+| [Trakt.tv \| Playback Progress Manager](swtn5c9q.md#StickyHeader "Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the \"Progress\" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE \"TRAKT API WRAPPER\" USERSCRIPT!") | `swtn5c9q` |
 | [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md#StickyHeader "Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).") | `2hc6zfyy` |
+| [Trakt.tv \| Trakt API Wrapper](f785bub0.md#StickyHeader "Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.") | `f785bub0` |
 */
 
-/* [Trakt.tv | Custom Profile Image]
+/* [Trakt.tv | Custom Profile Header Image]
 A custom profile image for free users. Like the vip feature, except this one only works locally. Uses the native set/reset buttons and changes the dashboard + settings background as well.
 */
 
@@ -82,7 +87,7 @@ Automatic trakt.tv backups for free users. On every trakt.tv visit a background 
 Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com
 */
 
-/* [Trakt.tv | Bug Fixes and Optimizations]
+/* [Trakt.tv | Bug Fixes And Optimizations]
 A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
 
 ### General
@@ -125,12 +130,53 @@ Adds a line chart to /seasons pages which shows the ratings (personal + general)
     but the core functionality is there and it might be while until I get back to it, which is why I'm putting it out there as it is right now.
 */
 
+/* [Trakt.tv | Trakt API Wrapper]
+Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.
+
+> Based on iDavide94/iFelix18's [Trakt API wrapper for userscripts](https://github.com/iDavide94) which in turn was based on
+> vankasteelj's [Trakt.tv API wrapper for Node.js](https://github.com/vankasteelj/trakt.tv).
+
+### General
+- If you're not interested in the technical details, then the rest of the documentation here will probably be of little interest to you. This script will mostly speed up some of
+    my other userscripts which would otherwise scrape the respective data instead of pulling it from the api (the api responses are cached for 8 hours).
+- This wrapper is entirely self sufficient and requires no prior configuration or user input. It creates its own api application, fetches the respective client credentials and
+    authenticates the user on the fly when a method is called. You can change the name and description of that api application to whatever you like,
+    however please keep in mind that the name (in addition to the id) is used for checking for an existing application before creating a new one (useful after script reinstall).
+    If you delete it a new one will be created in its place when the wrapper is used again.
+- Only works if a user is logged in.
+- The methods were last updated in Jan. 2026.
+
+### Usage
+- The wrapper is exposed through `window.userscriptTraktApiWrapper` and can be used like:<br>
+    `const data = await userscriptTraktApiWrapper.search.id({ id_type: 'trakt', id: 1234, type: 'episode', extended: 'full', _auth: true });`<br>
+    There are two types of props you can pass to a method, parameters corresponding to those listed in the Trakt API docs and options (denoted by a leading `_`) for the wrapper itself.
+- ***Parameters***<br>
+    There are three categories: path parameters, search parameters, and the props for the request's body. First the mandatory and optional parameters for the path
+    are filled in, then for `GET`/`DELETE` requests the remaining parameters are appended as search parameters, whereas for `POST`/`PUT` requests they are added to the body.
+- ***Options***<br>
+    - `_method` - The type of HTTP request to make, normally supplied by the method config, but as with all options you can override it.
+    - `_path` - The path template to use, normally supplied by the method config. Override it in case it's outdated.
+    - `_auth` - Whether to authenticate the request. Normally supplied by the method config for methods with mandatory authentication.
+        Override it to enable optional authentication (which also has a separate rate limit).
+    - `_meta` - Whether to wrap the response's data in an object with the supplied trakt header metadata like: `{ data: returned_data, meta: { pagination_page: 3 } }`.
+        `meta` includes all the trakt `x-`-prefixed headers and a couple select others in a normalized form to allow for dot-syntax access. Type coercion is done for numbers and booleans.
+        It's also included as `parsedTraktHeaders` with the raw response object which get's thrown in case of a failed request.
+    - `_revalidate` - Whether to revalidate the data instead of directly pulling it from the disk cache. Defaults to `false`.
+    - `_retry` - Configuration for a basic exponential backoff based retry mechanism. By default only activated for authed `POST`/`PUT`/`DELETE` requests.
+        Doesn't use the `ratelimit` and `retry_after` trakt headers. Takes a config object like `{ limit: 5, req_delay: 1000, resp_delay: 0 }`, with each retry
+        `limit` gets decremented (= 5 retries) and `req_delay` doubled. If you want to turn it off you can just override it with `_retry: null`.
+- In the userscript storage tab you can change the `apiUrl` to `https://api-staging.trakt.tv` for a sandbox environment
+    and you can activate console logging of all api requests with `logApiRequests`.
+- There's built-in rate-limiting for authed `POST`/`PUT`/`DELETE` requests (1 / sec).
+*/
+
 /* [Trakt.tv | Enhanced Title Metadata]
 Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for "combined" searches by clicking on the labels.
 
 > Based on sergeyhist's [Trakt.tv Clickable Info](https://github.com/sergeyhist/trakt-scripts/blob/main/trakt-info.user.js) userscript.
 
 ### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the studios data fetching.
 - By clicking on the label for languages, genres, networks, studios and writers, you can make a search for all their respective values combined, ANDed for genres, languages and writers,
     ORed for networks and studios. For example if the genres are "Crime" and "Drama", then a label search will return a selection of other titles that also have the genres "Crime" AND "Drama".
 - The writers label search was mostly added as an example of how to search for filmography intersections with trakt's search engine (there's no official tutorial about this,
@@ -151,7 +197,7 @@ Makes the posters of list preview stacks/shelves link to the respective title su
 - The [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript fixes some rating related issues and enables (more) reliable updates of the list-preview-poster rating indicators.
 */
 
-/* [Trakt.tv | All-in-One Lists View]
+/* [Trakt.tv | All-In-One Lists View]
 Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main "Personal Lists" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.
 
 ### General
@@ -162,6 +208,34 @@ Adds a button for appending your lists from the /collaborations, /liked and /lik
 
 /* [Trakt.tv | Charts - Ratings Distribution]
 Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart.
+
+### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the ratings distribution data fetching.
+*/
+
+/* [Trakt.tv | Playback Progress Manager]
+Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the "Progress" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE "TRAKT API WRAPPER" USERSCRIPT!
+
+> Inspired by sharkykh's [Trakt.tv Playback Progress Manager](https://sharkykh.github.io/tppm/).
+
+### General
+- This script does not work without the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript, so you'll need to install that one as well (or the [Trakt.tv | Megascript](zzzzzzzz.md)).
+- By clicking on a playback progress badge, you can access options to either set a new playback progress state or remove it entirely.
+- There are three context menu actions. "Set New" is only available on movie and episode summary pages and allows for setting a new playback progress state for that title.
+    "Delete All" and "Renew All" are only available on the [Playback Progress - All Types](https://trakt.tv/users/me/progress/playback) page as those affect all stored playback progress states.
+- Playback progress states are automatically removed by Trakt after 6 months. Renewing them postpones the auto-removal by first removing and then setting the
+    playback progress states again, while preserving the current order.
+- Marking an in-progress movie or episode as watched will also remove the corresponding playback progress state.
+
+### Playback Progress on Trakt
+Trakt has supported storing playback progress states for movies and episodes via their api for many years now, however for some reason they never actually bothered to add support
+for this to their website, so if you wanted to access those progress states you had to either do it through whichever 3rd party application saved them in the first place,
+or use sharkykh's [TPPM](https://sharkykh.github.io/tppm/).
+
+This has changed now, they've finally added native support for this to the new lite version of the website. Specifically on the "continue watching" page you can now see and remove
+the playback progress states of movies. From what I can tell there's no episode support, no bulk actions, no option to set a new state and most importantly there are no
+playback progress indicators on movie summary pages or any of the other grid views outside of the /progress page. It's a rather lackluster implementation, though at least it's in line with
+the rest of their new version.
 */
 
 /* [Trakt.tv | Nested Header Navigation Menus]
@@ -181,6 +255,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 > sergeyhist's [Watch Now Alternative](https://github.com/sergeyhist/trakt-watch-now-alternative) and Tanase Gabriel's [Trakt.tv Universal Search](https://greasyfork.org/en/scripts/508020) userscripts.
 
 ### General
+- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the item data fetching.
 - `maxSidebarWnLinks` controls how many watch-now links are visible in the watch-now preview of the sidebar. The default is `4` and can be modfied
     in the userscript storage tab *(note: only displayed after first run)*. There you can also modify `torrentResolution` which defaults to `1080p` and
     is used for the query of the torrent and usenet links. Additionally `includeNsfwLinks` controls the visibility of the NSFW links and defaults to `false`.
@@ -207,7 +282,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [EXT](https://ext.to) [Torrent Aggregator]
 - [Stremio](https://www.stremio.com) [Debrid]
 - [Kuroiru](https://kuroiru.co) [Anime Aggregator]
-- [GOJO.LIVE](https://animetsu.cc) [Anime Streaming]
+- [Animetsu](https://animetsu.cc) [Anime Streaming]
 - [AniDap](https://anidap.se) [Anime Streaming]
 - [Miruro](https://www.miruro.to) [Anime Streaming]
 - [Knaben Database](https://knaben.org) [Torrent Aggregator]
@@ -247,33 +322,41 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 Unlocks some vip features: adding titles to maxed-out lists, advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
 
 ### Full Unlock
-- "more" buttons on dashboard
-- ~2x faster page navigation with Hotwire's Turbo (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
+- ***"more" buttons on dashboard***
+- ***~2x faster page navigation with Hotwire's Turbo***<br>
+    (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
     Also imo it's nothing short of embarassing for them to think it's good idea to intentionally slow down their website for free users. There's a reason they don't have it listed amongst the vip perks..)
-- bulk list actions: reset ranks, copy, move, delete (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
+- ***bulk list actions: reset ranks, copy, move, delete***<br>
+    (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
     In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
-- rewatching
-- vip badge (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
-- all vip settings from the `/settings` page: calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings
-- filter-by-terms
-- watch-now modal country selection
+- ***rewatching***
+- ***vip badge***<br>
+    (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
+- ***all vip settings from the `/settings` page***<br>
+    (calendar autoscroll, limit dashboard "up next" episodes to watch-now favorites, only show watch-now icon if title is available on favorites, rewatching settings)
+- ***filter-by-terms***
+- ***watch-now modal country selection***
 
 ### Partial Unlock
-- adding an item to maxed-out lists (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
+- ***adding an item to maxed-out lists***<br>
+    (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
     you can now directly add a new item to it using the regular ui elems. How long that takes depends on the size of that list, if it's 1000 items you're looking at about 45s until completion..
     Hefty, but it works. Mind you that this is very much experimental and I can only emphasize the importance of backups here.)
-- advanced filters (no saved filters, though you can always just save the url of a search with its specific parameters as a bookmark.. works all them same)
-- custom calendars (get generated and work, but are not listed in sidebar and can't be deleted, so you have to save the url of the custom calendar or "regenerate" it on the `/lists` page)
-- advanced list progress (From my understanding the idea is to filter your `/progress/watched` and `/progress/dropped` pages by the shows on a specific list. As this script also unlocks
+- ***advanced filters***<br>
+    (no saved filters, though you can always just save the url of a search with its specific parameters as a bookmark.. works all the same)
+- ***custom calendars***<br>
+    (get generated and work, but are not listed in sidebar and can't be deleted, so you have to save the url of the custom calendar or "regenerate" it on the `/lists` page)
+- ***advanced list progress***<br>
+    (From my understanding the idea is to filter your `/progress/watched` and `/progress/dropped` pages by the shows on a specific list. As this script also unlocks
     the filter-by-terms function which on the `/progress` pages happens to have regex support, it's possible to just OR all titles of watched shows on a list to get the same result.
     Drawbacks of this are that you can't use filter-by-terms anymore, active filters are turned off in the process (e.g. hide completed), and that shows with the same name can lead to incorrect results.)
-- ~~ical/rss feeds + csv exports~~ => [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)<br>
+- ***~~rss/ical feeds + csv exports~~ => [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)***<br>
     (Makes their [privacy policy](https://trakt.tv/privacy) and "You're not the product. We never sell your data." mantra read like a bad joke, nevermind the fact that they failed to make any sort of public
     announcement about this, didn't notify the affected users and didn't produce an incident report, so god knowns on what scale this was exploited. And all I got in return was getting ghosted. Twice.)
 
 ### Related Userscripts
-Of the ~14 Trakt.tv userscripts I've got, there are another three which (in part) replicate a vip feature in some way:
-- [Trakt.tv \| Custom Profile Image](2dz6ub1t.md)
+I've got a couple more Trakt.tv userscripts which replicate other vip features in some way:
+- [Trakt.tv \| Custom Profile Header Image](2dz6ub1t.md)
 - [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md)
 - [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
 
@@ -331,18 +414,20 @@ Shows the average general and personal rating of the seasons of a show and the e
 
 'use strict';
 
-const gmStorage = { '2dz6ub1t': true, '2hc6zfyy': true, '71cd9s61': true, 'brzmp0a9': true, 'cs1u5z40': true, 'fyk2l3vj': true, 'kji85iek': true, 'p2o98x5r': true, 'pmdf6nr9': true, 'txw82860': true, 'wkt34fcz': true, 'x70tru7b': true, 'yl9xlca7': true, ...(GM_getValue('megascript')) };
+const gmStorage = { '2dz6ub1t': true, '2hc6zfyy': true, '71cd9s61': true, 'brzmp0a9': true, 'cs1u5z40': true, 'f785bub0': true, 'fyk2l3vj': true, 'kji85iek': true, 'p2o98x5r': true, 'pmdf6nr9': true, 'swtn5c9q': true, 'txw82860': true, 'wkt34fcz': true, 'x70tru7b': true, 'yl9xlca7': true, ...(GM_getValue('megascript')) };
 GM_setValue('megascript', gmStorage);
 
 
 gmStorage['2dz6ub1t'] && (async (moduleName) => {
+/* global moduleName */
+
 'use strict';
 
-let $, toastr;
+let $;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -351,7 +436,7 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -369,8 +454,7 @@ window.addEventListener('turbo:load', () => {
   if (!/^\/(shows|movies|users|dashboard|settings|oauth\/(authorized_)?applications)/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
-  if (!$ || !toastr) return;
+  if (!$) return;
 
   const $coverWrapper = $('body.is-self #cover-wrapper'),
         $btnSetProfileImage = $('body.is-self #btn-set-profile-image'),
@@ -516,22 +600,19 @@ body:is(.dashboard, .settings, .authorized_applications, .applications) #results
   `);
   }
 }
-})('Trakt.tv | Custom Profile Image');
+})('Trakt.tv | Custom Profile Header Image');
 
 
 gmStorage['2hc6zfyy'] && (async (moduleName) => {
-/* global Cron */
+/* global moduleName, Cron */
 
 'use strict';
 
-let $, toastr, userslug;
-
-const gmStorage = { toastOnSuccess: true, cronExpr: '@weekly', lastRun: {}, ...(GM_getValue('scheduledEmailDataExports')) };
-GM_setValue('scheduledEmailDataExports', gmStorage);
+let $, userslug;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -540,13 +621,16 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
-  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', toast: gmStorage.toastOnSuccess, ...opt }) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
   warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
   error(msg, opt) { this._print('error', 'error', msg, opt) },
 };
+
+const gmStorage = { cronExpr: '@weekly', toastOnSuccess: true, lastRun: {}, ...(GM_getValue('scheduledEmailDataExports')) };
+GM_setValue('scheduledEmailDataExports', gmStorage);
 
 let cron;
 try {
@@ -560,9 +644,8 @@ try {
 
 cron && window.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
   userslug ??= unsafeWindow.Cookies?.get('trakt_userslug');
-  if (!$ || !toastr || !userslug) return;
+  if (!$ || !userslug) return;
 
   const dateNow = new Date();
 
@@ -579,7 +662,7 @@ cron && window.addEventListener('turbo:load', async () => {
     $.post('/settings/export_data').done(() => {
       gmStorage.lastRun[userslug] = dateNow.toISOString();
       GM_setValue('scheduledEmailDataExports', gmStorage);
-      logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.');
+      logger.success('Success. Your data export is processing. You will receive an e-mail when it is ready.', { toast: gmStorage.toastOnSuccess });
     }).fail((xhr) => {
       if (xhr.status === 409) {
         gmStorage.lastRun[userslug] = dateNow.toISOString();
@@ -595,13 +678,15 @@ cron && window.addEventListener('turbo:load', async () => {
 
 
 gmStorage['71cd9s61'] && (async (moduleName) => {
+/* global moduleName */
+
 'use strict';
 
-let $, toastr;
+let $;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -610,7 +695,7 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -625,8 +710,7 @@ document.addEventListener('turbo:load', () => {
   if (!/^\/people\/[^\/]+(\/lists.*)?$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
-  if (!$ || !toastr) return;
+  if (!$) return;
 
   $(`<button id="btn-pronounce-name">` +
       `<div class="audio-animation fade">` +
@@ -770,6 +854,11 @@ gmStorage['brzmp0a9'] && (async (moduleName) => {
 - "Progress" -> "Dropped" 1. doesn't allow for sorting by dropped date 2. still has a working "drop show" button despite shows already having been dropped
 - "allow comments" setting of lists can be bypassed with manual post request (/comments page is available regardless of setting + this even works for deleted user profiles)
 - appending a second date (which one doesn't matter) to the /shows-movies calendar url like /calendars/my/shows-movies/2024-10-14/2024-10-16 returns a view for all days until 2030
+- "var words = characters.split(' ').length" comment word-counter is incorrect, needs e.g. .filter(Boolean) added for correct word count in case of consecutive spaces or empty text input
+- click on streaming service button, after having filtered a list by streaming service, results in rangeError + stuck on loading
+- calendar start/end date popover can't be hidden by clicking on icon again
+- $.each(['following', 'following_pending', 'followers'] ... ends up checking last_activities for account['followers_at'] which does not exist as prop is called followed_at,
+    meaning when a new person follows you, this is not immediately reflected by the buttons in the network tab
 */
 
 
@@ -873,7 +962,7 @@ GM_addStyle(`
     position: fixed;
     top: 0 !important;
     left: 0;
-    z-index: 20;
+    z-index: 30;
     width: 40%;
     padding: calc(10px + var(--header-height)) 10px 0;
     height: 100%;
@@ -967,8 +1056,8 @@ document.addEventListener('keydown', (evt) => {
 
   $(document).on('ajaxSuccess', (_evt, _xhr, opt) => {
     if (opt.url.endsWith('/rate')) {
-      const params = new URLSearchParams(opt.data),
-            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => params.get(key));
+      const searchParams = new URLSearchParams(opt.data),
+            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => searchParams.get(key));
 
       unsafeWindow[type + 's'].ratings[id] = stars;
       unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings);
@@ -985,8 +1074,8 @@ document.addEventListener('keydown', (evt) => {
       //     .end().find('.rated-text').show();
       // }
     } else if (opt.url.endsWith('/rate/remove')) {
-      const params = new URLSearchParams(opt.data),
-            type = params.get('type');
+      const searchParams = new URLSearchParams(opt.data),
+            type = searchParams.get('type');
 
       unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings); // ratings object already gets updated correctly
 
@@ -1516,7 +1605,7 @@ GM_addStyle(`
 //     $container.prepend($peopleGridItems);
 //   });
 // }
-})('Trakt.tv | Bug Fixes and Optimizations');
+})('Trakt.tv | Bug Fixes And Optimizations');
 
 
 gmStorage['cs1u5z40'] && (async (moduleName) => {
@@ -1524,7 +1613,7 @@ gmStorage['cs1u5z40'] && (async (moduleName) => {
 
 'use strict';
 
-let $, traktApiModule;
+let $, traktApiWrapper;
 let $grid, isSeasonChart, filterSpecials, labelsCallback, chart, datasetsData, firstRunDelay;
 
 Chart.defaults.borderColor = 'rgb(44 44 44 / 0.5)';
@@ -1538,7 +1627,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/shows\/[^/]+\/seasons\/[^/]+$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
   if (!$) return;
 
   $grid = $('#seasons-episodes-sortable');
@@ -1630,9 +1719,8 @@ function getDatasetsData() {
       itemData.comments = $(i.element).find('.episode-stats > a[data-original-title="Comments"]').text() || 0;
     } else {
       itemData.mainTitle = $(i.element).find('div[data-type="season"] .titles-link h3').text();
-      if (traktApiModule) { // TODO
-        const respJSON = await traktApiModule.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, pagination: true, limit: 1 });
-        itemData.comments = respJSON.pagination.item_count;
+      if (traktApiWrapper) { // TODO
+        itemData.comments = (await traktApiWrapper.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, limit: 1 })).item_count;;
       } else {
         const resp = await fetch(i.element.dataset.url + '.json');
         if (!resp.ok) throw new Error(`XHR for: ${resp.url} failed with status: ${resp.status}`);
@@ -1897,14 +1985,14 @@ function addStyles() {
 })('Trakt.tv | Charts - Seasons');
 
 
-gmStorage['fyk2l3vj'] && (async (moduleName) => {
-'use strict';
+gmStorage['f785bub0'] && (async (moduleName) => {
+/* global moduleName */
 
-let $, toastr, traktApiModule;
+'use strict';
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -1913,7 +2001,597 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
+
+const gmStorage = { logApiRequests: false, apiUrl: 'https://api.trakt.tv', app: {}, auth: {}, ...(GM_getValue('traktApiWrapper')) };
+GM_setValue('traktApiWrapper', gmStorage);
+
+const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1];
+let authedNonGetReqChain = Promise.resolve(),
+    activeFetchApp = Promise.resolve(),
+    activeFetchAuth = Promise.resolve(),
+    methods;
+
+if (userslug) unsafeWindow.userscriptTraktApiWrapper = methods = buildMethods(getRawMethods());
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+async function callMethod(args) {
+  const groupedArgs = Object.groupBy(Object.entries(args), ([key]) => key.startsWith('_') ? 'opts' : 'params'),
+        opts = Object.fromEntries(groupedArgs.opts ?? []),
+        params = Object.fromEntries(groupedArgs.params ?? []);
+
+  const req = {
+    method: opts._method,
+    ...(opts._revalidate != null && { revalidate: Boolean(opts._revalidate) }),
+    responseType: 'json',
+    headers: {
+      'content-type': 'application/json',
+      'user-agent': 'TraktApiWrapper/v1',
+      'trakt-api-version': '2',
+    },
+  };
+
+  req.url = gmStorage.apiUrl + opts._path.replaceAll(/:(\?)?(\w+)/g, (_m, isOptional, key) => {
+    if (params[key] != null) { delete params[key]; return args[key]; }
+    if (isOptional) return '';
+    throw new Error(`Missing mandatory path parameter: ${key}`);
+  });
+  if (/GET|DELETE/.test(opts._method)) req.url = req.url + (Object.keys(params).length ? `?${new URLSearchParams(params)}` : '');
+  else if (/POST|PUT/.test(opts._method)) req.data = JSON.stringify(params);
+
+  await activeFetchApp;
+  if (!gmStorage.app.clientId || !gmStorage.app.clientSecret || !gmStorage.app.redirectUri) {
+    activeFetchApp = fetchAppClientCreds();
+    await activeFetchApp;
+  }
+  req.headers['trakt-api-key'] = gmStorage.app.clientId;
+
+  if (opts._auth) {
+    await activeFetchAuth;
+    if (!gmStorage.auth.accessToken || !gmStorage.auth.expiresAt ||
+        gmStorage.auth.expiresAt < Date.now() - 5*60*1000 ||
+        gmStorage.auth.userslug !== userslug) {
+      activeFetchAuth = fetchAuthTokens();
+      await activeFetchAuth;
+    }
+    req.headers.authorization = `Bearer ${gmStorage.auth.accessToken}`;
+  }
+
+  if (opts._auth && opts._method !== 'GET') {
+    const rateLimitDelay = 1100; // +100ms for network jitter; though the rate limit doesn't actually seem to be enforced
+    return new Promise((resolveCaller) => {
+      authedNonGetReqChain = authedNonGetReqChain.then(() => {
+        const reqPromise = sendApiRequest(req, { _retry: { limit: 5, req_delay: rateLimitDelay, resp_delay: rateLimitDelay }, ...opts });
+        resolveCaller(reqPromise);
+        return new Promise((resolveChain) => {
+          setTimeout(() => reqPromise.finally(resolveChain), rateLimitDelay);
+        });
+      });
+    });
+  } else {
+    return sendApiRequest(req, opts);
+  }
+}
+
+function sendApiRequest(req, opts) {
+  return GM.xmlHttpRequest(req).then((resp) => {
+    if (gmStorage.logApiRequests) logger.info(`${req.method}: ${req.url}`, { toast: false, data: { req, resp } });
+
+    resp.parsedTraktHeaders = parseTraktHeaders(resp.responseHeaders);
+
+    if (resp.status >= 200 && resp.status < 300) {
+      return opts._meta ? { data: resp.response, meta: resp.parsedTraktHeaders } : resp.response;
+    }
+    if (resp.status === 429 && opts._retry?.limit) {
+      const newOpts = { ...opts, _retry: { limit: opts._retry.limit - 1, req_delay: opts._retry.req_delay * 2 } }
+      return new Promise((resolve) => setTimeout(() => resolve(sendApiRequest(req, newOpts)), opts._retry.req_delay))
+        .then((resp) => new Promise((resolve) => setTimeout(() => resolve(resp), opts._retry.resp_delay)));
+    }
+    if (resp.status === 401 && !resp.parsedTraktHeaders.private_user) {
+      gmStorage.auth = {};
+      GM_setValue('traktApiWrapper', gmStorage);
+      logger.warning('Auth tokens might be invalid and have been cleared.');
+    }
+    if (resp.status === 403) {
+      gmStorage.app = { id: gmStorage.app.id };
+      gmStorage.auth = {};
+      GM_setValue('traktApiWrapper', gmStorage);
+      logger.warning('Client credentials might be invalid and have been cleared.');
+    }
+    throw resp;
+  });
+}
+
+function parseTraktHeaders(headers) {
+  const normalizedHeaderEntries = headers.split(/\r?\n/).map((header) => header.split(':')).map(([key, val]) => [key.trim().toLowerCase(), val?.trim()]),
+        traktHeaderKeys = normalizedHeaderEntries.find(([key]) => key === 'access-control-expose-headers')[1].toLowerCase().split(',');
+  return Object.fromEntries(
+    normalizedHeaderEntries
+      .filter(([key]) => traktHeaderKeys.includes(key))
+      .map(([key, val]) => {
+        return [(key.startsWith('x-') ? key.slice(2) : key).replaceAll('-', '_'),
+                val === 'true' ? true : val === 'false' ? false : /^-?\d*\.?\d+$/.test(val) ? +val : val];
+      })
+  );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+async function fetchAppClientCreds() {
+  try {
+    logger.info('No valid client credentials found. Checking for matching application..');
+    const appName = 'Trakt API Wrapper for Userscripts';
+    let appDoc;
+
+    const appsDoc = await fetch('/oauth/applications').then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html'));
+    const appEl = [...appsDoc.querySelectorAll('#authorized-applications > .row:has(.label-success) h4 a[href^="/oauth/applications/"]')].find((el) => {
+      const hasMatchingId = gmStorage.app.id ? el.getAttribute('href').endsWith(gmStorage.app.id) : false,
+            hasMatchingName = el.textContent.trim().toLowerCase() === appName.toLowerCase();
+      return hasMatchingId || hasMatchingName;
+    });
+    if (appEl) appDoc = await fetch(appEl.getAttribute('href')).then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html'));
+
+    if (!appDoc) {
+      const formData = new FormData();
+      [
+        ['authenticity_token', appsDoc.querySelector('head meta[name="csrf-token"]').content],
+        ['doorkeeper_application[name]', appName],
+        ['doorkeeper_application[description]', 'A userscript which provides authenticated Trakt API access to other userscripts. https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection'],
+        ['doorkeeper_application[redirect_uri]', 'https://trakt.tv/dashboard'],
+        ['doorkeeper_application[origins]', 'https://trakt.tv'],
+        ['doorkeeper_application[icon]', new Blob([], { type: 'application/octet-stream' }), ''],
+        ['doorkeeper_application[checkin]', '0'],
+        ['doorkeeper_application[checkin]', '1'],
+        ['doorkeeper_application[scrobble]', '0'],
+        ['doorkeeper_application[scrobble]', '1'],
+        ['commit', 'Save App'],
+      ].forEach((args) => formData.append(...args));
+      const resp = await GM.xmlHttpRequest({ url: '/oauth/applications', method: 'POST', data: formData, headers: { referer: 'https://trakt.tv/oauth/applications/new' } });
+      if (resp.status >= 200 && resp.status < 300) {
+        appDoc = new DOMParser().parseFromString(resp.responseText, 'text/html');
+        logger.info(`No matching application found. New Trakt API application has been created. <a href="${resp.finalUrl}" target="_blank">${resp.finalUrl}</a>`);
+      }
+    }
+
+    GM_setValue('traktApiWrapper', Object.assign(gmStorage, {
+      app: {
+        clientId: appDoc.querySelector('#authorized-applications .credentials:nth-child(1 of .credentials) code').textContent,
+        clientSecret: appDoc.querySelector('#authorized-applications .credentials:nth-child(2 of .credentials) code').textContent,
+        redirectUri: appDoc.querySelector('.redirect-uris code').textContent,
+        id: +appDoc.querySelector('.btn.update[href$="edit"]').getAttribute('href').match(/\d+/)[0],
+      },
+    }));
+    logger.success('Successfully fetched client credentials!', { data: gmStorage.app });
+  } catch (err) {
+    logger.error('Failed to fetch client credentials!');
+    throw err;
+  }
+}
+
+async function fetchAuthTokens() {
+  try {
+    const isAuthorization = !gmStorage.auth.refreshToken || gmStorage.auth.userslug !== userslug;
+    let authCode;
+
+    if (isAuthorization) {
+      logger.info('No valid refresh token found. Authorizing application..');
+      const authSearchParams = new URLSearchParams({ response_type: 'code', client_id: gmStorage.app.clientId, redirect_uri: gmStorage.app.redirectUri }),
+            authUrl = `${gmStorage.apiUrl.replace(/api[.-]/, '')}/oauth/authorize?${authSearchParams}`,
+            authDoc = await fetch(authUrl).then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html'));
+      const resp = await GM.xmlHttpRequest({
+        method: 'POST',
+        url: '/oauth/authorize',
+        headers: { referer: authUrl },
+        data: new URLSearchParams([
+          ['authenticity_token', authDoc.querySelector('head meta[name="csrf-token"]').content],
+          ['client_id', gmStorage.app.clientId],
+          ['redirect_uri', gmStorage.app.redirectUri],
+          ['state', ''],
+          ['response_type', 'code'],
+          ['response_mode', 'query'],
+          ['scope', 'public'],
+          ['nonce', ''],
+          ['code_challenge', ''],
+          ['code_challenge_method', ''],
+          ['commit', 'Yes'],
+        ]),
+      });
+      if (resp.status >= 200 && resp.status < 300) {
+        authCode = new URL(resp.finalUrl).searchParams.get('code');
+        logger.success('Application successfully authorized!', { data: { code: authCode } });
+      } else {
+        gmStorage.app = { id: gmStorage.app.id };
+        GM_setValue('traktApiWrapper', gmStorage);
+        logger.warning('Client credentials might be invalid and have been cleared.');
+      }
+    }
+
+    const resp = await methods.oauth.get({
+      client_id: gmStorage.app.clientId,
+      client_secret: gmStorage.app.clientSecret,
+      redirect_uri: gmStorage.app.redirectUri,
+      grant_type: isAuthorization ? 'authorization_code' : 'refresh_token',
+      ...(isAuthorization ? { code: authCode } : { refresh_token: gmStorage.auth.refreshToken }),
+    });
+    GM_setValue('traktApiWrapper', Object.assign(gmStorage, {
+      auth: {
+        accessToken: resp.access_token,
+        expiresAt: (resp.created_at + resp.expires_in) * 1000,
+        refreshToken: resp.refresh_token,
+        userslug: userslug,
+      },
+    }));
+  } catch (err) {
+    logger.error('Failed to fetch authentication tokens!');
+    throw err;
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+function buildMethods(obj, pathPrefix) {
+  obj._path = (pathPrefix ?? '') + (obj._path ?? '');
+  if (obj._method) return (args) => callMethod({ ...obj, ...args });
+  else {
+    for (const key in obj) if (!key.startsWith('_')) obj[key] = buildMethods(obj[key], obj._path);
+    delete obj._path;
+    return obj;
+  }
+}
+
+function getRawMethods() {
+  return {
+    oauth: {
+      _path: '/oauth',
+      get: { _method: 'POST', _path: '/token' },
+      revoke: { _method: 'POST', _path: '/revoke' },
+    },
+    calendars: {
+      _path: '/calendars',
+      my: {
+        _path: '/my',
+        shows: { _method: 'GET', _path: '/shows/:?start_date/:?days', _auth: true },
+        new_shows: { _method: 'GET', _path: '/shows/new/:?start_date/:?days', _auth: true },
+        season_premieres: { _method: 'GET', _path: '/shows/premieres/:?start_date/:?days', _auth: true },
+        finales: { _method: 'GET', _path: '/shows/finales/:?start_date/:?days', _auth: true },
+        movies: { _method: 'GET', _path: '/movies/:?start_date/:?days', _auth: true },
+        streaming: { _method: 'GET', _path: '/streaming/:?start_date/:?days', _auth: true },
+        dvd: { _method: 'GET', _path: '/dvd/:?start_date/:?days', _auth: true },
+      },
+      all: {
+        _path: '/all',
+        shows: { _method: 'GET', _path: '/shows/:?start_date/:?days' },
+        new_shows: { _method: 'GET', _path: '/shows/new/:?start_date/:?days' },
+        season_premieres: { _method: 'GET', _path: '/shows/premieres/:?start_date/:?days' },
+        finales: { _method: 'GET', _path: '/shows/finales/:?start_date/:?days' },
+        movies: { _method: 'GET', _path: '/movies/:?start_date/:?days' },
+        streaming: { _method: 'GET', _path: '/streaming/:?start_date/:?days' },
+        dvd: { _method: 'GET', _path: '/dvd/:?start_date/:?days' },
+      },
+    },
+    checkin: {
+      _path: '/checkin',
+      add: { _method: 'POST', _auth: true },
+      remove: { _method: 'DELETE', _auth: true },
+    },
+    certifications: { _method: 'GET', _path: '/certifications/:type' },
+    comments: {
+      _path: '/comments',
+      comment: {
+        add: { _method: 'POST', _auth: true },
+        get: { _method: 'GET', _path: '/:id' },
+        update: { _method: 'PUT', _path: '/:id', _auth: true },
+        remove: { _method: 'DELETE', _path: '/:id', _auth: true },
+      },
+      replies: {
+        _path: '/:id/replies',
+        get: { _method: 'GET' },
+        add: { _method: 'POST', _auth: true },
+      },
+      item: { _method: 'GET', _path: '/:id/item' },
+      likes: {
+        _path: '/:id',
+        get: { _method: 'GET', _path: '/likes' },
+        add: { _method: 'POST', _path: '/like', _auth: true },
+        remove: { _method: 'DELETE', _path: '/like', _auth: true },
+      },
+      trending: { _method: 'GET', _path: '/trending/:?comment_type/:?type' },
+      recent: { _method: 'GET', _path: '/recent/:?comment_type/:?type' },
+      updates: { _method: 'GET', _path: '/updates/:?comment_type/:?type' },
+    },
+    countries: { _method: 'GET', _path: '/countries/:type' },
+    genres: { _method: 'GET', _path: '/genres/:type', },
+    languages: { _method: 'GET', _path: '/languages/:type' },
+    lists: {
+      _path: '/lists',
+      trending: { _method: 'GET', _path: '/trending/:?type' },
+      popular: { _method: 'GET', _path: '/popular/:?type' },
+      list: {
+        _path: '/:id',
+        get: { _method: 'GET' },
+        items: { _method: 'GET', _path: '/items/:?type/:?sort_by/:?sort_how' },
+        comments: { _method: 'GET', _path: '/comments/:?sort' },
+        likes: {
+          get: { _method: 'GET', _path: '/likes' },
+          add: { _method: 'POST', _path: '/like', _auth: true },
+          remove: { _method: 'DELETE', _path: '/like', _auth: true },
+        },
+      },
+    },
+    movies: {
+      _path: '/movies',
+      trending: { _method: 'GET', _path: '/trending' },
+      popular: { _method: 'GET', _path: '/popular' },
+      favorited: { _method: 'GET', _path: '/favorited/:?period' },
+      played: { _method: 'GET', _path: '/played/:?period' },
+      watched: { _method: 'GET', _path: '/watched/:?period' },
+      collected: { _method: 'GET', _path: '/collected/:?period' },
+      anticipated: { _method: 'GET', _path: '/anticipated' },
+      boxoffice: { _method: 'GET', _path: '/boxoffice' },
+      updates: { _method: 'GET', _path: '/updates/:?start_date' },
+      updated_ids: { _method: 'GET', _path: '/updates/id/:?start_date' },
+      summary: { _method: 'GET', _path: '/:id' },
+      aliases: { _method: 'GET', _path: '/:id/aliases' },
+      releases: { _method: 'GET', _path: '/:id/releases/:?country' },
+      translations: { _method: 'GET', _path: '/:id/translations/:?language' },
+      comments: { _method: 'GET', _path: '/:id/comments/:?sort' },
+      lists: { _method: 'GET', _path: '/:id/lists/:?type/:?sort' },
+      people: { _method: 'GET', _path: '/:id/people' },
+      ratings: { _method: 'GET', _path: '/:id/ratings' },
+      related: { _method: 'GET', _path: '/:id/related' },
+      stats: { _method: 'GET', _path: '/:id/stats' },
+      studios: { _method: 'GET', _path: '/:id/studios' },
+      watching: { _method: 'GET', _path: '/:id/watching' },
+      videos: { _method: 'GET', _path: '/:id/videos' },
+      refresh: { _method: 'POST', _path: '/:id/refresh', _auth: true },
+    },
+    networks: { _method: 'GET', _path: '/networks' },
+    notes: {
+      _path: '/notes',
+      add: { _method: 'POST', _auth: true },
+      get: { _method: 'GET', _path: '/:id', _auth: true },
+      update: { _method: 'PUT', _path: '/:id', _auth: true },
+      remove: { _method: 'DELETE', _path: '/:id', _auth: true },
+      item: { _method: 'GET', _path: '/:id/item' },
+    },
+    people: {
+      _path: '/people',
+      updates: { _method: 'GET', _path: '/updates/:?start_date' },
+      updated_ids: { _method: 'GET', _path: '/updates/id/:?start_date' },
+      summary: { _method: 'GET', _path: '/:id' },
+      movies: { _method: 'GET', _path: '/:id/movies' },
+      shows: { _method: 'GET', _path: '/:id/shows' },
+      lists: { _method: 'GET', _path: '/:id/lists/:?type/:?sort' },
+      refresh: { _method: 'POST', _path: '/:id/refresh', _auth: true },
+    },
+    recommendations: {
+      _path: '/recommendations',
+      movies: {
+        _path: '/movies',
+        get: { _method: 'GET', _auth: true },
+        hide: { _method: 'DELETE', _path: '/:id', _auth: true },
+      },
+      shows: {
+        _path: '/shows',
+        get: { _method: 'GET', _auth: true },
+        hide: { _method: 'DELETE', _path: '/:id', _auth: true },
+      },
+    },
+    scrobble: {
+      _path: '/scrobble',
+      start: { _method: 'POST', _path: '/start', _auth: true },
+      stop: { _method: 'POST', _path: '/stop', _auth: true },
+    },
+    search: {
+      _path: '/search',
+      text: { _method: 'GET', _path: '/:type' },
+      id: { _method: 'GET', _path: '/:id_type/:id' },
+    },
+    shows: {
+      _path: '/shows',
+      trending: { _method: 'GET', _path: '/trending' },
+      popular: { _method: 'GET', _path: '/popular' },
+      favorited: { _method: 'GET', _path: '/favorited/:?period' },
+      played: { _method: 'GET', _path: '/played/:?period' },
+      watched: { _method: 'GET', _path: '/watched/:?period' },
+      collected: { _method: 'GET', _path: '/collected/:?period' },
+      anticipated: { _method: 'GET', _path: '/anticipated' },
+      updates: { _method: 'GET', _path: '/updates/:?start_date' },
+      updated_ids: { _method: 'GET', _path: '/updates/id/:?start_date' },
+      summary: { _method: 'GET', _path: '/:id' },
+      aliases: { _method: 'GET', _path: '/:id/aliases' },
+      certifications: { _method: 'GET', _path: '/:id/certifications' },
+      translations: { _method: 'GET', _path: '/:id/translations/:?language' },
+      comments: { _method: 'GET', _path: '/:id/comments/:?sort' },
+      lists: { _method: 'GET', _path: '/:id/lists/:?type/:?sort' },
+      progress: {
+        _path: '/:id/progress',
+        collection: { _method: 'GET', _path: '/collection', _auth: true },
+        watched: { _method: 'GET', _path: '/watched', _auth: true },
+        reset: { _method: 'POST', _path: '/watched/reset', _auth: true },
+        undo_reset: { _method: 'DELETE', _path: '/watched/reset', _auth: true },
+      },
+      people: { _method: 'GET', _path: '/:id/people' },
+      ratings: { _method: 'GET', _path: '/:id/ratings' },
+      related: { _method: 'GET', _path: '/:id/related' },
+      stats: { _method: 'GET', _path: '/:id/stats' },
+      studios: { _method: 'GET', _path: '/:id/studios' },
+      watching: { _method: 'GET', _path: '/:id/watching' },
+      next_episode: { _method: 'GET', _path: '/:id/next_episode' },
+      last_episode: { _method: 'GET', _path: '/:id/last_episode' },
+      videos: { _method: 'GET', _path: '/:id/videos' },
+      refresh: { _method: 'POST', _path: '/:id/refresh', _auth: true },
+    },
+    seasons: {
+      _path: '/shows/:id/seasons',
+      summary: { _method: 'GET' },
+      season: { _method: 'GET', _path: '/:season/info' },
+      episodes: { _method: 'GET', _path: '/:season' },
+      translations: { _method: 'GET', _path: '/:season/translations/:?language' },
+      comments: { _method: 'GET', _path: '/:season/comments/:?sort' },
+      lists: { _method: 'GET', _path: '/:season/lists/:?type/:?sort' },
+      people: { _method: 'GET', _path: '/:season/people' },
+      ratings: { _method: 'GET', _path: '/:season/ratings' },
+      stats: { _method: 'GET', _path: '/:season/stats' },
+      watching: { _method: 'GET', _path: '/:season/watching' },
+      videos: { _method: 'GET', _path: '/:season/videos' },
+    },
+    episodes: {
+      _path: '/shows/:id/seasons/:season/episodes/:episode',
+      summary: { _method: 'GET' },
+      translations: { _method: 'GET', _path: '/translations/:?language' },
+      comments: { _method: 'GET', _path: '/comments/:?sort' },
+      lists: { _method: 'GET', _path: '/lists/:?type/:?sort' },
+      people: { _method: 'GET', _path: '/people' },
+      ratings: { _method: 'GET', _path: '/ratings' },
+      stats: { _method: 'GET', _path: '/stats' },
+      watching: { _method: 'GET', _path: '/watching' },
+      videos: { _method: 'GET', _path: '/videos' },
+    },
+    sync: {
+      _path: '/sync',
+      last_activities: { _method: 'GET', _path: '/last_activities', _auth: true },
+      playback: {
+        _path: '/playback',
+        get: { _method: 'GET', _path: '/:?type', _auth: true },
+        remove: { _method: 'DELETE', _path: '/:id', _auth: true },
+      },
+      collection: {
+        _path: '/collection',
+        get: { _method: 'GET', _path: '/:type', _auth: true },
+        add: { _method: 'POST', _auth: true },
+        remove: { _method: 'POST', _path: '/remove', _auth: true },
+      },
+      watched: { _method: 'GET', _path: '/watched/:type', _auth: true },
+      history: {
+        _path: '/history',
+        get: { _method: 'GET', _path: '/:?type/:?id', _auth: true },
+        add: { _method: 'POST', _auth: true },
+        remove: { _method: 'POST', _path: '/remove', _auth: true },
+      },
+      ratings: {
+        _path: '/ratings',
+        get: { _method: 'GET', _path: '/:?type/:?rating', _auth: true },
+        add: { _method: 'POST', _auth: true },
+        remove: { _method: 'POST', _path: '/remove', _auth: true },
+      },
+      watchlist: {
+        _path: '/watchlist',
+        get: { _method: 'GET', _path: '/:?type/:?sort_by/:?sort_how', _auth: true },
+        update: { _method: 'PUT', _auth: true },
+        add: { _method: 'POST', _auth: true },
+        remove: { _method: 'POST', _path: '/remove', _auth: true },
+        reorder: { _method: 'POST', _path: '/reorder', _auth: true },
+        update_item: { _method: 'PUT', _path: '/:list_item_id', _auth: true },
+      },
+      favorites: {
+        _path: '/favorites',
+        get: { _method: 'GET', _path: '/:?type/:?sort_by/:?sort_how', _auth: true },
+        update: { _method: 'PUT', _auth: true },
+        add: { _method: 'POST', _auth: true },
+        remove: { _method: 'POST', _path: '/remove', _auth: true },
+        reorder: { _method: 'POST', _path: '/reorder', _auth: true },
+        update_item: { _method: 'PUT', _path: '/:list_item_id', _auth: true },
+      },
+    },
+    users: {
+      _path: '/users',
+      settings: { _method: 'GET', _path: '/settings', _auth: true },
+      requests: {
+        _path: '/requests',
+        following: { _method: 'GET', _path: '/following', _auth: true },
+        get: { _method: 'GET', _auth: true },
+        approve: { _method: 'POST', _path: '/:id', _auth: true },
+        deny: { _method: 'DELETE', _path: '/:id', _auth: true },
+      },
+      saved_filters: { _method: 'GET', _path: '/saved_filters/:?section', _auth: true },
+      hidden: {
+        _path: '/hidden',
+        get: { _method: 'GET', _path: '/:section', _auth: true },
+        add: { _method: 'POST', _path: '/:section', _auth: true },
+        remove: { _method: 'POST', _path: '/:section/remove', _auth: true },
+      },
+      profile: { _method: 'GET', _path: '/:id' },
+      likes: { _method: 'GET', _path: '/:id/likes/:?type' },
+      collection: { _method: 'GET', _path: '/:id/collection/:type' },
+      comments: { _method: 'GET', _path: '/:id/comments/:?comment_type/:?type' },
+      notes: { _method: 'GET', _path: '/:id/notes/:?type' },
+      lists: {
+        _path: '/:id/lists',
+        get: { _method: 'GET' },
+        create: { _method: 'POST', _auth: true },
+        reorder: { _method: 'POST', _path: '/reorder', _auth: true },
+        collaborations: { _method: 'GET', _path: '/collaborations' },
+      },
+      list: {
+        _path: '/:id/lists/:list_id',
+        get: { _method: 'GET' },
+        update: { _method: 'PUT', _auth: true },
+        delete: { _method: 'DELETE', _auth: true },
+        likes: {
+          get: { _method: 'GET', _path: '/likes' },
+          add: { _method: 'POST', _path: '/like', _auth: true },
+          remove: { _method: 'DELETE', _path: '/like', _auth: true },
+        },
+        items: {
+          _path: '/items',
+          get: { _method: 'GET', _path: '/:?type/:?sort_by/:?sort_how' },
+          add: { _method: 'POST', _auth: true },
+          remove: { _method: 'POST', _path: '/remove', _auth: true },
+          reorder: { _method: 'POST', _path: '/reorder', _auth: true },
+          update: { _method: 'PUT', _path: '/:list_item_id', _auth: true },
+        },
+        comments: { _method: 'GET', _path: '/comments/:?sort' },
+      },
+      follow: {
+        _path: '/:id/follow',
+        add: { _method: 'POST', _auth: true },
+        remove: { _method: 'DELETE', _auth: true },
+      },
+      followers: { _method: 'GET', _path: '/:id/followers' },
+      following: { _method: 'GET', _path: '/:id/following' },
+      friends: { _method: 'GET', _path: '/:id/friends' },
+      history: { _method: 'GET', _path: '/:id/history/:?type/:?item_id' },
+      ratings: { _method: 'GET', _path: '/:id/ratings/:?type/:?rating' },
+      watchlist: { _method: 'GET', _path: '/:id/watchlist/:?type/:?sort_by/:?sort_how' },
+      watchlist_comments: { _method: 'GET', _path: '/:id/watchlist/comments/:?sort' },
+      favorites: { _method: 'GET', _path: '/:id/favorites/:?type/:?sort_by/:?sort_how', _auth: true },
+      favorites_comments: { _method: 'GET', _path: '/:id/favorites/comments/:?sort' },
+      watching: { _method: 'GET', _path: '/:id/watching' },
+      watched: { _method: 'GET', _path: '/:id/watched/:type' },
+      stats: { _method: 'GET', _path: '/:id/stats' },
+    },
+  };
+}
+})('Trakt.tv | Trakt API Wrapper');
+
+
+gmStorage['fyk2l3vj'] && (async (moduleName) => {
+/* global moduleName */
+
+'use strict';
+
+let $, traktApiWrapper;
+
+const logger = {
+  _defaults: {
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
+  },
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -1931,9 +2609,8 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/(shows|movies)\//.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  toastr ??= unsafeWindow.toastr;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
-  if (!$ || !toastr) return;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
+  if (!$) return;
 
   const $additionalStatsLi = $('#overview .additional-stats > li'),
         pathSplit = location.pathname.split('/').filter(Boolean);
@@ -2098,7 +2775,7 @@ document.addEventListener('turbo:load', async () => {
   // STUDIOS
   const $studios = $additionalStatsLi.filter((_, e) => $(e).find('label').text().toLowerCase().startsWith('studio'));
   if ($studios.length) {
-    if (traktApiModule) {
+    if (traktApiWrapper) {
       let hasRun = false;
 
       const matchStudioFromElemContext = async function(evt) {
@@ -2107,8 +2784,8 @@ document.addEventListener('turbo:load', async () => {
         evt?.preventDefault();
 
         unsafeWindow.showLoading?.();
-        const dataStudios = await traktApiModule[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
-              allStudioIdsJoined = dataStudios.map((studio) => studio.ids.trakt).join();
+        const dataStudios = await traktApiWrapper[pathSplit[0]].studios({ id: $('.summary-user-rating').attr(`data-${pathSplit[0].slice(0, -1)}-id`) }), // has the same order as $studios
+              allStudioIdsJoined = dataStudios.map((dataStudio) => dataStudio.ids.trakt).join();
         unsafeWindow.hideLoading?.();
 
         if (evt) {
@@ -2119,7 +2796,7 @@ document.addEventListener('turbo:load', async () => {
 
         $studios.children().eq(0).attr('href', `/search/${pathSplit[0]}?studio_ids=${allStudioIdsJoined}`);
         $studios.children().eq(1).attr('href', `/search/${pathSplit[0]}?studio_ids=${dataStudios[0].ids.trakt}`);
-        $studios.find('.studios-more').html(dataStudios.slice(1).map((studio) => `, <a href="${studio.ids.trakt}">${studio.name}</a>`));
+        $studios.find('.studios-more').html(dataStudios.slice(1).map((dataStudio) => `, <a href="/search/${pathSplit[0]}?studio_ids=${dataStudio.ids.trakt}">${dataStudio.name}</a>`));
       }
 
       // wrap names with unresolved anchor tags to minimize api requests
@@ -2394,7 +3071,7 @@ document.addEventListener('turbo:load', () => {
 
   const $sortableGrid = $('#sortable-grid'),
         $spacer = $sortableGrid.children().length ? $(`<hr id="all-in-one-lists-view-spacer">`).insertAfter($sortableGrid) : undefined,
-        $btn = $(`<button id="all-in-one-lists-view-btn" type="button">All-in-One Lists View</button>`).insertAfter($spacer ?? $sortableGrid);
+        $btn = $(`<button id="all-in-one-lists-view-btn" type="button">All-In-One Lists View</button>`).insertAfter($spacer ?? $sortableGrid);
 
   $btn.on('click', async () => {
     $btn.text('Loading...').prop('disabled', true);
@@ -2509,7 +3186,7 @@ body:has(#btn-list-edit-lists.active) :is(#all-in-one-lists-view-btn, #all-in-on
 }
   `);
 }
-})('Trakt.tv | All-in-One Lists View');
+})('Trakt.tv | All-In-One Lists View');
 
 
 gmStorage['pmdf6nr9'] && (async (moduleName) => {
@@ -2517,7 +3194,7 @@ gmStorage['pmdf6nr9'] && (async (moduleName) => {
 
 'use strict';
 
-let $, traktApiModule;
+let $, traktApiWrapper;
 const numFormatCompact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
 numFormatCompact.formatTLC = (n) => numFormatCompact.format(n).toLowerCase();
 
@@ -2528,7 +3205,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/(shows|movies)\//.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
   if (!$) return;
 
   const $summaryWrapper = $('#summary-wrapper'),
@@ -2555,10 +3232,10 @@ document.addEventListener('turbo:load', async () => {
 
 async function getRatingsData(statsPath) {
   let ratingsData;
-  if (traktApiModule) {
+  if (traktApiWrapper) {
     const statsPathSplit = statsPath.split('/').slice(1, -1),
           id = isNaN(statsPathSplit[1]) ? statsPathSplit[1] : $('.summary-user-rating').attr(`data-${statsPathSplit[0].slice(0, -1)}-id`), // /shows/1883 numeric slugs are interpreted as trakt-id by api
-          resp = await traktApiModule[(statsPathSplit[4] ?? statsPathSplit[2] ?? statsPathSplit[0])].ratings({ id, season: statsPathSplit[3], episode: statsPathSplit[5] });
+          resp = await traktApiWrapper[(statsPathSplit[4] ?? statsPathSplit[2] ?? statsPathSplit[0])].ratings({ id, season: statsPathSplit[3], episode: statsPathSplit[5] });
     ratingsData = { distribution: Object.values(resp.distribution), votes: resp.votes };
   } else {
     const resp = await fetch(statsPath),
@@ -2773,6 +3450,452 @@ function addStyles() {
 })('Trakt.tv | Charts - Ratings Distribution');
 
 
+gmStorage['swtn5c9q'] && (async (moduleName) => {
+/* global moduleName */
+
+'use strict';
+
+let $, Cookies, traktApiWrapper;
+
+const logger = {
+  _defaults: {
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
+    toast: true,
+    toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
+    toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
+  },
+  _print(fnConsole, fnToastr, msg = '', opt = {}) {
+    const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
+          fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
+    console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+  },
+  info(msg, opt) { this._print('info', 'info', msg, opt) },
+  success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
+  warning(msg, opt) { this._print('warn', 'warning', msg, opt) },
+  error(msg, opt) { this._print('error', 'error', msg, opt) },
+};
+
+const getProgRuntimeText = (itemData, runtime) => {
+  const hoursIn = ~~(((itemData.progress / 100) * runtime) / 60),
+        minsIn = Math.round(((itemData.progress / 100) * runtime) % 60),
+        hoursLeft = ~~(((1 - (itemData.progress / 100)) * runtime) / 60),
+        minsLeft = Math.round(((1 - (itemData.progress / 100)) * runtime) % 60);
+  return `${itemData.progress.toFixed(1)}% (${hoursIn ? `${hoursIn}h` : ''}${minsIn}m | -${hoursLeft ? `${hoursLeft}h` : ''}${minsLeft}m)`;
+}
+
+const pbProgItems = {},
+      menuCommands = { set: null, removeAll: null, renewAll: null };
+let lastPausedAt;
+
+
+if (location.pathname.includes('/progress/playback')) document.body?.classList.add('playback');
+addStyles();
+
+document.addEventListener('turbo:load', () => {
+  $ ??= unsafeWindow.jQuery;
+  Cookies ??= unsafeWindow.Cookies;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
+  if (!$ || !Cookies) return;
+  if (!traktApiWrapper) { logger.error('"Trakt API Wrapper" is not available. Please make sure you have it installed and/or enabled. Aborting..', { toast: false }); return; }
+
+  unsafeWindow.userscriptPbProgMan ={
+    set: setPbProg,
+    remove: removePbProg,
+    getAll: getPbProgAll,
+    removeAll: removePbProgAll,
+    renewAll: renewPbProgAll,
+    items: pbProgItems,
+  };
+
+  Object.entries(menuCommands).forEach(([name, id]) => { if (id !== null) { GM_unregisterMenuCommand(id); menuCommands[name] = null; }; });
+  const itemUrl = $(`:is(.sidebar, .sidebar .btn-item-report):is([data-type="movie"], [data-type="episode"])`).attr('data-url');
+  if (itemUrl) menuCommands.set = GM_registerMenuCommand('PPM: Set New', () => setPbProg(itemUrl));
+
+  if (location.pathname.includes('/progress/playback')) $('body').addClass('playback');
+  if (new RegExp(`/users/(me|${Cookies.get('trakt_userslug')})/progress`).test(location.pathname)) addPbProgDropdownEntries();
+
+  $(document).off('ajaxSuccess.userscript09213').on('ajaxSuccess.userscript09213', async (_evt, _xhr, opt, resp) => {
+    if (opt.url.includes('/me/last_activities')) {
+      if(!lastPausedAt || lastPausedAt !== resp.movies.paused_at + resp.episodes.paused_at) {
+        getPbProgAll();
+        lastPausedAt = resp.movies.paused_at + resp.episodes.paused_at;
+      } else if (!$('#playback-progress-wrapper').length) {
+        if ($('body').is('.show_progress.is-self.playback')) await populatePbProgPage();
+        addPbProgBadges();
+      }
+    }
+
+    if ([
+      /\/shows\/.*\/recent_episodes$/,
+      /\/movies\/.*\/related_items$/,
+      /\/dashboard\/(recently_watched|on_deck|recommendations\/movies|network_activies|list)$/,
+      /\/users\/.*\/profile\/(recently_watched|most_watched\/movies)$/,
+    ].some((regExp) => regExp.test(opt.url))) addPbProgBadges();
+
+    if (opt.url.endsWith('/watch')) {
+      const itemUrl = opt.url.match(/(.+)\/watch/)[1];
+      if (pbProgItems[itemUrl]) removePbProg(itemUrl);
+    }
+  });
+}, { capture: true });
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+async function setPbProg(itemUrl, progRaw, toast = true) {
+  progRaw ??= prompt(`Please enter your playback progress.\nhttps://trakt.tv${itemUrl}\n\nIt's not possible to set a playback progress of < 1% or >= 80%.\n` +
+                     `The input parsing is very lenient, valid formats include:\n13 | 13.37 | 13,37% | 0:42 | 0:42:59 | : 42 | 2h42m | 42 M 59s 2 H`);
+  if (progRaw === null) return;
+  const prog = await parseProgRaw(progRaw, itemUrl);
+  if (!prog) { logger.error('Invalid playback progress input.'); return; }
+
+  if (pbProgItems[itemUrl]) await removePbProg(itemUrl, false);
+
+  try {
+    const itemUrlSplit = itemUrl.split('/').filter(Boolean),
+          itemType = itemUrlSplit[0].slice(0, -1);
+    pbProgItems[itemUrl] = {
+      ...(await traktApiWrapper.scrobble.stop({ [itemType]: { ids: { [itemType === 'movie' ? 'slug' : 'trakt']: itemUrlSplit[1] } }, progress: prog })),
+      paused_at: new Date().toISOString(),
+      type: itemType,
+    };
+    logger.success(`Playback progress for "${pbProgItems[itemUrl].show ? `${pbProgItems[itemUrl].show.title} - ` : ''}${pbProgItems[itemUrl][pbProgItems[itemUrl].type].title}" ` +
+                   `has been set to ${pbProgItems[itemUrl].progress.toFixed(1)}%.`, { toast, data: pbProgItems[itemUrl] });
+  } catch (err) {
+    logger.error(`Failed to set playback progress!`, { toast, data: err });
+    throw err;
+  }
+
+  if ($('body').is('.show_progress.is-self.playback')) await populatePbProgPage();
+  addPbProgBadges();
+}
+
+async function removePbProg(itemUrl, toast = true) {
+  try {
+    await traktApiWrapper.sync.playback.remove({ id: pbProgItems[itemUrl].id });
+    logger.success(`Playback progress for "${pbProgItems[itemUrl].show ? `${pbProgItems[itemUrl].show.title} - ` : ''}` +
+                   `${pbProgItems[itemUrl][pbProgItems[itemUrl].type].title}" has been removed.`, { toast, data: pbProgItems[itemUrl] });
+    delete pbProgItems[itemUrl];
+  } catch (err) {
+    if (err.status === 404) {
+      logger.warning(`Playback progress has already been removed.`, { toast, data: err });
+      delete pbProgItems[itemUrl];
+    } else {
+      logger.error(`Failed to remove playback progress!`, { toast, data: err });
+      throw err;
+    }
+  }
+
+  if ($('body').is('.show_progress.is-self.playback')) {
+    $(`.grid-item[data-url="${itemUrl}"]`).remove();
+    $('body > .tooltip').tooltip('destroy');
+  } else $(`.pb-prog-badge[data-url="${itemUrl}"]`).remove();
+}
+
+async function getPbProgAll() {
+  const resp = await traktApiWrapper.sync.playback.get();
+  Object.keys(pbProgItems).forEach((itemUrl) => delete pbProgItems[itemUrl]);
+  Object.assign(pbProgItems, Object.fromEntries(resp.map((item) => [`/${item.type}s/${item[item.type].ids[item.type === 'movie' ? 'slug' : 'trakt']}`, item])));
+
+  if ($('body').is('.show_progress.is-self.playback')) await populatePbProgPage();
+  $(`.pb-prog-badge`).remove();
+  addPbProgBadges();
+
+  return pbProgItems;
+}
+
+async function removePbProgAll(toast = true) {
+  await Promise.all(
+    Object.entries(pbProgItems)
+      .sort((a, b) => new Date(a[1].paused_at) - new Date(b[1].paused_at))
+      .map(([itemUrl]) => removePbProg(itemUrl, false))
+  );
+  logger.success(`All playback progress items have been removed.`, { toast });
+}
+
+async function renewPbProgAll(toast = true) {
+  const sortedRenewableItemEntries = Object.entries(pbProgItems)
+    .filter(([, { progress }]) => progress < 80)
+    .sort((a, b) => new Date(a[1].paused_at) - new Date(b[1].paused_at));
+  for (const [itemUrl, { progress }] of sortedRenewableItemEntries) await setPbProg(itemUrl, progress, false);
+
+  if (sortedRenewableItemEntries.length) logger.success(`All (${sortedRenewableItemEntries.length}) renewable playback progress items have been renewed.`, { toast });
+  else logger.warning(`No renewable playback progress items found.`, { toast });
+}
+
+async function parseProgRaw(progRaw, itemUrl) {
+  progRaw = `${progRaw}`.trim();
+  let prog;
+
+  if (/^[\d.,%]+$/.test(progRaw)) {
+    prog = parseFloat(progRaw.replace(',', '.'));
+  } else if (itemUrl) {
+    const itemUrlSplit = itemUrl.split('/').filter(Boolean),
+          runtime = itemUrlSplit[0] === 'movies'
+            ? (await traktApiWrapper.movies.summary({ id: itemUrlSplit[1], extended: 'full' })).runtime
+            : (await traktApiWrapper.search.id({ id_type: 'trakt', id: itemUrlSplit[1], type: 'episode', extended: 'full' }))[0].episode.runtime;
+    if (runtime) {
+      if (progRaw.includes(':')) {
+        prog = (progRaw.split(':').slice(0, 3).reduce((acc, v, i) => acc + v * (3600 / (60 ** i)), 0) / (runtime * 60)) * 100;
+      } else if (/[hms]/i.test(progRaw)) {
+        const [h, m, s] = ['h', 'm', 's'].map((unit) => +progRaw.match(new RegExp(`(\\d+)\s*${unit}`, 'i'))?.[1] || 0);
+        prog = ((h*3600 + m*60 + s) / (runtime * 60)) * 100;
+      }
+    }
+  }
+  if (!isNaN(prog) && prog >= 1 && prog < 80) return prog;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+function addPbProgBadges() {
+  if (!Object.keys(pbProgItems).length) return;
+
+  $(`.grid-item:is([data-type="movie"], [data-type="episode"]):has(.poster, .fanart):not(:has(.pb-prog-badge)), ` +
+    `.sidebar:is([data-type="movie"], [data-type="episode"], :has(.btn-item-report:is([data-type="movie"], [data-type="episode"]))):not(:has(.pb-prog-badge)), ` +
+    `#summary-ratings-wrapper:has(.summary-user-rating:is([data-type="movie"], [data-type="episode"])) ~ .summary .mobile-poster:not(:has(.pb-prog-badge))`).each((_i, e) => {
+    const itemUrl = $(e).attr('data-url') ?? $('.notable-summary').attr('data-url'),
+          runtime = $(e).attr('data-runtime') ?? $('.notable-summary').attr('data-runtime');
+
+    if (pbProgItems[itemUrl]) {
+      $(`<div class="pb-prog-badge" data-url="${itemUrl}" style="--pb-prog-percent: ${pbProgItems[itemUrl].progress}%; display: none;"><div class="icon fa-solid fa-pause"></div></div>`)
+        .appendTo($(e).is('.grid-item') ? $(e) : $(e).find('.poster')).tooltip({
+          title: () =>
+            `<span style="white-space: nowrap;">` +
+              `Playback Progress<br>` +
+              `${getProgRuntimeText(pbProgItems[itemUrl], runtime)}<br>` +
+              `${unsafeWindow.formatDate(pbProgItems[itemUrl].paused_at)}<br>` +
+              `<em>Click for options</em>` +
+            `</span>`,
+          placement: 'right',
+          container: 'body',
+          html: true,
+        }).popover({
+          template: '<div class="popover remove" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>',
+          title: 'Playback Progress Options',
+          content:
+            `<button class="btn btn-primary less-rounded" onclick="$(this).closest('.popover').popover('hide'); userscriptPbProgMan.set('${itemUrl}');">Set New</button>` +
+            `<button class="btn btn-primary less-rounded" onclick="$(this).closest('.popover').popover('destroy'); userscriptPbProgMan.remove('${itemUrl}');">Remove</button>` +
+            `<button class="btn btn-cancel less-rounded" onclick="$(this).closest('.popover').popover('hide');">Cancel</button>`,
+          trigger: 'manual',
+          placement: 'bottom',
+          container: 'body',
+          html: true,
+        }).on('click', function(evt) {
+          evt.preventDefault();
+          $(this).tooltip('hide').popover('show');
+        }).fadeIn();
+    }
+  });
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+function addPbProgDropdownEntries() {
+  const $dropdownMenu = $('.subnav-wrapper .left .dropdown-menu');
+  $dropdownMenu.append(
+    `<li class="divider fader" role="presentation"></li>` +
+    `<li class="dropdown-header" role="presentation">PLAYBACK</li>` +
+    `<li><a href="/users/me/progress/playback">All Types</a></li>` +
+    `<li><a href="/users/me/progress/playback/movies">Movies</a></li>` +
+    `<li><a href="/users/me/progress/playback/episodes">Episodes</a></li>`
+  );
+  if ($('body').is('.playback')) {
+    $dropdownMenu
+      .find('.selected').removeClass('selected')
+      .end().find(`[href$="${location.pathname.split('/').pop()}"]`).addClass('selected')
+      .end().prev().contents()[0].textContent = `Playback - ${$dropdownMenu.find('.selected').text()} `;
+  }
+}
+
+async function populatePbProgPage() {
+  const typeFilter = location.pathname.split('/playback').pop();
+  const $gridItems = await Promise.all(
+    Object.entries(pbProgItems)
+      .filter(([, { type }]) => !typeFilter || typeFilter.includes(type))
+      .sort((a, b) => new Date(b[1].paused_at) - new Date(a[1].paused_at))
+      .map(async ([itemUrl, itemData]) => {
+        const [summary, summaryEp] = await Promise.all([
+          traktApiWrapper[itemData.movie ? 'movies' : 'shows'].summary({ id: itemData[itemData.movie ? 'movie' : 'show'].ids.trakt, extended: 'full,images' }),
+          itemData.episode ? traktApiWrapper.episodes.summary({ id: itemData.show.ids.trakt, season: itemData.episode.season, episode: itemData.episode.number, extended: 'full,images' }) : null,
+        ]);
+        return buildPbProgGridItem(itemUrl, itemData, summary, summaryEp);
+      })
+  );
+
+  $(':is(#progress-wrapper, #playback-progress-wrapper)').attr('id', 'playback-progress-wrapper') // id change to bypass native progress watched actions (e.g. auto refresh)
+    .children().html('<div class="row"></div>')
+  $('body > .tooltip').tooltip('destroy');
+
+  if ($gridItems.length) {
+    $('#playback-progress-wrapper .row').addClass('posters').append($gridItems);
+    unsafeWindow.isProgress = false; // needed for correct note-badge insertion/placement in addOverlays() => addNotesOverlays()
+    unsafeWindow.addOverlays();
+    unsafeWindow.posterGridTooltips();
+    unsafeWindow.formatDates();
+    unsafeWindow.hideUnreleasedRatings();
+    unsafeWindow.lazyLoadImages();
+
+    if (!typeFilter) {
+      const removeAllMsg = `Remove all (${$gridItems.length}) playback progress items?\nThis will take about ${$gridItems.length * 1}s and cannot be undone!`,
+            renewAllMsg = `Renew all (${$gridItems.length}) playback progress items?\nThis will take about ${$gridItems.length * 2}s and cannot be undone!\n\n` +
+                          `Playback progress states are automatically removed by Trakt after 6 months. Renewing them postpones the auto-removal by first removing ` +
+                          `and then setting the playback progress states again, while preserving the current order. Due to trakt api changes playback progress items ` +
+                          `with a progress of >= 80% cannot be renewed and will be excluded.`;
+      [['removeAll', 'Remove All', removeAllMsg, removePbProgAll], ['renewAll', 'Renew All', renewAllMsg, renewPbProgAll]].forEach(([idKey, name, msg, fn]) => {
+        menuCommands[idKey] ??= GM_registerMenuCommand(`PPM: ${name}`, () => confirm(msg) && fn());
+      });
+    }
+  } else {
+    $('#playback-progress-wrapper .row').html(`<div class="col-md-12"><br><div class="alert alert-no-data">Nothing to see here. Move along, move along.</div></div>`);
+  }
+}
+
+function buildPbProgGridItem(itemUrl, itemData, summary, summaryEp) {
+  const releaseDate = summaryEp?.first_aired ?? summary.first_aired ?? summary.released + 'T00:00:00Z';
+  const dataPercentage = Math.floor((summaryEp ?? summary).rating * 10);
+  const runtime = (summaryEp ?? summary).runtime;
+  const longPath = itemData.movie
+    ? itemUrl
+    : `/shows/${itemData.show.ids.slug}/seasons/${itemData.episode.season}/episodes/${itemData.episode.number}`;
+  const longTitle = itemData.movie
+    ? `${itemData.movie.title} (${itemData.movie.year})`
+    : `${itemData.show.title}&lt;br&gt;${itemData.episode.season}x${String(itemData.episode.number).padStart(2, '0')} &quot;${itemData.episode.title}&quot;`;
+  const dataEpisodeTitle = itemData.episode
+    ? `&lt;span class='main-title-sxe'&gt;${itemData.episode.season}x${String(itemData.episode.number).padStart(2, '0')}&lt;/span&gt; &lt;span class='main-title' data-spoiler-episode-id='${itemData.episode.ids.trakt}' data-spoiler-show-id='${itemData.show.ids.trakt}'&gt;${itemData.episode.title}&lt;/span&gt;`
+    : null;
+  const episodeTypeClass = summaryEp
+    ? summaryEp.episode_type.replace('_', '-')
+    : null;
+  const episodeTypeLabel = summaryEp && summaryEp.episode_type !== 'standard'
+    ? summaryEp.episode_type.replace('_', ' ').toUpperCase()
+    : null;
+
+  return $(
+    `<div class="grid-item col-xs-6 col-md-2 col-sm-3" data-${itemData.type}-id="${itemData[itemData.type].ids.trakt}" data-runtime="${runtime}" data-total-runtime="${runtime}" data-type="${itemData.type}" data-url="${itemUrl}" itemscope="" itemtype="http://schema.org/${itemData.movie ? 'Movie' : 'TVEpisode'}"` +
+    ` data-paused-at="${itemData.paused_at}" data-progress="${itemData.progress}" data-percentage="${dataPercentage}" data-released="${releaseDate}" data-title="${longTitle}" data-votes="${summaryEp?.votes ?? summary.votes}"` +
+    (itemData.episode
+      ? ` data-episode-number="${itemData.episode.number}" ${itemData.episode.number === 1 ? `data-episode-type-class="${episodeTypeClass}" data-episode-type-label="${episodeTypeLabel}" ` : ''}data-season-id="" data-season-number="${itemData.episode.season}" data-show-id="${itemData.show.ids.trakt}" itemprop="episode"`
+      : '') + '>' +
+      `<meta content="https://trakt.tv${longPath}" itemprop="url">` +
+      `<a href="${longPath}">` +
+        `<div class="poster" title="${longTitle}">` +
+          `<img class="base" src="/assets/placeholders/thumb/poster-7d5f5ef772b207dc5e74b5d7b0f1b5be444ea217fe09dbbe5995ffec2fefcd98.png">` +
+          `<img class="real" data-original="https://${summary.images.poster[0]}" src="/assets/placeholders/thumb/poster-7d5f5ef772b207dc5e74b5d7b0f1b5be444ea217fe09dbbe5995ffec2fefcd98.png">` +
+          `<div class="loading">` +
+            `<div class="icon">` +
+              `<div class="fa fa-refresh fa-spin"></div>` +
+            `</div>` +
+          `</div>` +
+        `</div>` +
+      `</a>` +
+      `<div class="quick-icons smaller">` +
+        `<div class="actions">` +
+          `<a class="watch" data-${itemData.type}-id="${itemData[itemData.type].ids.trakt}" data-fanart="https://${summary.images.fanart[0]}" data-first-aired="${releaseDate}" data-full-title="${longTitle.split('&lt;br&gt;').join('  ')}" data-logo="https://${summary.images.logo[0]}" data-runtime="${runtime}" data-top-title="${itemData[itemData.type].title + (itemData.movie ? ` (${itemData.movie.year})` : '')}" data-total-runtime="${runtime}" data-type="${itemData.type}" data-url="${itemUrl}"` +
+          (itemData.episode
+            ? ` data-episode-number="${itemData.episode.number}" data-episode-title="${dataEpisodeTitle}" ${itemData.episode.number === 1 ? `data-episode-type-class="${episodeTypeClass}" data-episode-type-label="${episodeTypeLabel}" ` : ''}data-screenshot="${summaryEp.images.screenshot[0]}" data-season-id="" data-season-number="${itemData.episode.season}" data-show-id="${itemData.show.ids.trakt}"`
+            : '') + '>' +
+            `<div class="base"></div>` +
+            `<div class="icon trakt-icon-check-thick"></div>` +
+          `</a>` +
+          `<a class="collect" data-original-title="" title="">` +
+            `<div class="base"></div>` +
+            `<div class="icon trakt-icon-collection-thick"></div>` +
+          `</a>` +
+          `<a class="list" data-original-title="" title="">` +
+            `<div class="base"></div><div class="icon trakt-icon-list-thick"></div>` +
+          `</a>` +
+          `<a class="watch-now" data-source-counts="{'us':1}" data-source-slugs="{}" data-target="#watch-now-modal" data-toggle="modal" data-url="${itemUrl}" data-original-title="" title="">` +
+            `<div class="base"></div>` +
+            `<div class="fa-solid fa-play"></div>` +
+          `</a>` +
+        `</div>` +
+        `<div class="metadata">` +
+          `<div class="percentage" data-earliest-release-date="${releaseDate}" data-original-title="" title="">` +
+            `<div class="fa fa-heart rating-${Math.floor((summaryEp ?? summary).rating)}"></div>${dataPercentage}%` +
+          `</div>` +
+        `</div>` +
+      `</div>` +
+      `<div class="titles">` +
+        `<a class="titles-link" href="${longPath.split('/episodes/')[0]}">` +
+          `<h3 class="ellipsify">` +
+            (itemData.episode
+              ? `<span class='main-title-sxe'>${itemData.episode.season}x${String(itemData.episode.number).padStart(2, '0')}</span> ` +
+                `<span class='main-title' data-spoiler-episode-id='${itemData.episode.ids.trakt}' data-spoiler-show-id='${itemData.show.ids.trakt}'>${itemData.episode.title}</span>`
+              : itemData.movie.title) +
+          `</h3>` +
+        `</a>` +
+        `<a class="titles-link" href="${longPath.split('/seasons/')[0]}">` +
+          `<h4 class="ellipsify">${getProgRuntimeText(itemData, runtime)}</h4>` +
+        `</a>` +
+        `<div class="titles-link">` +
+          `<h4 class="ellipsify">` +
+            `<span class="format-date relative-date-swap" data-date="${itemData.paused_at}">${itemData.paused_at}</span>` +
+          `</h4>` +
+        `</div>` +
+      `</div>` +
+      (itemData.episode
+        ? `<span class="hidden" itemprop="partOfSeries" itemscope="" itemtype="http://schema.org/TVSeries">` +
+            `<meta content="${itemData.show.title}" itemprop="name">` +
+            `<meta content="https://trakt.tv/shows/${itemData.show.ids.slug}" itemprop="sameAs">` +
+          `</span>` +
+          `<meta content="${itemData.episode.number}" itemprop="episodeNumber">`
+        : '') +
+      `<meta content="${itemData[itemData.type].title + (itemData.movie ? ` (${itemData.movie.year})` : '')}" itemprop="name">` +
+      `<meta content="${releaseDate}" itemprop="datePublished">` +
+    `</div>`
+  );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+function addStyles() {
+  GM_addStyle(`
+.pb-prog-badge {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background:
+    radial-gradient(#555 45%, transparent 45%),
+    conic-gradient(from 180deg, #4CAF50 var(--pb-prog-percent), #333 var(--pb-prog-percent));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ccc;
+  z-index: 30;
+  top: -10px;
+  left: 0;
+}
+.grid-item:has(> .notable-badge, > .added-by) .pb-prog-badge {
+  left: 20px;
+}
+.grid-item:has(> .notable-badge):has(> .added-by) .pb-prog-badge {
+  left: 40px;
+}
+:is(.sidebar, .fanarts) :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
+  top: 1.5% !important;
+  margin-left: 1.5% !important;
+}
+
+body.show_progress.playback :is(#progress-wrapper, .subnav-wrapper .right, .subnav-wrapper.visible-xs-block .left) {
+  display: none !important;
+}
+#playback-progress-wrapper .titles {
+  margin: 10px 5px 10px !important;
+}
+#playback-progress-wrapper .titles h3 {
+  margin-top: 0 !important;
+}
+
+.reports-wrapper .grid-item {
+  position: relative;
+}
+  `);
+}
+})('Trakt.tv | Playback Progress Manager');
+
+
 gmStorage['txw82860'] && (async (moduleName) => {
 'use strict';
 
@@ -2983,13 +4106,11 @@ const menus = {
       { text: 'Watched', href: '/watched', anchor: true, submenu: menuTemplates.progressSorting('/users/me/progress/watched') },
       { text: 'Dropped', href: '/dropped', submenu: menuTemplates.progressSorting('/users/me/progress/dropped') },
       { text: 'Library', href: '/library', submenu: menuTemplates.progressSorting('/users/me/progress/library') },
-      ...(unsafeWindow.userscriptPlaybackProgressManager ? [
-        {},
-        { text: 'PLAYBACK' },
-        { text: 'All Types', href: '/playback' },
-        { text: 'Movies', href: '/playback/movies' },
-        { text: 'Episodes', href: '/playback/episodes' },
-      ] : []),
+      {},
+      { text: 'PLAYBACK' },
+      { text: 'All Types', href: '/playback' },
+      { text: 'Movies', href: '/playback/movies' },
+      { text: 'Episodes', href: '/playback/episodes' },
     ],
   },
   '.btn-profile a[href$="/ratings"]': {
@@ -3614,10 +4735,10 @@ const customWatchNowLinks = [
   },
   {
     buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://animetsu.cc' + (id ? '/watch/' + id + '?ep=${i.episode ?? '1'}&subType=dub&server=' : '/search?query=${customLinkHelperFns.encodeRfc3986(i.title)}'))`,
-    innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #111;', text: 'GOJO.LIVE', textStyle: 'font-family: GangOfThree; font-size: 18cqi;' }),
+    innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #111;', text: 'Animetsu', textStyle: 'font-family: GangOfThree; font-size: 18cqi;' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeStreaming'),
     includeIf: (i) => i.genres.includes('anime'),
-    addStyles: `@font-face { font-family: "GangOfThree"; src: url("${GM_getResourceURL('gojolive')}") format("woff2"); font-display: block; }`,
+    addStyles: `@font-face { font-family: "GangOfThree"; src: url("${GM_getResourceURL('animetsu')}") format("woff2"); font-display: block; }`,
   },
   { // type=dub is bugged
     buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://anidap.se' + (id ? '/watch?ep=${i.episode ?? '1'}&type=dub&provider=&id=' + id : '/search?q=${customLinkHelperFns.encodeRfc3986(i.title)}'))`,
@@ -3632,7 +4753,7 @@ const customWatchNowLinks = [
     includeIf: (i) => i.genres.includes('anime'),
   },
   {
-    buildHref: (i) => `https://knaben.org/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${customLinkHelperFns.encodeRfc3986(gmStorage.torrentResolution)} (265|av1)/${i.type === 'movies' ? '3000000' : i.genres.includes('anime') ? '6000000' : '2000000'}/1/seeders`,
+    buildHref: (i) => `https://knaben.org/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${customLinkHelperFns.encodeRfc3986(gmStorage.torrentResolution)} (265|av1)/${i.type === 'movies' ? '3000000' : i.genres.includes('anime') ? '6000000' : '2000000'}/1/${/shows|seasons/.test(i.type) ? 'bytes' : 'seeders'}`,
     innerHtml: `<div class="icon btn-custom" style="background: #323537; flex-direction: column;">${GM_getResourceText('knaben').replace('<svg', '<svg style="max-height: 79%;"')}<div class="text" style="font-family: system-ui; font-size: 10cqi; letter-spacing: 0.3px;">KNABEN DATABASE</div></div>`,
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('torrentAggregator'),
   },
@@ -3726,7 +4847,7 @@ const customExternalLinks = [
     includeIf: (i) => gmStorage.includeNsfwLinks && i.type !== 'people',
   },
   {
-    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}.then((id) => 'https://myanimelist.net' + (id ? '/anime/' + id ${i.episode ? `+ '/x/episode/${i.episode}'` : ''}: '/search/all?q=${customLinkHelperFns.encodeRfc3986(i.title)}'))`,
+    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}.then((id) => 'https://myanimelist.net' + (id ? '/anime/' + id${i.episode ? ` + '/x/episode/${i.episode}'` : ''} : '/search/all?q=${customLinkHelperFns.encodeRfc3986(i.title)}'))`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('myanimelist.net'),
     tooltipHtml: 'MyAnimeList',
     includeIf: (i) => i.genres?.includes('anime'),
@@ -3791,7 +4912,7 @@ const customExternalLinks = [
   },
   {
     buildHref: (i) => `${customLinkHelperFns.fetchWikidataClaim(i, 'P1258')}.then((id) => id ? ` +
-      `'https://www.rottentomatoes.com/' + id ${i.season ? `+ '/s${String(i.season).padStart(2, '0')}${i.episode ? `/e${String(i.episode).padStart(2, '0')}` : ''}'` : ''}: ` +
+      `'https://www.rottentomatoes.com/' + id${i.season ? ` + '/s${String(i.season).padStart(2, '0')}${i.episode ? `/e${String(i.episode).padStart(2, '0')}` : ''}'` : ''} : ` +
       `'${customLinkHelperFns.getDdgTopResultRedirectUrl('rottentomatoes.com', i.title + (i.season ? ` Season ${i.season}${i.episode ? ` Episode ${i.episode}` : ''}` : ''))}')`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('rottentomatoes.com', '--extra-filters: brightness(1.15) contrast(1.3);'),
     tooltipHtml: 'Rotten Tomatoes',
@@ -3799,7 +4920,7 @@ const customExternalLinks = [
   },
   {
     buildHref: (i) => `${customLinkHelperFns.fetchWikidataClaim(i, 'P1712')}.then((id) => id ? ` +
-      `'https://www.metacritic.com/' + id ${i.season ? `+ '/season-${i.season}${i.episode ? `/episode-${i.episode}-${i.episode_title.toLowerCase().replaceAll(/[^a-z0-9- ]/g, '').replaceAll(' ', '-')}` : ''}'` : ''}: ` +
+      `'https://www.metacritic.com/' + id${i.season ? ` + '/season-${i.season}${i.episode ? `/episode-${i.episode}-${i.episode_title.toLowerCase().replaceAll(/[^a-z0-9- ]/g, '').replaceAll(' ', '-')}` : ''}'` : ''} : ` +
       `'${customLinkHelperFns.getDdgTopResultRedirectUrl('metacritic.com', i.title + (i.season ? ` Season ${i.season}${i.episode ? ` Episode ${i.episode}` : ''}` : ''))}')`,
     innerHtml: customLinkHelperFns.getDdgFaviconHtml('metacritic.com'),
     tooltipHtml: 'Metacritic',
@@ -3880,7 +5001,7 @@ const customExternalLinks = [
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-let $, traktApiModule;
+let $, traktApiWrapper;
 unsafeWindow.userscriptLevDist = levenshteinDistance;
 unsafeWindow.userscriptGmOpenInTab = GM_openInTab;
 unsafeWindow.userscriptGmXhrCustomLinks = GM.xmlHttpRequest;
@@ -3894,7 +5015,7 @@ addStyles();
 
 document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
   if (!$) return;
 
   const $watchNowContent = $('#watch-now-content'),
@@ -4058,7 +5179,14 @@ async function addCustomLinksToModal($watchNowContent) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-const getItemDataFromTraktApi = async (itemUrl) => {
+async function getItemData(itemUrl) {
+  return (unsafeWindow.userscriptItemDataCache[itemUrl] ??= await (
+    (traktApiWrapper ? getItemDataFromTraktApi : getItemDataFromSummaryPage)(itemUrl)
+      .then((i) => i.type === 'episodes' && i.genres.includes('anime') ? verifyEpisodeGroup(i) : i)
+  ));
+}
+
+async function getItemDataFromTraktApi(itemUrl) {
   const itemUrlSplit = itemUrl.split('/').filter(Boolean),
         type = itemUrlSplit[0];
   let itemDoc, $notableSummary, showData, seasonData, episodeData;
@@ -4072,14 +5200,14 @@ const getItemDataFromTraktApi = async (itemUrl) => {
   }
 
   if (type === 'episodes') {
-    [{ show: showData, episode: episodeData }] = await traktApiModule.search.id({ id_type: 'trakt', id: itemUrlSplit[1], type: 'episode', extended: 'full' }); // doesn't work with slugs and doesn't support type: 'season'
-    seasonData = await traktApiModule.seasons.season.info({ id: showData.ids.trakt, season: episodeData.season, extended: 'full' });
+    [{ show: showData, episode: episodeData }] = await traktApiWrapper.search.id({ id_type: 'trakt', id: itemUrlSplit[1], type: 'episode', extended: 'full' }); // doesn't work with slugs or seasons
+    seasonData = await traktApiWrapper.seasons.season({ id: showData.ids.trakt, season: episodeData.season, extended: 'full' });
   };
   const itemData = {
     item_url: itemUrl,
     type,
     ...(type !== 'episodes' && {
-      ...(await traktApiModule[type === 'seasons' ? 'shows' : type].summary({ id: $notableSummary?.attr('data-show-id') ?? itemUrlSplit[1], extended: 'full' })), // cached on disk for 8 hours
+      ...(await traktApiWrapper[type === 'seasons' ? 'shows' : type].summary({ id: $notableSummary?.attr('data-show-id') ?? itemUrlSplit[1], extended: 'full' })), // cached on disk for 8 hours
     }),
     ...(type === 'seasons' && {
       season: +$notableSummary.attr('data-season-number'),
@@ -4108,7 +5236,7 @@ const getItemDataFromTraktApi = async (itemUrl) => {
   return itemData;
 }
 
-const getItemDataFromSummaryPage = async (itemUrl) => {
+async function getItemDataFromSummaryPage(itemUrl) {
   let itemDoc, itemDoc2;
 
   const resp = await fetch(itemUrl);
@@ -4171,11 +5299,11 @@ const getItemDataFromSummaryPage = async (itemUrl) => {
   return itemData;
 }
 
-const verifyEpisodeGroup = async (itemData) => { // some anime don't default to the "correct" episode group e.g. /shows/cowboy-bebop (eps out of order), /shows/solo-leveling (1 instead of 2 seasons)
-  const showData = await fetch(`https://api.tvmaze.com/lookup/shows?imdb=${itemData.ids.imdb}`) // max 20 calls / 10s; cached on disk for 1 hour
-                           .then((r) => r.ok ? fetch(r.url + '?embed[]=episodes&embed[]=seasons') : null)
-                           .then((r) => r?.ok ? r.json() : null);
-  const episodeData = showData?._embedded.episodes.find((ep) => ep.name.trim().toLowerCase() === itemData.episode_title.trim().toLowerCase());
+async function verifyEpisodeGroup(itemData) { // some anime don't default to the "correct" episode group e.g. /shows/cowboy-bebop (eps out of order), /shows/solo-leveling (1 instead of 2 seasons)
+  const normalizeTitle = (title) => title.trim().toLowerCase().replaceAll(/[.,]/g, '').replace(/\((\d)\)$/, (_m, p1) => 'i'.repeat(+p1)),
+        showData = await fetch(`https://api.tvmaze.com/lookup/shows?imdb=${itemData.ids.imdb}`) // max 20 calls / 10s; cached on disk for 1 hour
+                           .then((r) => r.ok ? fetch(r.url + '?embed[]=seasons&embed[]=episodes') : null).then((r) => r?.ok ? r.json() : null),
+        episodeData = showData?._embedded.episodes.find((ep) => normalizeTitle(ep.name) === normalizeTitle(itemData.episode_title)); // can fail in case of completely different titles e.g. /shows/jujutsu-kaisen s02e21 "Transformation" vs "Metamorphosis"
 
   if (episodeData && (itemData.season !== episodeData.season || itemData.episode !== episodeData.number)) { // ep group used by tvmaze is usually the "correct" one
     itemData.season_old = itemData.season;
@@ -4186,13 +5314,6 @@ const verifyEpisodeGroup = async (itemData) => { // some anime don't default to 
     ['season_original_title', 'season_ids', 'season_first_aired', 'season_episode_count'].forEach((prop) => delete itemData[prop]);
   }
   return itemData;
-}
-
-async function getItemData(itemUrl) {
-  return (unsafeWindow.userscriptItemDataCache[itemUrl] ??= await (
-    (traktApiModule ? getItemDataFromTraktApi : getItemDataFromSummaryPage)(itemUrl)
-      .then((i) => i.type === 'episodes' && i.genres.includes('anime') ? verifyEpisodeGroup(i) : i)
-  ));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -4376,18 +5497,15 @@ ${customWatchNowLinks.concat(customExternalLinks).map((l) => l.addStyles).filter
 
 
 gmStorage['x70tru7b'] && (async (moduleName) => {
+/* global moduleName */
+
 'use strict';
 
-let $, compressedCache, Cookies, toastr;
-const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1],
-      token = null; // atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?) -->/)[1];
-
-const gmStorage = { ...(GM_getValue('vipUnlock')) };
-GM_setValue('vipUnlock', gmStorage);
+let $, compressedCache, Cookies;
 
 const logger = {
   _defaults: {
-    title: GM_info.script.name.replace('Trakt.tv', 'Userscript'),
+    title: (typeof moduleName !== 'undefined' ? moduleName : GM_info.script.name).replace('Trakt.tv', 'Userscript'),
     toast: true,
     toastrOpt: { positionClass: 'toast-top-right', timeOut: 10000, progressBar: true },
     toastrStyles: '#toast-container#toast-container a { color: #fff !important; border-bottom: dotted 1px #fff; }',
@@ -4396,7 +5514,7 @@ const logger = {
     const { title = this._defaults.title, toast = this._defaults.toast, toastrOpt, toastrStyles = '', consoleStyles = '', data } = opt,
           fullToastrMsg = `${msg}${data !== undefined ? ' See console for details.' : ''}<style>${this._defaults.toastrStyles + toastrStyles}</style>`;
     console[fnConsole](`%c${title}: ${msg}`, consoleStyles, ...(data !== undefined ? [data] : []));
-    if (toast) toastr[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
+    if (toast) unsafeWindow.toastr?.[fnToastr](fullToastrMsg, title, { ...this._defaults.toastrOpt, ...toastrOpt });
   },
   info(msg, opt) { this._print('info', 'info', msg, opt) },
   success(msg, opt) { this._print('info', 'success', msg, { consoleStyles: 'color:#00c853;', ...opt }) },
@@ -4404,21 +5522,33 @@ const logger = {
   error(msg, opt) { this._print('error', 'error', msg, opt) },
 };
 
+const gmStorage = { ...(GM_getValue('vipUnlock')) };
+GM_setValue('vipUnlock', gmStorage);
+
+const token = null; // atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?) -->/)[1];
+
 
 addStyles();
+
+document.addEventListener('click', (evt) => {
+  const listBtnEl = evt.target.closest('.quick-icons .list, .btn-summary.btn-list, .btn-summary.btn-list .side-btn .icon-add'),
+        popoverEl = evt.target.closest('.popover');
+  if (listBtnEl && !popoverEl) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    addToListBtnOverride.call(listBtnEl);
+  }
+}, { capture: true });
 
 document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
   compressedCache ??= unsafeWindow.compressedCache;
   Cookies ??= unsafeWindow.Cookies;
-  toastr ??= unsafeWindow.toastr;
-  if (!$ || !compressedCache || !Cookies || !toastr) return;
+  if (!$ || !compressedCache || !Cookies) return;
 
 
-  $('body').removeAttr('data-turbo');
   unsafeWindow.actionList = addToListPopupOverride;
-  document.querySelectorAll('.quick-icons .list, .btn-summary.btn-list, .btn-summary.btn-list .side-btn .icon-add').forEach((el) => el.addEventListener('click', addToListBtnOverride));
-
+  $('body').removeAttr('data-turbo');
   patchUserSettings();
   if (token) $('body:not(.dashboard) .feed-icon.csv').attr('href', location.pathname + '.csv?slurm=' + token + location.search.replace('?', '&'));
 
@@ -4446,10 +5576,12 @@ document.addEventListener('turbo:load', async () => {
     unsafeWindow.showLoading?.();
     const searchParams = new URLSearchParams(location.search),
           listId = searchParams.get('list'),
-          listDoc = await fetch('/lists/' + listId).then((r) => fetch(r.url + '?display=show&hide=unwatched&limit=10000')).then((r) => r.text()).then((r) => new DOMParser().parseFromString(r, 'text/html')),
+          listDoc = await fetch('/lists/' + listId)
+            .then((r) => fetch(r.url + '?display=show&hide=unwatched&limit=10000')).then((r) => r.text())
+            .then((r) => new DOMParser().parseFromString(r, 'text/html')),
           watchedShowsOnListTitles = [...listDoc.querySelectorAll('.grid-item')].map((e) => e.querySelector('.titles-link')?.textContent).filter(Boolean);
 
-    searchParams.append('terms', `^${watchedShowsOnListTitles.join('$|^')}$`);
+    searchParams.set('terms', `^${watchedShowsOnListTitles.join('$|^')}$`);
     ['airing', 'completed', 'ended', 'not-completed', 'rewatching'].forEach((cookieSuffix) => {
       Cookies.remove('filter-hide-progress-' + cookieSuffix, { path: '/' });
       Cookies.remove('filter-hide-progress-' + cookieSuffix, { path: '/users/' + Cookies.get('trakt_userslug') });
@@ -4471,7 +5603,97 @@ function patchUserSettings() {
   }
 }
 
-const getTempListId = async () => { // would need a second one for some bulk copy/move actions
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+async function addToListBtnOverride() {
+  if(unsafeWindow.listPopupPressed) { unsafeWindow.listPopupPressed = false; return; }
+
+  const isSideBtn = $(this).hasClass('side-btn') || $(this).parent().hasClass('side-btn'),
+        isSummaryMode = $(this).hasClass('btn-list'),
+        $gridItem = isSideBtn ? $(this).closest('.btn-summary') : isSummaryMode ? $(this) : $(this).closest('.grid-item'),
+        itemUrl = $gridItem.attr('data-url'),
+        itemType = $gridItem.attr('data-type'),
+        itemId = +$gridItem.attr(`data-${itemType}-id`),
+        hasLists = Object.values(compressedCache.get('lists') ?? {}).some((l) => l.type === 'list'),
+        listPopupAction = (unsafeWindow.isPersonPage && isSummaryMode || $gridItem.attr('data-type') === 'person') ? 'list' : unsafeWindow.userSettings.browsing.list_popup_action;
+
+  if(unsafeWindow.isPersonPage && isSummaryMode || hasLists && (listPopupAction !== 'watchlist' || $(this).hasClass('selected')) || isSideBtn) {
+    unsafeWindow.actionListPopup(isSideBtn ? $gridItem : $(this));
+  } else {
+    $gridItem.find('.loading').show();
+    const isRemoval = $(this).hasClass('selected'),
+          watchListData = Object.values(compressedCache.get('lists')).find((l) => l.name === 'Watchlist'),
+          $pseudoLi = $(`<li class="${watchListData.item_count >= unsafeWindow.userSettings.limits.watchlist.item_count ? 'maxed-out' : ''} ${isRemoval ? 'selected' : ''}" ` +
+                        `data-list-id="${watchListData.ids.trakt}" data-list-type="watchlist" data-item-count="${watchListData.item_count}"></li>`);
+
+    const wasSuccessful = await addToListPopupOverride($gridItem, $pseudoLi, isRemoval);
+    if (wasSuccessful) {
+      $(`[data-${itemType}-id="${itemId}"]:is(.btn-summary.btn-list, [data-type="${itemType}"]) .list`)[isRemoval ? 'removeClass' : 'addClass']('selected');
+      unsafeWindow.cacheUserData();
+    };
+    $gridItem.find('.loading').hide();
+  }
+}
+
+async function addToListPopupOverride($gridItem, $li, isRemoval) {
+  $li.addClass('spinner').find('.icon').addClass('fa-spin');
+  const itemUrl = $gridItem.attr('data-url'),
+        itemType = $gridItem.attr('data-type'),
+        itemId = +$gridItem.attr(`data-${itemType}-id`),
+        targetListId = +$li.attr('data-list-id') || Object.values(compressedCache.get('lists')).find((l) => l.name === 'Watchlist').ids.trakt,
+        targetListType = $li.attr('data-list-type'),
+        targetListItemCount = +$li.attr('data-item-count');
+
+  try {
+    if ($li.hasClass('maxed-out') && !isRemoval) {
+      const durationEstimate = (45 / 1000) * targetListItemCount;
+      logger.info(`Target list is maxed-out, attempting bypass.. This will take about <strong>${~~(durationEstimate / 60)}m${~~(durationEstimate % 60)}s</strong>.`,
+                  { toastrOpt: { timeOut: durationEstimate * 1000 } });
+
+      const tempListId = await getTempListId(),
+            cachedLists = compressedCache.get('lists');
+      if (cachedLists[tempListId] && cachedLists[tempListId].item_count > 0) { logger.error(`Temp list is not empty. Aborting..`, { data: cachedLists[tempListId] }); return; }
+      const resp1 = await fetch(itemUrl + '/list', {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+        body: new URLSearchParams({ type: itemType, trakt_id: itemId, list_id: tempListId }),
+      });
+      if (!resp1.ok) { logger.error(`Failed to add item to temp list: id=${tempListId}.`, { data: resp1 }); return; }
+      logger.info('Added item to temp list.');
+
+      for (const [list1Id, list2Id] of [[targetListId, tempListId], [tempListId, targetListId]]) {
+        const list1AllItemIds = await fetch('/lists/' + list1Id).then((r) => r.text())
+          .then((r) => new DOMParser().parseFromString(r, 'text/html').querySelector('#listable-all-item-ids').value.split(',').map(Number));
+        if (!list1AllItemIds || !list1AllItemIds.length) { logger.error(`Failed to fetch all list item ids for list: id=${list1Id}.`); return; }
+
+        const resp2 = await fetch(`/lists/${list1Id}/move_items/${list2Id}`, {
+          method: 'POST',
+          headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+          body: new URLSearchParams([['sort_by', 'rank'], ['sort_how', 'asc'], ...list1AllItemIds.map((id) => ['order[]', id])]),
+        });
+        if (!resp2.ok) { logger.error(`Failed to move all items from ${list1Id === targetListId ? 'target to temp' : 'temp to target'} list.`, { data: resp2 }); return; }
+        logger.info(`Moved all items from ${list1Id === targetListId ? 'target to temp' : 'temp to target'} list.`);
+      }
+
+      logger.success(`Success. Item was added to <a href="/lists/${targetListId}"><strong>target list</strong></a>.`);
+    } else {
+      const resp = await fetch(`${itemUrl}/${/(watchlist|favorites|recommendations)/.test(targetListType) ? targetListType : 'list'}${isRemoval ? '/remove' : ''}`, {
+        method: 'POST',
+        headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
+        body: new URLSearchParams({ type: itemType, trakt_id: itemId, list_id: targetListId }),
+      });
+      if (!resp.ok) { await resp.json().then((r) => logger.error('Failed to add item to list.' + (r.message ? ' Response: ' + r.message : ''), { data: resp })); return; }
+      logger.success('Success. ' + (await resp.json()).message);
+    }
+
+    $li.toggleClass('selected');
+    return true;
+  } finally {
+    $li.removeClass('spinner').find('.icon').removeClass('fa-spin');
+  }
+}
+
+async function getTempListId() {
   if (!gmStorage.tempList1Id || !compressedCache.get('lists')[gmStorage.tempList1Id]) {
     const favsListId = Object.values(compressedCache.get('lists')).find((l) => l.name === 'Favorites').ids.trakt;
     const resp1 = await fetch(`/lists/${favsListId}/copy_items/0`, {
@@ -4512,96 +5734,6 @@ const getTempListId = async () => { // would need a second one for some bulk cop
   return gmStorage.tempList1Id;
 }
 
-async function addToListPopupOverride($gridItem, $li, isRemoval) {
-  $li.addClass('spinner').find('.icon').addClass('fa-spin');
-  const itemUrl = $gridItem.attr('data-url'),
-        itemType = $gridItem.attr('data-type'),
-        itemId = +$gridItem.attr(`data-${itemType}-id`),
-        targetListId = +$li.attr('data-list-id') || Object.values(compressedCache.get('lists')).find((l) => l.name === 'Watchlist').ids.trakt,
-        targetListType = $li.attr('data-list-type'),
-        targetListItemCount = +$li.attr('data-item-count');
-
-  try {
-    if ($li.hasClass('maxed-out') && !isRemoval) {
-      const durationEstimate = (45 / 1000) * targetListItemCount;
-      logger.info(`Target list is maxed-out, attempting bypass.. This will take about <strong>${~~(durationEstimate / 60)}m${~~(durationEstimate % 60)}s</strong>.`,
-                  { toastrOpt: { timeOut: durationEstimate * 1000 } });
-
-      const tempListId = await getTempListId(),
-            cachedLists = compressedCache.get('lists');
-      if (cachedLists[tempListId] && cachedLists[tempListId].item_count > 0) { logger.error(`Temp list is not empty. Aborting..`, { data: cachedLists[tempListId] }); return; }
-      const resp1 = await fetch(itemUrl + '/list', {
-        method: 'POST',
-        headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
-        body: new URLSearchParams({ type: itemType, trakt_id: itemId, list_id: tempListId }),
-      });
-      if (!resp1.ok) { logger.error(`Failed to add item to temp list: id=${tempListId}.`, { data: resp1 }); return; }
-      logger.info('Added item to temp list.');
-
-      for (const [list1Id, list2Id] of [[targetListId, tempListId], [tempListId, targetListId]]) {
-        const list1AllItemIds = await fetch('/lists/' + list1Id).then((r) => r.text())
-          .then((r) => new DOMParser().parseFromString(r, 'text/html').querySelector('#listable-all-item-ids').value.split(',').map(Number));
-        if (!list1AllItemIds || !list1AllItemIds.length) { logger.error(`Failed to fetch all list item ids for list: id=${list1Id}.`); return; }
-
-        const resp2 = await fetch(`/lists/${list1Id}/move_items/${list2Id}`, {
-          method: 'POST',
-          headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
-          body: ((usp) => { list1AllItemIds.forEach((id) => usp.append('order[]', id)); return usp; })(new URLSearchParams({ sort_by: 'rank', sort_how: 'asc' })),
-        });
-        if (!resp2.ok) { logger.error(`Failed to move all items from ${list1Id === targetListId ? 'target to temp' : 'temp to target'} list.`, { data: resp2 }); return; }
-        logger.info(`Moved all items from ${list1Id === targetListId ? 'target to temp' : 'temp to target'} list.`);
-      }
-
-      logger.success(`Success. Item was added to <a href="/lists/${targetListId}"><strong>target list</strong></a>.`);
-    } else {
-      const resp = await fetch(`${itemUrl}/${/(watchlist|favorites|recommendations)/.test(targetListType) ? targetListType : 'list'}${isRemoval ? '/remove' : ''}`, {
-        method: 'POST',
-        headers: { 'X-CSRF-Token': unsafeWindow.csrfToken },
-        body: new URLSearchParams({ type: itemType, trakt_id: itemId, list_id: targetListId }),
-      });
-      if (!resp.ok) { await resp.json().then((r) => logger.error('Failed to add item to list.' + (r.message ? ' Response: ' + r.message : ''), { data: resp })); return; }
-      logger.success('Success. ' + (await resp.json()).message);
-    }
-
-    $li.toggleClass('selected');
-    return true;
-  } finally {
-    $li.removeClass('spinner').find('.icon').removeClass('fa-spin');
-  }
-}
-
-async function addToListBtnOverride(evt) {
-  evt.stopImmediatePropagation();
-  evt.preventDefault();
-  if(unsafeWindow.listPopupPressed) { unsafeWindow.listPopupPressed = false; return; }
-
-  const isSideBtn = $(this).hasClass('side-btn') || $(this).parent().hasClass('side-btn'),
-        isSummaryMode = $(this).hasClass('btn-list'),
-        $gridItem = isSideBtn ? $(this).closest('.btn-summary') : isSummaryMode ? $(this) : $(this).closest('.grid-item'),
-        itemUrl = $gridItem.attr('data-url'),
-        itemType = $gridItem.attr('data-type'),
-        itemId = +$gridItem.attr(`data-${itemType}-id`),
-        hasLists = Object.values(compressedCache.get('lists') ?? {}).some((l) => l.type === 'list'),
-        listPopupAction = (unsafeWindow.isPersonPage && isSummaryMode || $gridItem.attr('data-type') === 'person') ? 'list' : unsafeWindow.userSettings.browsing.list_popup_action;
-
-  if(unsafeWindow.isPersonPage && isSummaryMode || hasLists && (listPopupAction !== 'watchlist' || $(this).hasClass('selected')) || isSideBtn) {
-    unsafeWindow.actionListPopup(isSideBtn ? $gridItem : $(this));
-  } else {
-    $gridItem.find('.loading').show();
-    const isRemoval = $(this).hasClass('selected'),
-          watchListData = Object.values(compressedCache.get('lists')).find((l) => l.name === 'Watchlist'),
-          $pseudoLi = $(`<li class="${watchListData.item_count >= unsafeWindow.userSettings.limits.watchlist.item_count ? 'maxed-out' : ''} ${isRemoval ? 'selected' : ''}" ` +
-                        `data-list-id="${watchListData.ids.trakt}" data-list-type="watchlist" data-item-count="${watchListData.item_count}"></li>`);
-
-    const wasSuccessful = await addToListPopupOverride($gridItem, $pseudoLi, isRemoval);
-    if (wasSuccessful) {
-      $(`[data-${itemType}-id="${itemId}"]:is(.btn-summary.btn-list, [data-type="${itemType}"]) .list`)[isRemoval ? 'removeClass' : 'addClass']('selected');
-      unsafeWindow.cacheUserData();
-    };
-    $gridItem.find('.loading').hide();
-  }
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 function addStyles() {
@@ -4617,6 +5749,7 @@ function addStyles() {
 }
   `);
 
+  const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1];
   if (userslug) {
     GM_addStyle(`
 :is(#avatar-wrapper h1, .comment-wrapper .user-name) [href="/users/${userslug}"]::after,

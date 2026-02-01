@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Charts - Seasons
 // @description  Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode. See README for details.
-// @version      0.1.5
+// @version      0.1.8
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -33,7 +33,7 @@
 
 'use strict';
 
-let $, traktApiModule;
+let $, traktApiWrapper;
 let $grid, isSeasonChart, filterSpecials, labelsCallback, chart, datasetsData, firstRunDelay;
 
 Chart.defaults.borderColor = 'rgb(44 44 44 / 0.5)';
@@ -47,7 +47,7 @@ document.addEventListener('turbo:load', async () => {
   if (!/^\/shows\/[^/]+\/seasons\/[^/]+$/.test(location.pathname)) return;
 
   $ ??= unsafeWindow.jQuery;
-  traktApiModule ??= unsafeWindow.userscriptTraktApiModule?.isFulfilled ? await unsafeWindow.userscriptTraktApiModule : null;
+  traktApiWrapper ??= unsafeWindow.userscriptTraktApiWrapper;
   if (!$) return;
 
   $grid = $('#seasons-episodes-sortable');
@@ -139,9 +139,8 @@ function getDatasetsData() {
       itemData.comments = $(i.element).find('.episode-stats > a[data-original-title="Comments"]').text() || 0;
     } else {
       itemData.mainTitle = $(i.element).find('div[data-type="season"] .titles-link h3').text();
-      if (traktApiModule) { // TODO
-        const respJSON = await traktApiModule.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, pagination: true, limit: 1 });
-        itemData.comments = respJSON.pagination.item_count;
+      if (traktApiWrapper) { // TODO
+        itemData.comments = (await traktApiWrapper.seasons.comments({ id: i.element.dataset.showId, season: itemData.seasonNum, limit: 1 })).item_count;;
       } else {
         const resp = await fetch(i.element.dataset.url + '.json');
         if (!resp.ok) throw new Error(`XHR for: ${resp.url} failed with status: ${resp.status}`);

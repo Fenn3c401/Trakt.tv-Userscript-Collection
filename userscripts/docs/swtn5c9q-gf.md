@@ -1,3 +1,3 @@
-# [README](https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/blob/main/userscripts/docs/2dz6ub1t.md#StickyHeader)
+# [README](https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection/blob/main/userscripts/docs/swtn5c9q.md#StickyHeader)
 
 Click [HERE](https://github.com/Fenn3c401/Trakt.tv-Userscript-Collection#readme) for general info, requirements and a full list of all my Trakt.tv userscripts.
