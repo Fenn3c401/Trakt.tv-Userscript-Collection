@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper.
-// @version      2026-02-01_07-46
+// @version      2026-02-01_08-29
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -148,7 +148,7 @@ Exposes an authenticated Trakt API Wrapper. Intended to run alongside other user
 
 ### Usage
 - The wrapper is exposed through `window.userscriptTraktApiWrapper` and can be used like:<br>
-    `const data = await userscriptTraktApiWrapper.search.id({ id_type: 'trakt', id: 1234, type: 'episode', extended: 'full', _auth: true, _meta: true, _revalidate: true });`<br>
+    `const { data, meta } = await userscriptTraktApiWrapper.search.id({ id_type: 'trakt', id: 1234, type: 'episode', extended: 'full', _auth: true, _meta: true, _revalidate: true });`<br>
     There are two types of props you can pass to a method, parameters corresponding to those listed in the Trakt API docs and options (denoted by a leading `_`) for the wrapper itself.
 - ***Parameters***<br>
     There are three categories: path parameters, search parameters, and the props for the request's body. First the mandatory and optional parameters for the path
@@ -167,9 +167,8 @@ Exposes an authenticated Trakt API Wrapper. Intended to run alongside other user
         `limit` gets decremented (= 5 retries) and `req_delay` doubled. If you want to turn it off you can just override it with `_retry: null`.
 - In the userscript storage tab you can change the `apiUrl` to `https://api-staging.trakt.tv` for a sandbox environment
     and you can activate console logging of all api requests with `logApiRequests`.
-- There's built-in rate-limiting for authed `POST`/`PUT`/`DELETE` requests (1/sec), which is complemented by the default `_retry` config, so you can just make a bunch of these
-    requests at once and they'll be queued up and executed one by one in the same order in which you made them. This is complemented by the default `_retry` config where in this case
-    a retried request delays all other queued requests.
+- There's built-in rate-limiting for authed `POST`/`PUT`/`DELETE` requests (1/sec), which is complemented by the default `_retry` config, so you can just make a bunch of
+    requests at once and they'll be queued up and executed one by one in the same order in which you made them (retries will block the queue).
 */
 
 /* [Trakt.tv | Enhanced Title Metadata]

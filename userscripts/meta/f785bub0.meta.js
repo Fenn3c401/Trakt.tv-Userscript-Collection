@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Trakt API Wrapper
 // @description  Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API. See README for details.
-// @version      1.0.1
+// @version      1.0.2
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
