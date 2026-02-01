@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Trakt.tv | Bug Fixes and Optimizations
+// @name         Trakt.tv | Bug Fixes And Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
-// @version      0.7.8
+// @version      1.0.0
 // @namespace    brzmp0a9
 // @updateURL    https://update.greasyfork.org/scripts/557302.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -60,6 +60,11 @@
 - "Progress" -> "Dropped" 1. doesn't allow for sorting by dropped date 2. still has a working "drop show" button despite shows already having been dropped
 - "allow comments" setting of lists can be bypassed with manual post request (/comments page is available regardless of setting + this even works for deleted user profiles)
 - appending a second date (which one doesn't matter) to the /shows-movies calendar url like /calendars/my/shows-movies/2024-10-14/2024-10-16 returns a view for all days until 2030
+- "var words = characters.split(' ').length" comment word-counter is incorrect, needs e.g. .filter(Boolean) added for correct word count in case of consecutive spaces or empty text input
+- click on streaming service button, after having filtered a list by streaming service, results in rangeError + stuck on loading
+- calendar start/end date popover can't be hidden by clicking on icon again
+- $.each(['following', 'following_pending', 'followers'] ... ends up checking last_activities for account['followers_at'] which does not exist as prop is called followed_at,
+    meaning when a new person follows you, this is not immediately reflected by the buttons in the network tab
 */
 
 
@@ -163,7 +168,7 @@ GM_addStyle(`
     position: fixed;
     top: 0 !important;
     left: 0;
-    z-index: 20;
+    z-index: 30;
     width: 40%;
     padding: calc(10px + var(--header-height)) 10px 0;
     height: 100%;
@@ -257,8 +262,8 @@ document.addEventListener('keydown', (evt) => {
 
   $(document).on('ajaxSuccess', (_evt, _xhr, opt) => {
     if (opt.url.endsWith('/rate')) {
-      const params = new URLSearchParams(opt.data),
-            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => params.get(key));
+      const searchParams = new URLSearchParams(opt.data),
+            [type, id, stars] = ['type', 'trakt_id', 'stars'].map((key) => searchParams.get(key));
 
       unsafeWindow[type + 's'].ratings[id] = stars;
       unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings);
@@ -275,8 +280,8 @@ document.addEventListener('keydown', (evt) => {
       //     .end().find('.rated-text').show();
       // }
     } else if (opt.url.endsWith('/rate/remove')) {
-      const params = new URLSearchParams(opt.data),
-            type = params.get('type');
+      const searchParams = new URLSearchParams(opt.data),
+            type = searchParams.get('type');
 
       unsafeWindow.compressedCache.set(`ratings_${type}s`, unsafeWindow[type + 's'].ratings); // ratings object already gets updated correctly
 
