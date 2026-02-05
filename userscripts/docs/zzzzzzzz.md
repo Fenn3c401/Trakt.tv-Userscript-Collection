@@ -3,8 +3,8 @@ My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation 
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2026--02--01__08--29-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
-[![lines of code](https://img.shields.io/badge/loc-4751-orange)](../../userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2026--02--05__19--07-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![lines of code](https://img.shields.io/badge/loc-4872-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
 ### General
@@ -18,7 +18,7 @@ My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation 
 | [Trakt.tv \| Actor Pronunciation Helper](71cd9s61.md#StickyHeader "Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com") | `71cd9s61` |
 | [Trakt.tv \| All-In-One Lists View](p2o98x5r.md#StickyHeader "Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main \"Personal Lists\" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.") | `p2o98x5r` |
 | [Trakt.tv \| Average Season And Episode Ratings](yl9xlca7.md#StickyHeader "Shows the average general and personal rating of the seasons of a show and the episodes of a season. You can see the averages for all episodes of a show on its /seasons/all page.") | `yl9xlca7` |
-| [Trakt.tv \| Bug Fixes And Optimizations](brzmp0a9.md#StickyHeader "A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.") | `brzmp0a9` |
+| [Trakt.tv \| Bug Fixes And Optimizations](brzmp0a9.md#StickyHeader "A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.") | `brzmp0a9` |
 | [Trakt.tv \| Charts - Ratings Distribution](pmdf6nr9.md#StickyHeader "Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart.") | `pmdf6nr9` |
 | [Trakt.tv \| Charts - Seasons](cs1u5z40.md#StickyHeader "Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.") | `cs1u5z40` |
 | [Trakt.tv \| Custom Links (Watch-Now + External)](wkt34fcz.md#StickyHeader "Adds custom links to all the \"Watch-Now\" and \"External\" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.") | `wkt34fcz` |

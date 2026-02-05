@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes And Optimizations
-// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
-// @version      1.0.0
+// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
+// @version      1.0.3
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

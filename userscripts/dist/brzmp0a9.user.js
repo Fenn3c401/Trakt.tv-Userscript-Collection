@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes And Optimizations
-// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
-// @version      1.0.0
+// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
+// @version      1.0.3
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -78,6 +78,138 @@
 
 // FINISHED
 /////////////////////////////////////////////////////////////////////////////////////////////
+
+// - styles the header-search scrollbar
+// - prevents overlap of long header-search queries from the "recent searches" section with the respective remove-from-search-history button
+// - prevents the focused header-search bar from overlapping with the profile icon and the page's scrollbar on mobile layout
+GM_addStyle(`
+#header-search-autocomplete {
+  scrollbar-color: #666 transparent;
+}
+
+#header-search-autocomplete .search-term {
+  overflow: clip;
+  text-overflow: ellipsis;
+}
+#header-search-autocomplete .search-term > .in-type {
+  display: inline-block;
+}
+
+@media (width <= 767px) {
+  #top-nav .search-wrapper.focused {
+    z-index: 1;
+  }
+
+  #top-nav {
+    container-type: inline-size;
+  }
+  #top-nav .search-wrapper.focused #header-search#header-search {
+    width: 100cqi !important;
+    margin-left: -47px !important;
+  }
+}
+`);
+
+
+// By default the category selection and advanced-filters sidenavs of grid views do not play well with window resizing. Based on the initial window size several fixed height and min-height
+// inline styles get set, which can break the page layout in numerous ways, e.g. a large empty space above or below the .grid-items after resizing.
+// Then there's some quirky scrolling behavior in the advanced-filters sidenav, the three "votes" sliders at the bottom get cut off on mobile-layout, the category sidenav's sticky positioning
+// doesn't always work, there's some text overlap, some text is cut off, some missing padding, the display prop of the sidenav links is not adaptive and a bunch of other problems.
+GM_addStyle(`
+.frame-wrapper :is(.sidenav, .sidenav-inner) {
+  height: revert !important;
+  min-height: revert !important;
+}
+.frame-wrapper .sidenav .sidenav-inner {
+  position: revert !important;
+}
+.frame-wrapper #filter-fade-hide .dropdown-menu {
+  overflow-y: auto;
+  max-height: calc(100dvh - var(--header-height) - 55px);
+  scrollbar-width: thin;
+  scrollbar-color: #666 #333;
+}
+@media (width <= 1024px) {
+  .frame-wrapper .sidenav.advanced-filters {
+    padding: 10px 10px 75px !important;
+    top: 110px !important;
+    scrollbar-width: none;
+  }
+  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
+    max-height: revert !important;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style="display: none;"]) {
+    display: inline !important;
+  }
+}
+@media (1024px < width) {
+  .frame-wrapper:has(> .sidenav.advanced-filters.open) {
+    background: linear-gradient(to right, #1d1d1d 300px, #222 300px 600px, #1d1d1d 600px) !important;
+  }
+  .frame-wrapper .frame {
+    display: flow-root;
+    margin-right: 0 !important;
+    min-height: calc(100dvh - var(--header-height));
+  }
+  .frame-wrapper .frame .no-results {
+    transform: revert !important;
+  }
+  .frame-wrapper .frame .personal-list .posters {
+    min-width: max-content;
+  }
+  .frame-wrapper .sidenav {
+    position: sticky !important;
+    top: 0;
+  }
+  .frame-wrapper .sidenav .sidenav-inner {
+    max-height: 100dvh;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) {
+    z-index: 26;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) .sidenav-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav {
+    margin-top: 0 !important;
+    overflow-y: auto;
+    scrollbar-width: none;
+    mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav h3 {
+    position: sticky !important;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 0 !important;
+    padding: 15px 0 10px !important;
+    background-color: #1d1d1d;
+    mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style*="display: none;"]) {
+    display: block !important;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) .sidenav-inner > span {
+    display: none;
+  }
+}
+@media (991px < width <= 1024px) {
+  .frame-wrapper #filter-fade-hide .dropdown-menu {
+    right: 0;
+    left: revert !important;
+  }
+}
+`);
+
+
+// Makes the imdb external rating link point to the title's main imdb page instead of its /ratings page,
+// both because it's arguably the more relevant one and for consistency with the other external rating links (and because u/FatKitty asked for it).
+document.addEventListener('turbo:load', () => {
+  if (/^\/(movies|shows)/.test(location.pathname)) {
+    unsafeWindow.jQuery?.('#summary-ratings-wrapper .stats .imdb > a').attr('href', (_i, oldHref) => oldHref.match(/.+(?=\/ratings)/)?.[0] ?? oldHref);
+  }
+});
+
 
 // swipe gestures prevent scrolling in title stats section (with external ratings, number of comments, etc.) on mobile layout because it's not set as excluded element
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
@@ -519,7 +651,7 @@ Object.defineProperty(unsafeWindow, 'renderReadmore', {
 // "all" link gets cut off on tablet and mobile-layout if lots of items present, fixed inline width messes up layout when resizing, touch scrolling is jerky and doesn't work directly on scrollbar
 GM_addStyle(`
 #info-wrapper .season-links .links {
-  overflow-x: auto;
+  overflow-x: auto !important;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s;

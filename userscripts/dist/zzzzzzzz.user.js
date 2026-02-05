@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper. See README for details.
-// @version      2026-02-01_08-29
+// @version      2026-02-05_19-07
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -61,7 +61,7 @@
 | [Trakt.tv \| Actor Pronunciation Helper](71cd9s61.md#StickyHeader "Adds a button on /people pages for fetching an audio recording of that person's name with the correct pronunciation from https://forvo.com") | `71cd9s61` |
 | [Trakt.tv \| All-In-One Lists View](p2o98x5r.md#StickyHeader "Adds a button for appending your lists from the /collaborations, /liked and /liked/official pages on the main \"Personal Lists\" page for easier access and management of all your lists in one place. Essentially an alternative to the lists category dropdown menu.") | `p2o98x5r` |
 | [Trakt.tv \| Average Season And Episode Ratings](yl9xlca7.md#StickyHeader "Shows the average general and personal rating of the seasons of a show and the episodes of a season. You can see the averages for all episodes of a show on its /seasons/all page.") | `yl9xlca7` |
-| [Trakt.tv \| Bug Fixes And Optimizations](brzmp0a9.md#StickyHeader "A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.") | `brzmp0a9` |
+| [Trakt.tv \| Bug Fixes And Optimizations](brzmp0a9.md#StickyHeader "A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.") | `brzmp0a9` |
 | [Trakt.tv \| Charts - Ratings Distribution](pmdf6nr9.md#StickyHeader "Adds a ratings distribution (number of users who rated a title 1/10, 2/10 etc.) chart to title summary pages. Also allows for rating the title by clicking on the bars of the chart.") | `pmdf6nr9` |
 | [Trakt.tv \| Charts - Seasons](cs1u5z40.md#StickyHeader "Adds a line chart to /seasons pages which shows the ratings (personal + general) and the number of watchers and comments for each individual episode.") | `cs1u5z40` |
 | [Trakt.tv \| Custom Links (Watch-Now + External)](wkt34fcz.md#StickyHeader "Adds custom links to all the \"Watch-Now\" and \"External\" sections (for titles and people). The ~35 defaults include Letterboxd, Stremio, streaming sites (e.g. P-Stream, Hexa), torrent aggregators (e.g. EXT, Knaben), various anime sites (both for streaming and tracking) and much more. Easily customizable.") | `wkt34fcz` |
@@ -94,7 +94,7 @@ Adds a button on /people pages for fetching an audio recording of that person's 
 */
 
 /* [Trakt.tv | Bug Fixes And Optimizations]
-A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
+A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
 
 ### General
 - Please take a look at [the code](../dist/brzmp0a9.user.js) and glimpse over the comments for each section to get an idea as to what exactly you can expect from this script.
@@ -876,6 +876,138 @@ gmStorage['brzmp0a9'] && (async (moduleName) => {
 // FINISHED
 /////////////////////////////////////////////////////////////////////////////////////////////
 
+// - styles the header-search scrollbar
+// - prevents overlap of long header-search queries from the "recent searches" section with the respective remove-from-search-history button
+// - prevents the focused header-search bar from overlapping with the profile icon and the page's scrollbar on mobile layout
+GM_addStyle(`
+#header-search-autocomplete {
+  scrollbar-color: #666 transparent;
+}
+
+#header-search-autocomplete .search-term {
+  overflow: clip;
+  text-overflow: ellipsis;
+}
+#header-search-autocomplete .search-term > .in-type {
+  display: inline-block;
+}
+
+@media (width <= 767px) {
+  #top-nav .search-wrapper.focused {
+    z-index: 1;
+  }
+
+  #top-nav {
+    container-type: inline-size;
+  }
+  #top-nav .search-wrapper.focused #header-search#header-search {
+    width: 100cqi !important;
+    margin-left: -47px !important;
+  }
+}
+`);
+
+
+// By default the category selection and advanced-filters sidenavs of grid views do not play well with window resizing. Based on the initial window size several fixed height and min-height
+// inline styles get set, which can break the page layout in numerous ways, e.g. a large empty space above or below the .grid-items after resizing.
+// Then there's some quirky scrolling behavior in the advanced-filters sidenav, the three "votes" sliders at the bottom get cut off on mobile-layout, the category sidenav's sticky positioning
+// doesn't always work, there's some text overlap, some text is cut off, some missing padding, the display prop of the sidenav links is not adaptive and a bunch of other problems.
+GM_addStyle(`
+.frame-wrapper :is(.sidenav, .sidenav-inner) {
+  height: revert !important;
+  min-height: revert !important;
+}
+.frame-wrapper .sidenav .sidenav-inner {
+  position: revert !important;
+}
+.frame-wrapper #filter-fade-hide .dropdown-menu {
+  overflow-y: auto;
+  max-height: calc(100dvh - var(--header-height) - 55px);
+  scrollbar-width: thin;
+  scrollbar-color: #666 #333;
+}
+@media (width <= 1024px) {
+  .frame-wrapper .sidenav.advanced-filters {
+    padding: 10px 10px 75px !important;
+    top: 110px !important;
+    scrollbar-width: none;
+  }
+  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
+    max-height: revert !important;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style="display: none;"]) {
+    display: inline !important;
+  }
+}
+@media (1024px < width) {
+  .frame-wrapper:has(> .sidenav.advanced-filters.open) {
+    background: linear-gradient(to right, #1d1d1d 300px, #222 300px 600px, #1d1d1d 600px) !important;
+  }
+  .frame-wrapper .frame {
+    display: flow-root;
+    margin-right: 0 !important;
+    min-height: calc(100dvh - var(--header-height));
+  }
+  .frame-wrapper .frame .no-results {
+    transform: revert !important;
+  }
+  .frame-wrapper .frame .personal-list .posters {
+    min-width: max-content;
+  }
+  .frame-wrapper .sidenav {
+    position: sticky !important;
+    top: 0;
+  }
+  .frame-wrapper .sidenav .sidenav-inner {
+    max-height: 100dvh;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) {
+    z-index: 26;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) .sidenav-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav {
+    margin-top: 0 !important;
+    overflow-y: auto;
+    scrollbar-width: none;
+    mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav h3 {
+    position: sticky !important;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 0 !important;
+    padding: 15px 0 10px !important;
+    background-color: #1d1d1d;
+    mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style*="display: none;"]) {
+    display: block !important;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) .sidenav-inner > span {
+    display: none;
+  }
+}
+@media (991px < width <= 1024px) {
+  .frame-wrapper #filter-fade-hide .dropdown-menu {
+    right: 0;
+    left: revert !important;
+  }
+}
+`);
+
+
+// Makes the imdb external rating link point to the title's main imdb page instead of its /ratings page,
+// both because it's arguably the more relevant one and for consistency with the other external rating links (and because u/FatKitty asked for it).
+document.addEventListener('turbo:load', () => {
+  if (/^\/(movies|shows)/.test(location.pathname)) {
+    unsafeWindow.jQuery?.('#summary-ratings-wrapper .stats .imdb > a').attr('href', (_i, oldHref) => oldHref.match(/.+(?=\/ratings)/)?.[0] ?? oldHref);
+  }
+});
+
+
 // swipe gestures prevent scrolling in title stats section (with external ratings, number of comments, etc.) on mobile layout because it's not set as excluded element
 ((fn) => document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', fn) : fn())(() => {
   if (!unsafeWindow.jQuery) return;
@@ -1316,7 +1448,7 @@ Object.defineProperty(unsafeWindow, 'renderReadmore', {
 // "all" link gets cut off on tablet and mobile-layout if lots of items present, fixed inline width messes up layout when resizing, touch scrolling is jerky and doesn't work directly on scrollbar
 GM_addStyle(`
 #info-wrapper .season-links .links {
-  overflow-x: auto;
+  overflow-x: auto !important;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s;
@@ -2036,6 +2168,8 @@ async function callMethod(args) {
         opts = Object.fromEntries(groupedArgs.opts ?? []),
         params = Object.fromEntries(groupedArgs.params ?? []);
 
+  Object.assign(gmStorage, GM_getValue('traktApiWrapper'));
+
   const req = {
     method: opts._method,
     ...(opts._revalidate != null && { revalidate: Boolean(opts._revalidate) }),
@@ -2065,7 +2199,7 @@ async function callMethod(args) {
   if (opts._auth) {
     await activeFetchAuth;
     if (!gmStorage.auth.accessToken || !gmStorage.auth.expiresAt ||
-        gmStorage.auth.expiresAt < Date.now() - 5*60*1000 ||
+        gmStorage.auth.expiresAt < Date.now() + 5*60*1000 ||
         gmStorage.auth.userslug !== userslug) {
       activeFetchAuth = fetchAuthTokens();
       await activeFetchAuth;
@@ -2104,15 +2238,15 @@ function sendApiRequest(req, opts) {
         .then((resp) => new Promise((resolve) => setTimeout(() => resolve(resp), opts._retry.resp_delay)));
     }
     if (resp.status === 401 && !resp.parsedTraktHeaders.private_user) {
+      logger.warning('Auth tokens might be invalid and have been cleared.', { data: gmStorage.auth });
       gmStorage.auth = {};
       GM_setValue('traktApiWrapper', gmStorage);
-      logger.warning('Auth tokens might be invalid and have been cleared.');
     }
     if (resp.status === 403) {
+      logger.warning('Client credentials might be invalid and have been cleared.', { data: gmStorage });
       gmStorage.app = { id: gmStorage.app.id };
       gmStorage.auth = {};
       GM_setValue('traktApiWrapper', gmStorage);
-      logger.warning('Client credentials might be invalid and have been cleared.');
     }
     throw resp;
   });
@@ -3536,10 +3670,10 @@ document.addEventListener('turbo:load', () => {
     }
 
     if ([
-      /\/shows\/.*\/recent_episodes$/,
       /\/movies\/.*\/related_items$/,
+      /\/shows\/.*\/recent_episodes$/,
       /\/dashboard\/(recently_watched|on_deck|recommendations\/movies|network_activies|list)$/,
-      /\/users\/.*\/profile\/(recently_watched|most_watched\/movies)$/,
+      /\/users\/.*\/profile\/(recently_watched|most_watched\/movies|comments)$/,
     ].some((regExp) => regExp.test(opt.url))) addPbProgBadges();
 
     if (opt.url.endsWith('/watch')) {
@@ -3882,9 +4016,15 @@ function addStyles() {
 .grid-item:has(> .notable-badge):has(> .added-by) .pb-prog-badge {
   left: 40px;
 }
-:is(.sidebar, .fanarts) :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
+:is(.sidebar, .frame) :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
   top: 1.5% !important;
   margin-left: 1.5% !important;
+}
+#user-profile-comments-wrapper .grid-item :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
+  top: 10px !important;
+}
+body.calendars .grid-item .notable-badge {
+  left: revert !important;
 }
 
 body.show_progress.playback :is(#progress-wrapper, .subnav-wrapper .right, .subnav-wrapper.visible-xs-block .left) {

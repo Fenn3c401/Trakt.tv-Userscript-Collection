@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes And Optimizations
-// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~30 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
-// @version      1.0.0
+// @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches. See README for details.
+// @version      1.0.3
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -50,7 +50,117 @@
 */
 
 
-"use strict";(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),a=t.value;t.value=function(...r){return this.attr("id")==="summary-wrapper"&&(r[0].excludedElements="#summary-ratings-wrapper .stats"),a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",t),Object.entries(e).forEach(([r,o])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,r,o))}),GM_addStyle(`
+"use strict";GM_addStyle(`
+#header-search-autocomplete {
+  scrollbar-color: #666 transparent;
+}
+
+#header-search-autocomplete .search-term {
+  overflow: clip;
+  text-overflow: ellipsis;
+}
+#header-search-autocomplete .search-term > .in-type {
+  display: inline-block;
+}
+
+@media (width <= 767px) {
+  #top-nav .search-wrapper.focused {
+    z-index: 1;
+  }
+
+  #top-nav {
+    container-type: inline-size;
+  }
+  #top-nav .search-wrapper.focused #header-search#header-search {
+    width: 100cqi !important;
+    margin-left: -47px !important;
+  }
+}
+`),GM_addStyle(`
+.frame-wrapper :is(.sidenav, .sidenav-inner) {
+  height: revert !important;
+  min-height: revert !important;
+}
+.frame-wrapper .sidenav .sidenav-inner {
+  position: revert !important;
+}
+.frame-wrapper #filter-fade-hide .dropdown-menu {
+  overflow-y: auto;
+  max-height: calc(100dvh - var(--header-height) - 55px);
+  scrollbar-width: thin;
+  scrollbar-color: #666 #333;
+}
+@media (width <= 1024px) {
+  .frame-wrapper .sidenav.advanced-filters {
+    padding: 10px 10px 75px !important;
+    top: 110px !important;
+    scrollbar-width: none;
+  }
+  .frame-wrapper .sidenav.advanced-filters .sidenav-inner {
+    max-height: revert !important;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style="display: none;"]) {
+    display: inline !important;
+  }
+}
+@media (1024px < width) {
+  .frame-wrapper:has(> .sidenav.advanced-filters.open) {
+    background: linear-gradient(to right, #1d1d1d 300px, #222 300px 600px, #1d1d1d 600px) !important;
+  }
+  .frame-wrapper .frame {
+    display: flow-root;
+    margin-right: 0 !important;
+    min-height: calc(100dvh - var(--header-height));
+  }
+  .frame-wrapper .frame .no-results {
+    transform: revert !important;
+  }
+  .frame-wrapper .frame .personal-list .posters {
+    min-width: max-content;
+  }
+  .frame-wrapper .sidenav {
+    position: sticky !important;
+    top: 0;
+  }
+  .frame-wrapper .sidenav .sidenav-inner {
+    max-height: 100dvh;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) {
+    z-index: 26;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) .sidenav-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav {
+    margin-top: 0 !important;
+    overflow-y: auto;
+    scrollbar-width: none;
+    mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav h3 {
+    position: sticky !important;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 0 !important;
+    padding: 15px 0 10px !important;
+    background-color: #1d1d1d;
+    mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style*="display: none;"]) {
+    display: block !important;
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) .sidenav-inner > span {
+    display: none;
+  }
+}
+@media (991px < width <= 1024px) {
+  .frame-wrapper #filter-fade-hide .dropdown-menu {
+    right: 0;
+    left: revert !important;
+  }
+}
+`),document.addEventListener("turbo:load",()=>{/^\/(movies|shows)/.test(location.pathname)&&unsafeWindow.jQuery?.("#summary-ratings-wrapper .stats .imdb > a").attr("href",(e,t)=>t.match(/.+(?=\/ratings)/)?.[0]??t)}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.swipe),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"swipe"),a=t.value;t.value=function(...r){return this.attr("id")==="summary-wrapper"&&(r[0].excludedElements="#summary-ratings-wrapper .stats"),a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"swipe",t),Object.entries(e).forEach(([r,n])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.swipe,r,n))}),GM_addStyle(`
 .popover .rating-hearts {
   min-width: max-content;
 }
@@ -85,7 +195,7 @@
 .comment-wrapper[data-user-slug] .user-name .type + strong {
   color: #aaa !important;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),a=t.value;t.value=function(...r){return r[0]?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r[0].container,a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",t),Object.entries(e).forEach(([r,o])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.tooltip,r,o))}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.tooltip),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"tooltip"),a=t.value;t.value=function(...r){return r[0]?.container&&this.closest(".popover, #ondeck-wrapper, #progress-grid-wrapper").length&&delete r[0].container,a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"tooltip",t),Object.entries(e).forEach(([r,n])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.tooltip,r,n))}),GM_addStyle(`
 @media (width <= 767px) {
   #info-wrapper .sticky-wrapper {
     display: block !important;
@@ -108,11 +218,11 @@
     transform: translateX(0);
   }
 }
-`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,a,r,o,n,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,a,r,o,n,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&(e(document).on("auxclick",".btn-watch .view-all",function(t){t.preventDefault(),GM_openInTab(location.origin+e(this).attr("data-url"),{setParent:!0})}),e(document).on("mousedown mouseup","#header-search-autocomplete-results .selected",function(t){t.which===2&&!e(t.target).closest("a").length&&(t.type==="mousedown"?t.preventDefault():(unsafeWindow.searchModifierKey=!0,e(this).trigger("click")))}))}),document.addEventListener("keydown",e=>{e.ctrlKey&&e.key==="Enter"&&e.target.closest?.("#header-search-query")&&(e.preventDefault(),e.stopPropagation(),e.target.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",keyCode:13,metaKey:!0,bubbles:!0,cancelable:!0})))},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSuccess",(t,a,r)=>{if(r.url.endsWith("/rate")){const o=new URLSearchParams(r.data),[n,i,s]=["type","trakt_id","stars"].map(d=>o.get(d));unsafeWindow[n+"s"].ratings[i]=s,unsafeWindow.compressedCache.set(`ratings_${n}s`,unsafeWindow[n+"s"].ratings),unsafeWindow.addOverlays()}else if(r.url.endsWith("/rate/remove")){const o=new URLSearchParams(r.data),n=o.get("type");unsafeWindow.compressedCache.set(`ratings_${n}s`,unsafeWindow[n+"s"].ratings),unsafeWindow.addOverlays()}})}),GM_addStyle(`
+`),window.addEventListener("turbo:load",()=>{const e=unsafeWindow.jQuery("body.touch-device #info-wrapper:has(.sidebar)");e.swipe({excludedElements:"#summary-ratings-wrapper .stats, #info-wrapper .season-links .links, #actors .posters",swipeRight:(t,a,r,n,o,i)=>i[0].start.x<50&&e.addClass("with-mobile-sidebar"),swipeLeft:(t,a,r,n,o,i)=>e.removeClass("with-mobile-sidebar")})}),window.addEventListener("turbo:load",()=>{document.querySelectorAll("#header-search-type .dropdown-menu li:has(~ .divider) a").forEach((e,t)=>{unsafeWindow.Mousetrap.bind(`alt+${t+1}`,()=>e.click()),unsafeWindow.Mousetrap(document.getElementById("header-search-query")).bind(`alt+${t+1}`,()=>e.click())})}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&(e(document).on("auxclick",".btn-watch .view-all",function(t){t.preventDefault(),GM_openInTab(location.origin+e(this).attr("data-url"),{setParent:!0})}),e(document).on("mousedown mouseup","#header-search-autocomplete-results .selected",function(t){t.which===2&&!e(t.target).closest("a").length&&(t.type==="mousedown"?t.preventDefault():(unsafeWindow.searchModifierKey=!0,e(this).trigger("click")))}))}),document.addEventListener("keydown",e=>{e.ctrlKey&&e.key==="Enter"&&e.target.closest?.("#header-search-query")&&(e.preventDefault(),e.stopPropagation(),e.target.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter",keyCode:13,metaKey:!0,bubbles:!0,cancelable:!0})))},{capture:!0}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSuccess",(t,a,r)=>{if(r.url.endsWith("/rate")){const n=new URLSearchParams(r.data),[o,i,s]=["type","trakt_id","stars"].map(d=>n.get(d));unsafeWindow[o+"s"].ratings[i]=s,unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}else if(r.url.endsWith("/rate/remove")){const n=new URLSearchParams(r.data),o=n.get("type");unsafeWindow.compressedCache.set(`ratings_${o}s`,unsafeWindow[o+"s"].ratings),unsafeWindow.addOverlays()}})}),GM_addStyle(`
 .personal-list .list-description {
   overflow-wrap: anywhere;
 }
-`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),a=t.value;t.value=function(...r){if(this.attr("id")==="filter-network_ids"&&(r[0].max_shown_results=200),/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)){Object.defineProperty(unsafeWindow.navigator,"userAgent",{get:()=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",configurable:!0});try{return a.apply(this,r)}finally{delete unsafeWindow.navigator.userAgent}}else return a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",t),Object.entries(e).forEach(([r,o])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.chosen,r,o))}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,a,r)=>{if(/\/lists\/[\d]+\/like/.test(r.url)){const o=new URLSearchParams(r.data).get("trakt_id"),n=e(`[data-list-id="${o}"] > .like .count-number`),i=n.text(),s=r.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{r.url===p.url&&n.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
+`),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{if(!unsafeWindow.jQuery)return;const e=Object.getOwnPropertyDescriptors(unsafeWindow.jQuery.fn.chosen),t=Object.getOwnPropertyDescriptor(unsafeWindow.jQuery.fn,"chosen"),a=t.value;t.value=function(...r){if(this.attr("id")==="filter-network_ids"&&(r[0].max_shown_results=200),/iP(od|hone)|IEMobile|Windows Phone|BlackBerry|BB10|Android.*Mobile/i.test(unsafeWindow.navigator.userAgent)){Object.defineProperty(unsafeWindow.navigator,"userAgent",{get:()=>"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",configurable:!0});try{return a.apply(this,r)}finally{delete unsafeWindow.navigator.userAgent}}else return a.apply(this,r)},Object.defineProperty(unsafeWindow.jQuery.fn,"chosen",t),Object.entries(e).forEach(([r,n])=>!["length","name","prototype"].includes(r)&&Object.defineProperty(unsafeWindow.jQuery.fn.chosen,r,n))}),(e=>document.readyState==="loading"?document.addEventListener("DOMContentLoaded",e):e())(()=>{const e=unsafeWindow.jQuery;e&&e(document).on("ajaxSend",(t,a,r)=>{if(/\/lists\/[\d]+\/like/.test(r.url)){const n=new URLSearchParams(r.data).get("trakt_id"),o=e(`[data-list-id="${n}"] > .like .count-number`),i=o.text(),s=r.url.includes("/remove");e(document).one("ajaxSuccess",(d,l,p)=>{r.url===p.url&&o.text(unsafeWindow.numeral(i)[s?"subtract":"add"](1).format("0,0"))})}})}),GM_addStyle(`
 #activity .users-wrapper {
   width: 100%;
   padding-bottom: 15px !important;
@@ -242,7 +352,7 @@
 }
 `);const optimizedRenderReadmore=()=>{unsafeWindow.jQuery('.readmore:not([id^="rmjs-"])').filter((t,a)=>unsafeWindow.jQuery(a).height()>350).readmore({embedCSS:!1,collapsedHeight:300,speed:200,moreLink:'<a href="#">Read more...</a>',lessLink:'<a href="#">Read less...</a>',afterToggle:(t,a,r)=>a.closest("#sortable-grid").length&&unsafeWindow.$grid?.isotope()}),requestAnimationFrame(()=>unsafeWindow.$grid?.isotope())};Object.defineProperty(unsafeWindow,"renderReadmore",{get:()=>optimizedRenderReadmore,set:()=>{},configurable:!0}),GM_addStyle(`
 #info-wrapper .season-links .links {
-  overflow-x: auto;
+  overflow-x: auto !important;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
   transition: scrollbar-color 0.2s;

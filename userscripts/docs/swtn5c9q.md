@@ -3,8 +3,8 @@ Adds playback progress badges to in-progress movies/episodes and allows for sett
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/swtn5c9q.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/swtn5c9q.min.user.js)
-[![version](https://img.shields.io/badge/version-1.0.1-blue)](../../../../blame/main/userscripts/dist/swtn5c9q.user.js)
-[![lines of code](https://img.shields.io/badge/loc-392-orange)](../../userscripts/dist/swtn5c9q.user.js)
+[![version](https://img.shields.io/badge/version-1.0.3-blue)](../../../../blame/main/userscripts/dist/swtn5c9q.user.js)
+[![lines of code](https://img.shields.io/badge/loc-398-orange)](../../userscripts/dist/swtn5c9q.user.js)
 
 ## Info
 > Inspired by sharkykh's [Trakt.tv Playback Progress Manager](https://sharkykh.github.io/tppm/).

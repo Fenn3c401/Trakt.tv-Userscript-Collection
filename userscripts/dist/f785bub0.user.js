@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Trakt API Wrapper
 // @description  Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API. See README for details.
-// @version      1.0.2
+// @version      1.0.4
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -102,6 +102,8 @@ async function callMethod(args) {
         opts = Object.fromEntries(groupedArgs.opts ?? []),
         params = Object.fromEntries(groupedArgs.params ?? []);
 
+  Object.assign(gmStorage, GM_getValue('traktApiWrapper'));
+
   const req = {
     method: opts._method,
     ...(opts._revalidate != null && { revalidate: Boolean(opts._revalidate) }),
@@ -131,7 +133,7 @@ async function callMethod(args) {
   if (opts._auth) {
     await activeFetchAuth;
     if (!gmStorage.auth.accessToken || !gmStorage.auth.expiresAt ||
-        gmStorage.auth.expiresAt < Date.now() - 5*60*1000 ||
+        gmStorage.auth.expiresAt < Date.now() + 5*60*1000 ||
         gmStorage.auth.userslug !== userslug) {
       activeFetchAuth = fetchAuthTokens();
       await activeFetchAuth;
@@ -170,15 +172,15 @@ function sendApiRequest(req, opts) {
         .then((resp) => new Promise((resolve) => setTimeout(() => resolve(resp), opts._retry.resp_delay)));
     }
     if (resp.status === 401 && !resp.parsedTraktHeaders.private_user) {
+      logger.warning('Auth tokens might be invalid and have been cleared.', { data: gmStorage.auth });
       gmStorage.auth = {};
       GM_setValue('traktApiWrapper', gmStorage);
-      logger.warning('Auth tokens might be invalid and have been cleared.');
     }
     if (resp.status === 403) {
+      logger.warning('Client credentials might be invalid and have been cleared.', { data: gmStorage });
       gmStorage.app = { id: gmStorage.app.id };
       gmStorage.auth = {};
       GM_setValue('traktApiWrapper', gmStorage);
-      logger.warning('Client credentials might be invalid and have been cleared.');
     }
     throw resp;
   });
