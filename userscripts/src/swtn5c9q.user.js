@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Playback Progress Manager
 // @description  Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the "Progress" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE "TRAKT API WRAPPER" USERSCRIPT!
-// @version      1.0.1
+// @version      1.0.3
 // @namespace    swtn5c9q
 // @updateURL    https://update.greasyfork.org/scripts/564749.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -117,10 +117,10 @@ document.addEventListener('turbo:load', () => {
     }
 
     if ([
-      /\/shows\/.*\/recent_episodes$/,
       /\/movies\/.*\/related_items$/,
+      /\/shows\/.*\/recent_episodes$/,
       /\/dashboard\/(recently_watched|on_deck|recommendations\/movies|network_activies|list)$/,
-      /\/users\/.*\/profile\/(recently_watched|most_watched\/movies)$/,
+      /\/users\/.*\/profile\/(recently_watched|most_watched\/movies|comments)$/,
     ].some((regExp) => regExp.test(opt.url))) addPbProgBadges();
 
     if (opt.url.endsWith('/watch')) {
@@ -463,9 +463,15 @@ function addStyles() {
 .grid-item:has(> .notable-badge):has(> .added-by) .pb-prog-badge {
   left: 40px;
 }
-:is(.sidebar, .fanarts) :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
+:is(.sidebar, .frame) :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
   top: 1.5% !important;
   margin-left: 1.5% !important;
+}
+#user-profile-comments-wrapper .grid-item :is(.pb-prog-badge, .notable-badge, .rewatching-badge) {
+  top: 10px !important;
+}
+body.calendars .grid-item .notable-badge {
+  left: revert !important;
 }
 
 body.show_progress.playback :is(#progress-wrapper, .subnav-wrapper .right, .subnav-wrapper.visible-xs-block .left) {
