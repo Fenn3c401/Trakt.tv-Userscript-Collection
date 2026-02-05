@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Trakt API Wrapper
 // @description  Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.
-// @version      1.0.2
+// @version      1.0.4
 // @namespace    f785bub0
 // @updateURL    https://update.greasyfork.org/scripts/564750.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -97,6 +97,8 @@ async function callMethod(args) {
         opts = Object.fromEntries(groupedArgs.opts ?? []),
         params = Object.fromEntries(groupedArgs.params ?? []);
 
+  Object.assign(gmStorage, GM_getValue('traktApiWrapper'));
+
   const req = {
     method: opts._method,
     ...(opts._revalidate != null && { revalidate: Boolean(opts._revalidate) }),
@@ -126,7 +128,7 @@ async function callMethod(args) {
   if (opts._auth) {
     await activeFetchAuth;
     if (!gmStorage.auth.accessToken || !gmStorage.auth.expiresAt ||
-        gmStorage.auth.expiresAt < Date.now() - 5*60*1000 ||
+        gmStorage.auth.expiresAt < Date.now() + 5*60*1000 ||
         gmStorage.auth.userslug !== userslug) {
       activeFetchAuth = fetchAuthTokens();
       await activeFetchAuth;
@@ -165,15 +167,15 @@ function sendApiRequest(req, opts) {
         .then((resp) => new Promise((resolve) => setTimeout(() => resolve(resp), opts._retry.resp_delay)));
     }
     if (resp.status === 401 && !resp.parsedTraktHeaders.private_user) {
+      logger.warning('Auth tokens might be invalid and have been cleared.', { data: gmStorage.auth });
       gmStorage.auth = {};
       GM_setValue('traktApiWrapper', gmStorage);
-      logger.warning('Auth tokens might be invalid and have been cleared.');
     }
     if (resp.status === 403) {
+      logger.warning('Client credentials might be invalid and have been cleared.', { data: gmStorage });
       gmStorage.app = { id: gmStorage.app.id };
       gmStorage.auth = {};
       GM_setValue('traktApiWrapper', gmStorage);
-      logger.warning('Client credentials might be invalid and have been cleared.');
     }
     throw resp;
   });
