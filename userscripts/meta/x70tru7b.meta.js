@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Partial VIP Unlock
 // @description  Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements. See README for details.
-// @version      2.1.1
+// @version      2.1.2
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later

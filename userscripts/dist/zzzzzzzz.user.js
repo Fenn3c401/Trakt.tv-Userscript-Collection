@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper. See README for details.
-// @version      2026-02-13_09-30
+// @version      2026-02-13_10-46
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -335,9 +335,6 @@ Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster
 - ***~2x faster page navigation with Hotwire's Turbo***<br>
     (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
     Also imo it's nothing short of embarassing for them to think it's good idea to intentionally slow down their website for free users. There's a reason they don't have it listed amongst the vip perks..)
-- ***bulk list actions: reset ranks, copy, move, delete***<br>
-    (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
-    In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
 - ***rewatching***
 - ***vip badge***<br>
     (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
@@ -5866,7 +5863,8 @@ function addStyles() {
   GM_addStyle(`
 #top-nav .btn-vip,
 .dropdown-menu.for-sortable > li > a.vip-only,
-.alert-vip-required {
+.alert-vip-required,
+.list-manage-wrapper .btn-list-move-items {
   display: none !important;
 }
   `);

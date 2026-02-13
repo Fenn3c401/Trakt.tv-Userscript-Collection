@@ -3,8 +3,8 @@ My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation 
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2026--02--13__09--30-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
-[![lines of code](https://img.shields.io/badge/loc-4859-orange)](../../userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2026--02--13__10--46-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![lines of code](https://img.shields.io/badge/loc-4860-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
 ### General

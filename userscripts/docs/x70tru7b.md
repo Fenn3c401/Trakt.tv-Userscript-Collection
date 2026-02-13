@@ -3,8 +3,8 @@ Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js)
-[![version](https://img.shields.io/badge/version-2.1.1-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
-[![lines of code](https://img.shields.io/badge/loc-244-orange)](../../userscripts/dist/x70tru7b.user.js)
+[![version](https://img.shields.io/badge/version-2.1.2-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
+[![lines of code](https://img.shields.io/badge/loc-245-orange)](../../userscripts/dist/x70tru7b.user.js)
 
 ## Info
 ### Full Unlock
@@ -12,9 +12,6 @@ Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster
 - ***~2x faster page navigation with Hotwire's Turbo***<br>
     (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
     Also imo it's nothing short of embarassing for them to think it's good idea to intentionally slow down their website for free users. There's a reason they don't have it listed amongst the vip perks..)
-- ***bulk list actions: reset ranks, copy, move, delete***<br>
-    (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
-    In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
 - ***rewatching***
 - ***vip badge***<br>
     (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
