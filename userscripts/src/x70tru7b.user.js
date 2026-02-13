@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Partial VIP Unlock
 // @description  Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
-// @version      2.1.0
+// @version      2.1.1
 // @namespace    x70tru7b
 // @updateURL    https://update.greasyfork.org/scripts/550079.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -70,40 +70,6 @@ the `/progress` page and list pages. The input is matched against:
 - title and character name for `/people` pages
 - episode and show title for `/progress` pages
 - title name for list pages
-*/
-
-/* TODO
-@description Unlocks some vip features: adding titles to maxed-out lists,
-
-- ***adding an item to maxed-out lists***<br>
-    (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
-    you can now directly add a new item to it using the regular ui elems. How long that takes depends on the size of that list, if it's 1000 items you're looking at about 45s until completion..
-    Hefty, but it works. Mind you that this is very much experimental and I can only emphasize the importance of backups here.)
-
-### List Limits Bypass
-Credit for this one goes to [SET19724](https://github.com/SET19724) who pointed out some inconsistencies with the unlocked bulk list actions in an issue.
-Turns out with those it's possible to bypass the imposed limits for both the number of lists and items per list:
-
-***Example 1:***<br>
-You've got your number of lists maxed out (2 by default). If you now want another list you can just go to any existing list (doesn't have to be your own) with 1-100 items,
-then use the "copy to new list" option and it creates a new list for you, which you can then edit and use however you want. Rinse and repeat. It works at least all the way up to 15 lists,
-I didn't push it any further. The "copied from..." text is not added if you use one of your own lists as source.<br>
-***=> "new list" target option of bulk list actions doesn't enforce max. list limit; source needs to have 1-100 items***
-
-***Example 2:***<br>
-Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
-Let's say `watchlist` + `watchlist2` have 99 items each and `watchlist3` has 100 items. I can now do a bulk move from `watchlist3` to `watchlist2`,
-followed by a bulk move from `watchlist2` to `watchlist`, to accumulate all 298 items on that list. Ranks are preserved this way as the new items always get appeded.
-You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
-***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
-
-Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
-
-
-
-restore "new list" creation function via regular button after limit is reached
-allow for bulk list copy to a new list with > 100 items
-allow for bulk list ops. with maxed out lists as target
 */
 
 
