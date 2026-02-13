@@ -3,7 +3,7 @@ Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js)
-[![version](https://img.shields.io/badge/version-2.1.0-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
+[![version](https://img.shields.io/badge/version-2.1.1-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
 [![lines of code](https://img.shields.io/badge/loc-244-orange)](../../userscripts/dist/x70tru7b.user.js)
 
 ## Info
