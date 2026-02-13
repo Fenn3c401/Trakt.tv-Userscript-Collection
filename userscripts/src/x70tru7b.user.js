@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Partial VIP Unlock
 // @description  Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
-// @version      2.1.1
+// @version      2.1.2
 // @namespace    x70tru7b
 // @updateURL    https://update.greasyfork.org/scripts/550079.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -21,9 +21,6 @@
 - ***~2x faster page navigation with Hotwire's Turbo***<br>
     (Allows for partial page updates instead of full page reloads when navigating, might break userscripts from other devs who didn't account for this.
     Also imo it's nothing short of embarassing for them to think it's good idea to intentionally slow down their website for free users. There's a reason they don't have it listed amongst the vip perks..)
-- ***bulk list actions: reset ranks, copy, move, delete***<br>
-    (Item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre.
-    In fact although the native gui only allows for filtering by type, genre and terms, most other filters from the regular advanced filters work as well, just directly modify the search params in the url.)
 - ***rewatching***
 - ***vip badge***<br>
     (Appends a special "Director" badge to your username. It's usually reserved for team members like Trakt's co-founders Sean and Justin. See https://trakt.tv/users/sean for how it looks.)
@@ -316,7 +313,8 @@ function addStyles() {
   GM_addStyle(`
 #top-nav .btn-vip,
 .dropdown-menu.for-sortable > li > a.vip-only,
-.alert-vip-required {
+.alert-vip-required,
+.list-manage-wrapper .btn-list-move-items {
   display: none !important;
 }
   `);
