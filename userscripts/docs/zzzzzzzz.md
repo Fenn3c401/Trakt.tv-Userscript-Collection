@@ -3,8 +3,8 @@ My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation 
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2026--02--05__19--07-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
-[![lines of code](https://img.shields.io/badge/loc-4872-orange)](../../userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2026--02--13__09--27-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![lines of code](https://img.shields.io/badge/loc-4859-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
 ### General
@@ -26,7 +26,7 @@ My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation 
 | [Trakt.tv \| Enhanced List Preview Posters](kji85iek.md#StickyHeader "Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles.") | `kji85iek` |
 | [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md#StickyHeader "Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for \"combined\" searches by clicking on the labels.") | `fyk2l3vj` |
 | [Trakt.tv \| Nested Header Navigation Menus](txw82860.md#StickyHeader "Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.") | `txw82860` |
-| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: adding titles to maxed-out lists, advanced filters, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
+| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: advanced filters, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
 | [Trakt.tv \| Playback Progress Manager](swtn5c9q.md#StickyHeader "Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the \"Progress\" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE \"TRAKT API WRAPPER\" USERSCRIPT!") | `swtn5c9q` |
 | [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md#StickyHeader "Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).") | `2hc6zfyy` |
 | [Trakt.tv \| Trakt API Wrapper](f785bub0.md#StickyHeader "Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.") | `f785bub0` |

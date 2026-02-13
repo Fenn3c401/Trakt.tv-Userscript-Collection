@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper.
-// @version      2026-02-05_19-07
+// @version      2026-02-13_09-27
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -64,7 +64,7 @@
 | [Trakt.tv \| Enhanced List Preview Posters](kji85iek.md#StickyHeader "Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles.") | `kji85iek` |
 | [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md#StickyHeader "Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for \"combined\" searches by clicking on the labels.") | `fyk2l3vj` |
 | [Trakt.tv \| Nested Header Navigation Menus](txw82860.md#StickyHeader "Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.") | `txw82860` |
-| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: adding titles to maxed-out lists, advanced filters, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
+| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: advanced filters, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
 | [Trakt.tv \| Playback Progress Manager](swtn5c9q.md#StickyHeader "Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the \"Progress\" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE \"TRAKT API WRAPPER\" USERSCRIPT!") | `swtn5c9q` |
 | [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md#StickyHeader "Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).") | `2hc6zfyy` |
 | [Trakt.tv \| Trakt API Wrapper](f785bub0.md#StickyHeader "Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.") | `f785bub0` |
@@ -322,7 +322,7 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 */
 
 /* [Trakt.tv | Partial VIP Unlock]
-Unlocks some vip features: adding titles to maxed-out lists, advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
+Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
 
 ### Full Unlock
 - ***"more" buttons on dashboard***
@@ -341,10 +341,6 @@ Unlocks some vip features: adding titles to maxed-out lists, advanced filters, "
 - ***watch-now modal country selection***
 
 ### Partial Unlock
-- ***adding an item to maxed-out lists***<br>
-    (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
-    you can now directly add a new item to it using the regular ui elems. How long that takes depends on the size of that list, if it's 1000 items you're looking at about 45s until completion..
-    Hefty, but it works. Mind you that this is very much experimental and I can only emphasize the importance of backups here.)
 - ***advanced filters***<br>
     (no saved filters, though you can always just save the url of a search with its specific parameters as a bookmark.. works all the same)
 - ***custom calendars***<br>
@@ -364,25 +360,6 @@ I've got a couple more Trakt.tv userscripts which replicate other vip features i
 - [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
 
 Though you can always just install the [Trakt.tv \| Megascript](zzzzzzzz.md) instead.
-
-### List Limits Bypass
-Credit for this one goes to [SET19724](https://github.com/SET19724) who pointed out some inconsistencies with the unlocked bulk list actions in an issue.
-Turns out with those it's possible to bypass the imposed limits for both the number of lists and items per list:
-
-***Example 1:***<br>
-You've got your number of lists maxed out (2 by default). If you now want another list you can just go to any existing list (doesn't have to be your own) with 1-100 items,
-then use the "copy to new list" option and it creates a new list for you, which you can then edit and use however you want. Rinse and repeat. It works at least all the way up to 15 lists,
-I didn't push it any further. The "copied from..." text is not added if you use one of your own lists as source.<br>
-***=> "new list" target option of bulk list actions doesn't enforce max. list limit; source needs to have 1-100 items***
-
-***Example 2:***<br>
-Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
-Let's say `watchlist` + `watchlist2` have 99 items each and `watchlist3` has 100 items. I can now do a bulk move from `watchlist3` to `watchlist2`,
-followed by a bulk move from `watchlist2` to `watchlist`, to accumulate all 298 items on that list. Ranks are preserved this way as the new items always get appeded.
-You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
-***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
-
-Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
 
 ### Semi-Private Notes in Comments
 Trakt supports markdown syntax in comments, including reference-style links which you can misuse as a semi-private notes container like `[//]: # (hidden text goes here)`.
@@ -5640,6 +5617,41 @@ ${customWatchNowLinks.concat(customExternalLinks).map((l) => l.addStyles).filter
 
 
 gmStorage['x70tru7b'] && (async (moduleName) => {
+/* TODO
+@description Unlocks some vip features: adding titles to maxed-out lists,
+
+- ***adding an item to maxed-out lists***<br>
+    (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
+    you can now directly add a new item to it using the regular ui elems. How long that takes depends on the size of that list, if it's 1000 items you're looking at about 45s until completion..
+    Hefty, but it works. Mind you that this is very much experimental and I can only emphasize the importance of backups here.)
+
+### List Limits Bypass
+Credit for this one goes to [SET19724](https://github.com/SET19724) who pointed out some inconsistencies with the unlocked bulk list actions in an issue.
+Turns out with those it's possible to bypass the imposed limits for both the number of lists and items per list:
+
+***Example 1:***<br>
+You've got your number of lists maxed out (2 by default). If you now want another list you can just go to any existing list (doesn't have to be your own) with 1-100 items,
+then use the "copy to new list" option and it creates a new list for you, which you can then edit and use however you want. Rinse and repeat. It works at least all the way up to 15 lists,
+I didn't push it any further. The "copied from..." text is not added if you use one of your own lists as source.<br>
+***=> "new list" target option of bulk list actions doesn't enforce max. list limit; source needs to have 1-100 items***
+
+***Example 2:***<br>
+Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
+Let's say `watchlist` + `watchlist2` have 99 items each and `watchlist3` has 100 items. I can now do a bulk move from `watchlist3` to `watchlist2`,
+followed by a bulk move from `watchlist2` to `watchlist`, to accumulate all 298 items on that list. Ranks are preserved this way as the new items always get appeded.
+You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
+***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
+
+Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
+
+
+
+restore "new list" creation function via regular button after limit is reached
+allow for bulk list copy to a new list with > 100 items
+allow for bulk list ops. with maxed out lists as target
+*/
+
+
 /* global moduleName */
 
 'use strict';
@@ -5673,15 +5685,15 @@ const token = null; // atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?)
 
 addStyles();
 
-document.addEventListener('click', (evt) => {
-  const listBtnEl = evt.target.closest('.quick-icons .list, .btn-summary.btn-list, .btn-summary.btn-list .side-btn .icon-add'),
-        popoverEl = evt.target.closest('.popover');
-  if (listBtnEl && !popoverEl) {
-    evt.stopPropagation();
-    evt.preventDefault();
-    addToListBtnOverride.call(listBtnEl);
-  }
-}, { capture: true });
+// document.addEventListener('click', (evt) => {
+//   const listBtnEl = evt.target.closest('.quick-icons .list, .btn-summary.btn-list, .btn-summary.btn-list .side-btn .icon-add'),
+//         popoverEl = evt.target.closest('.popover');
+//   if (listBtnEl && !popoverEl) {
+//     evt.stopPropagation();
+//     evt.preventDefault();
+//     addToListBtnOverride.call(listBtnEl);
+//   }
+// }, { capture: true });
 
 document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
@@ -5690,7 +5702,7 @@ document.addEventListener('turbo:load', async () => {
   if (!$ || !compressedCache || !Cookies) return;
 
 
-  unsafeWindow.actionList = addToListPopupOverride;
+  // unsafeWindow.actionList = addToListPopupOverride;
   $('body').removeAttr('data-turbo');
   patchUserSettings();
   if (token) $('body:not(.dashboard) .feed-icon.csv').attr('href', location.pathname + '.csv?slurm=' + token + location.search.replace('?', '&'));
@@ -5886,11 +5898,11 @@ function addStyles() {
 .alert-vip-required {
   display: none !important;
 }
-
-.popover:not(.copy-list) ul.lists li.maxed-out:not(.selected) {
-  text-decoration: line-through dashed 2px;
-}
   `);
+
+// .popover:not(.copy-list) ul.lists li.maxed-out:not(.selected) {
+//   text-decoration: line-through dashed 2px;
+// }
 
   const userslug = document.cookie.match(/(?:^|; )trakt_userslug=([^;]*)/)?.[1];
   if (userslug) {

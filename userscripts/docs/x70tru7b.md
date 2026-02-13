@@ -1,10 +1,10 @@
 # Trakt.tv | Partial VIP Unlock
-Unlocks some vip features: adding titles to maxed-out lists, advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
+Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/x70tru7b.min.user.js)
-[![version](https://img.shields.io/badge/version-2.0.5-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
-[![lines of code](https://img.shields.io/badge/loc-257-orange)](../../userscripts/dist/x70tru7b.user.js)
+[![version](https://img.shields.io/badge/version-2.1.0-blue)](../../../../blame/main/userscripts/dist/x70tru7b.user.js)
+[![lines of code](https://img.shields.io/badge/loc-244-orange)](../../userscripts/dist/x70tru7b.user.js)
 
 ## Info
 ### Full Unlock
@@ -24,10 +24,6 @@ Unlocks some vip features: adding titles to maxed-out lists, advanced filters, "
 - ***watch-now modal country selection***
 
 ### Partial Unlock
-- ***adding an item to maxed-out lists***<br>
-    (See the "List Limits Bypass" section down below, it's kind of like the second example, just automated. So if you've got a list with >= 100 items,
-    you can now directly add a new item to it using the regular ui elems. How long that takes depends on the size of that list, if it's 1000 items you're looking at about 45s until completion..
-    Hefty, but it works. Mind you that this is very much experimental and I can only emphasize the importance of backups here.)
 - ***advanced filters***<br>
     (no saved filters, though you can always just save the url of a search with its specific parameters as a bookmark.. works all the same)
 - ***custom calendars***<br>
@@ -47,25 +43,6 @@ I've got a couple more Trakt.tv userscripts which replicate other vip features i
 - [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
 
 Though you can always just install the [Trakt.tv \| Megascript](zzzzzzzz.md) instead.
-
-### List Limits Bypass
-Credit for this one goes to [SET19724](https://github.com/SET19724) who pointed out some inconsistencies with the unlocked bulk list actions in an issue.
-Turns out with those it's possible to bypass the imposed limits for both the number of lists and items per list:
-
-***Example 1:***<br>
-You've got your number of lists maxed out (2 by default). If you now want another list you can just go to any existing list (doesn't have to be your own) with 1-100 items,
-then use the "copy to new list" option and it creates a new list for you, which you can then edit and use however you want. Rinse and repeat. It works at least all the way up to 15 lists,
-I didn't push it any further. The "copied from..." text is not added if you use one of your own lists as source.<br>
-***=> "new list" target option of bulk list actions doesn't enforce max. list limit; source needs to have 1-100 items***
-
-***Example 2:***<br>
-Ever since they introduced the 100 items per list limit (watchlist included) I've been adding new titles to overflow lists (`watchlist2`, `watchlist3` etc).
-Let's say `watchlist` + `watchlist2` have 99 items each and `watchlist3` has 100 items. I can now do a bulk move from `watchlist3` to `watchlist2`,
-followed by a bulk move from `watchlist2` to `watchlist`, to accumulate all 298 items on that list. Ranks are preserved this way as the new items always get appeded.
-You can grow lists to arbitrary(ish, at ~4100 items I get 400 responses) sizes by sequentially merging them with target lists that have <= 99 items.<br>
-***=> copy/move bulk list actions don't enforce max. item limit on target list; target needs to already exist and have <= 99 items***
-
-Please don't draw any attention to this. I'd also suggest you make use of the [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md) userscript, just in case.
 
 ### Semi-Private Notes in Comments
 Trakt supports markdown syntax in comments, including reference-style links which you can misuse as a semi-private notes container like `[//]: # (hidden text goes here)`.
