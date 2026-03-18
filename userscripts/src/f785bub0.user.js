@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Trakt API Wrapper
 // @description  Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.
-// @version      1.0.4
+// @version      1.0.6
 // @namespace    f785bub0
 // @updateURL    https://update.greasyfork.org/scripts/564750.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -182,8 +182,8 @@ function sendApiRequest(req, opts) {
 }
 
 function parseTraktHeaders(headers) {
-  const normalizedHeaderEntries = headers.split(/\r?\n/).map((header) => header.split(':')).map(([key, val]) => [key.trim().toLowerCase(), val?.trim()]),
-        traktHeaderKeys = normalizedHeaderEntries.find(([key]) => key === 'access-control-expose-headers')[1].toLowerCase().split(',');
+  const normalizedHeaderEntries = headers.split(/\r?\n/).map((header) => header.split(/(?<=^[^:]+):/)).map(([key, val]) => [key.trim().toLowerCase(), val?.trim()]),
+        traktHeaderKeys = normalizedHeaderEntries.find(([key]) => key === 'access-control-expose-headers')?.[1].toLowerCase().split(',') ?? [];
   return Object.fromEntries(
     normalizedHeaderEntries
       .filter(([key]) => traktHeaderKeys.includes(key))
@@ -275,8 +275,8 @@ async function fetchAuthTokens() {
           ['commit', 'Yes'],
         ]),
       });
-      if (resp.status >= 200 && resp.status < 300) {
-        authCode = new URL(resp.finalUrl).searchParams.get('code');
+      authCode = new URL(resp.finalUrl).searchParams.get('code');
+      if (authCode) {
         logger.success('Application successfully authorized!', { data: { code: authCode } });
       } else {
         gmStorage.app = { id: gmStorage.app.id };
