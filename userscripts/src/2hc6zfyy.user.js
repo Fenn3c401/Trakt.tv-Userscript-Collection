@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Scheduled E-Mail Data Exports
 // @description  Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
-// @version      1.1.5
+// @version      1.1.6
 // @namespace    2hc6zfyy
 // @updateURL    https://update.greasyfork.org/scripts/550078.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -61,7 +61,7 @@ try {
 }
 
 
-cron && window.addEventListener('turbo:load', async () => {
+false && cron && window.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
   userslug ??= unsafeWindow.Cookies?.get('trakt_userslug');
   if (!$ || !userslug) return;
