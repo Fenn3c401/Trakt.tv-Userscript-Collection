@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper.
-// @version      2026-03-18_20-31
+// @version      2026-03-22_21-44
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -619,7 +619,7 @@ try {
 }
 
 
-cron && window.addEventListener('turbo:load', async () => {
+false && cron && window.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
   userslug ??= unsafeWindow.Cookies?.get('trakt_userslug');
   if (!$ || !userslug) return;
