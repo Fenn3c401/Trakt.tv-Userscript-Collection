@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Bug Fixes And Optimizations
 // @description  A large collection of bug fixes and optimizations for trakt.tv, organized into ~35 independent sections, each with a comment detailing which specific issues are being addressed. Also contains some minor feature patches.
-// @version      1.0.3
+// @version      1.0.5
 // @namespace    brzmp0a9
 // @updateURL    https://update.greasyfork.org/scripts/557302.meta.js
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -179,6 +179,10 @@ GM_addStyle(`
     padding: 15px 0 10px !important;
     background-color: #1d1d1d;
     mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link.saved-filter {
+    margin-bottom: 10px !important;
+    padding-left: 7px;
   }
   .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style*="display: none;"]) {
     display: block !important;
