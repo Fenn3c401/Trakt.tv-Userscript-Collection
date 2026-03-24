@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper. See README for details.
-// @version      2026-03-22_21-44
+// @version      2026-03-24_14-07
 // @namespace    https://github.com/Fenn3c401
 // @author       Fenn3c401
 // @license      GPL-3.0-or-later
@@ -14,7 +14,6 @@
 // @match        https://classic.trakt.tv/*
 // @run-at       document-start
 // @resource     anidap         https://anidap.se/logo.png
-// @resource     animetsu       https://db.onlinewebfonts.com/t/65e1ae41ad95e8bed2ac45adc765795a.woff2
 // @resource     cineby         https://www.cineby.gd/logo.png
 // @resource     dmm            https://raw.githubusercontent.com/debridmediamanager/debrid-media-manager/main/dmm-logo.svg
 // @resource     hexa           https://hexa.su/hexa-logo.png
@@ -22,9 +21,9 @@
 // @resource     kuroiru        https://kuroiru.co/logo/stuff/letter-small.png
 // @resource     miruro         https://www.miruro.to/assets/miruro-text-transparent-white-DRs0RmF1.png
 // @resource     oracleofbacon  https://oracleofbacon.org/center_list.php
-// @resource     pstream        data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMC4wMDggMTcuNDA1Ij48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDE4LjY3NDgpIHNjYWxlKDAuMDAzMzMzIC0wLjAwMzMzMykiIGZpbGw9IiM4NTg5ZmYiPjxwYXRoIGQ9Ik0zOTEwIDU1MjcgYy0zMyAtNCAtMTQ1IC0xNyAtMjUwIC0yOCAtNjQ1IC03MyAtOTAwIC0xODcgLTkwMCAtNDA1IGwwIC04OSAxNTQgLTIgYzIwOSAtMiAyMjUgLTE3IDM4MSAtMzU0IDE4NiAtMzk5IDMzNyAtNDkxIDU1NyAtMzQxIDEwMyA3MCAxNzYgNjcgMjUyIC05IDE0MyAtMTQyIC0xNSAtMzQyIC0zMjAgLTQwNCBsLTEyMyAtMjUgMTg1IC0zOTMgYzEwMSAtMjE3IDE4OSAtMzk2IDE5NCAtMzk4IDYgLTMgODcgNiAxODIgMjAgNDk5IDcxIDExNjAgLTI5NiA5NzIgLTU0MSAtNzcgLTEwMSAtMTgzIC0xMDAgLTMwNyAyIC0xODYgMTU0IC00MDcgMjIzIC02MTAgMTg4IC0xMjMgLTIxIC0xMTkgLTkgLTgwIC0yNzQgNDAgLTI3MyAxOCAtNzAxIC00OCAtOTE2IC0yNSAtODIgMjUyIC05OSA0NjMgLTI4IDY1NSAyMjAgMTE0NiA3NDggMTMzMCAxNDMwIDQ0IDE2NSA0NiAyMDEgNTMgMTIwNiBsOCAxMDM1IC02NyA2NiBjLTE4NSAxODMgLTEzNzYgMzM2IC0yMDI2IDI2MHogbTEwNzggLTEyMTkgYzExOCAtODEgMjA0IC04NCAzMTIgLTEwIDIzOSAxNjMgNDUzIC03MyAyNDAgLTI2NSAtMjQxIC0yMTggLTcwMyAtMTc4IC04MzIgNzEgLTkzIDE3OSAxMDUgMzIzIDI4MCAyMDR6Ii8+PHBhdGggZD0iTTI0MTAgNDU5MSBjLTk1MCAtMjAxIC0yNDA0IC0xMDE1IC0yNDA5IC0xMzQ4IC0xIC02OSA3NzEgLTE3MDcgODg1IC0xODc4IDQyMiAtNjMzIDExODUgLTk4NCAxOTI0IC04ODYgMjIxIDI5IDI5MyA2OCA0ODIgMjY0IDU3NSA1OTQgNzI3IDE0NjYgMzkwIDIyMzIgLTIzMSA1MjUgLTc0OSAxNjAwIC03ODUgMTYzMCAtNTcgNDggLTIxNCA0NCAtNDg3IC0xNHogbTU3OSAtMTEyMiBjMTE0IC01NCAxNDUgLTE4OCA2NCAtMjgxIC00OCAtNTYgLTYwIC01OCAtMjY1IC00NyAtMTAyIDYgLTE3NyAtNDIgLTIyOSAtMTQzIC05NSAtMTg3IC0zMzkgLTE0NSAtMzM5IDU3IDAgMjkxIDQ4MiA1NTAgNzY5IDQxNHogbS0xMzE5IC02MzAgYzIxNSAtMTA2IDg1IC0zNTAgLTE3MyAtMzI2IC0xNDQgMTMgLTIwOSAtMjEgLTI3MCAtMTQwIC0xMDIgLTE5NyAtMzgxIC0xMTkgLTMzOSA5NCA1OSAyOTUgNTA2IDUwOCA3ODIgMzcyeiBtMTQ3MiAtNTc3IGMyMTYgLTIxNyAtMjg3IC03ODkgLTc4NiAtODk1IC00NzMgLTEwMCAtOTA5IDEyNyAtNjU0IDM0MSA3MSA2MCA5MyA2MiAyMjYgMjIgMzQ4IC0xMDYgNzM5IDc3IDkwMyA0MjMgODMgMTc3IDIwMSAyMTggMzExIDEwOXoiLz48L2c+PC9zdmc+
 // @resource     scenenzbs      https://img.house-of-usenet.com/fd4bd542330506d41778e81860f29435c7f8795a7bbefbd9d297b7d79d5a067b.webp
 // @resource     stremio        https://web.stremio.com/images/stremio_symbol.png
+// @resource     vidora         data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iIzAwZmY5ZCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzYwYTVmYSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgcng9IjgiIGZpbGw9InVybCgjYSkiLz48cGF0aCBkPSJtOCA4IDggMTYgOC0xNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZS13aWR0aD0iMy41Ii8+PC9zdmc+
 // @require      https://cdn.jsdelivr.net/gh/stdlib-js/string-base-distances-levenshtein@v0.2.2-umd/browser.js#sha256-0SIsWI8h2EJjO46eyuxL1XnuGNhycW/o0yxyw/U+jrU=
 // @require      https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
 // @require      https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js
@@ -69,9 +68,9 @@
 | [Trakt.tv \| Enhanced List Preview Posters](kji85iek.md#StickyHeader "Makes the posters of list preview stacks/shelves link to the respective title summary pages instead of the list page and adds corner rating indicators for rated titles.") | `kji85iek` |
 | [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md#StickyHeader "Adds links of filtered search results to the metadata section (languages, genres, networks, studios, writers, certification, year) on title summary pages, similar to the vip feature. Also adds a country flag and allows for \"combined\" searches by clicking on the labels.") | `fyk2l3vj` |
 | [Trakt.tv \| Nested Header Navigation Menus](txw82860.md#StickyHeader "Adds 150+ dropdown menus with a total of 1000+ entries to the header navigation bar for one-click access to just about any page on the entire website.") | `txw82860` |
-| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: advanced filters, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
+| [Trakt.tv \| Partial VIP Unlock](x70tru7b.md#StickyHeader "Unlocks some vip features: advanced filters, creation of new lists, \"more\" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.") | `x70tru7b` |
 | [Trakt.tv \| Playback Progress Manager](swtn5c9q.md#StickyHeader "Adds playback progress badges to in-progress movies/episodes and allows for setting and removing playback progress states. Also adds playback progress overview pages to the \"Progress\" tab and allows for bulk deletion and renewal. DOES NOT WORK WITHOUT THE \"TRAKT API WRAPPER\" USERSCRIPT!") | `swtn5c9q` |
-| [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md#StickyHeader "Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).") | `2hc6zfyy` |
+| [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md#StickyHeader "OUT OF ORDER (for the time being). Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).") | `2hc6zfyy` |
 | [Trakt.tv \| Trakt API Wrapper](f785bub0.md#StickyHeader "Exposes an authenticated Trakt API Wrapper. Intended to run alongside other userscripts which require (authenticated) access to the Trakt API.") | `f785bub0` |
 */
 
@@ -81,7 +80,7 @@ A custom profile image for free users. Like the vip feature, except this one onl
 */
 
 /* [Trakt.tv | Scheduled E-Mail Data Exports]
-Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
+OUT OF ORDER (for the time being). Automatic trakt.tv backups for free users. On every trakt.tv visit a background e-mail data export is triggered, if one is overdue based on the specified cron expression (defaults to weekly).
 
 ### General
 - You might want to consider the use of an e-mail filter, so as to e.g. automatically move the data export e-mails to a dedicated trakt-tv-data-exports folder.
@@ -264,12 +263,13 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 > sergeyhist's [Watch Now Alternative](https://github.com/sergeyhist/trakt-watch-now-alternative) and Tanase Gabriel's [Trakt.tv Universal Search](https://greasyfork.org/en/scripts/508020) userscripts.
 
 ### General
-- By installing the [Trakt.tv | Trakt API Wrapper](f785bub0.md) userscript you can speed up the item data fetching.
-- `maxSidebarWnLinks` controls how many watch-now links are visible in the watch-now preview of the sidebar. The default is `4` and can be modfied
-    in the userscript storage tab *(note: only displayed after first run)*. There you can also modify `torrentResolution` which defaults to `1080p` and
-    is used for the query of the torrent and usenet links. Additionally `includeNsfwLinks` controls the visibility of the NSFW links and defaults to `false`.
-    For modifications beyond that you'll have to mess with the actual config arrays, which will disable automatic updates of the userscript. *(note: If I ever find the time I'll implement
-    a proper gui-based way to toggle, reorder and configure the links. I haven't done so yet, because it adds a decent amount of complexity while providing no real benefit to me personally.)*
+- Config options available via the userscript storage tab: *(note: only displayed after first run and with "Config mode" set to "Advanced" in TM settings)*
+  - `maxSidebarWnLinks`: Controls how many watch-now links are visible in the watch-now preview of the sidebar (defaults to `4`).
+  - `torrentResolution`: Resolution used for the query of the torrent and usenet links (defaults to `1080p`).
+  - `includeNsfwLinks`: Toggles the visibility of the NSFW links (defaults to `false` for greasyfork compliance).
+- Usually watch-now buttons of grid-items are only displayed if the title has been released and is available for streaming in your selected watch-now country.
+    This script changes that by unhiding all watch-now buttons and color coding them as to the title's digital release status. White means the title is available for streaming
+    in your selected watch-now country, light-grey means the title is available for streaming in another country and dark-grey means that the title is not available for streaming anywhere.
 - Nearly all links are direct links to e.g. individual episodes, as opposed to search links, anime included.
 - There's a "fix" for anime which default to the "wrong" episode group (aka. "alternate seasons"). For example "Solo Leveling" is listed with its second season being part of the first,
     and the episodes for "Cowboy Bebop" are all out of order, which would otherwise mess up direct linking to streaming sites. Trakt uses whichever grouping is used by TMDB and they have some,
@@ -278,28 +278,23 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
     the element behaves just like a regular link. A dynamic link is also resolved on right click, so you can e.g. do a double right click with a small delay in between
     to use the "open in incognito window" option like you can with a regular link.
 - Some links are configured to only be added if certain conditions are met, e.g. anime links are only added for titles where "anime" is included in the genres.
+- A scrollable plot summary is added to the watch-now modal. The watch-now modal and the sidebar are also made scrollable.
 - I only included anime streaming sites which used some sort of known external id (e.g. mal, anilist) and an episode number for their episode urls, to allow for direct linking.
     One of these is "Kuroiru", an anime aggregator which contains more direct episode links to other popular anime streaming sites like HiAnime or AnimeKai.
-- Usually watch-now buttons of grid-items are only displayed if the title has been released and is available for streaming in your selected watch-now country.
-    This script changes that by unhiding all watch-now buttons and color coding them as to the title's digital release status. White means the title is available for streaming
-    in your selected watch-now country, light-grey means the title is available for streaming in another country and dark-grey means that the title is not available for streaming anywhere.
-- A scrollable plot summary is added to the watch-now modal. The watch-now modal and the sidebar are also made scrollable.
-- The mobile-layout sidebar from the screenshots is part of the [Trakt.tv | Bug Fixes and Optimizations](brzmp0a9.md) userscript.
 
 ### Default Custom Links
 #### Watch-Now
 - [EXT](https://ext.to) [Torrent Aggregator]
 - [Stremio](https://www.stremio.com) [Debrid]
+- [Knaben Database](https://knaben.org) [Torrent Aggregator]
 - [Kuroiru](https://kuroiru.co) [Anime Aggregator]
-- [Animetsu](https://animetsu.cc) [Anime Streaming]
 - [AniDap](https://anidap.se) [Anime Streaming]
 - [Miruro](https://www.miruro.to) [Anime Streaming]
-- [Knaben Database](https://knaben.org) [Torrent Aggregator]
-- [P-Stream](https://pstream.mov) [Streaming]
+- [Fmovies+](https://www.fmovies.gd) [Streaming]
+- ~~[Vidora](https://watch.vidora.su) [Streaming] (embedded playback with support for one-way playback progress syncing if you've got my [PPM userscript](swtn5c9q.md) installed as well (only 5-80% and no scrobbling!))~~
 - [Cineby](https://www.cineby.gd) [Streaming]
 - [Hexa](https://hexa.su) [Streaming]
-- [FMOVIES+](https://www.fmovies.gd) [Streaming]
-- [SceneNZBs](https://scenenzbs.com) [Usenet Indexer]
+- [SceneNZBs](https://scenenzbs.com) [Usenet Indexer] (great fallback if a title is not available on public torrent trackers or streaming sites)
 - [Debrid Media Manager](https://debridmediamanager.com) [Debrid]
 
 #### External
@@ -308,9 +303,9 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [ReverseTV](https://reversetv.enzon19.com) ("Where have I seen each cast member before?")
 - [MovieMaps](https://moviemaps.org) (interactive map of filming locations)
 - [Fandom](https://www.fandom.com) (fan-made encyclopedias)
-- [AZNude](https://www.aznude.com) (NSFW; for titles and people)
-- [CelebGate](https://celeb.gate.cc) (NSFW; people only)
-- [Rule 34](https://rule34.xxx) (NSFW; titles only)
+- [AZNude](https://www.aznude.com) (NSFW; nude scenes for titles and people)
+- [CelebGate](https://celeb.gate.cc) (NSFW; people only; great source for leaks)
+- [Rule 34](https://rule34.xxx) (NSFW; titles only; "If it exists there is p*rn of it.")
 - [MyAnimeList](https://myanimelist.net) (anime tracking site)
 - [AniList](https://anilist.co) (anime tracking site)
 - [AniDB](https://anidb.net) (anime tracking site)
@@ -323,12 +318,12 @@ Adds custom links to all the "Watch-Now" and "External" sections (for titles and
 - [Metacritic](https://www.metacritic.com) (ratings/reviews from professional critics)
 - [Spotify](https://open.spotify.com) (soundtracks)
 - [MediUX](https://mediux.pro) (similar to fanart.tv)
-- [YouGlish](https://youglish.com) ("How do I pronounce this actors's name?")
+- [YouGlish](https://youglish.com) ("How do I pronounce this actor's name?")
 - [Oracle of Bacon](https://oracleofbacon.org) ([Six Degrees of Kevin Bacon](https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon))
 */
 
 /* [Trakt.tv | Partial VIP Unlock]
-Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
+Unlocks some vip features: advanced filters, creation of new lists, "more" buttons on dashboard, faster page navigation, bulk list management, rewatching, custom calendars, advanced list progress and more. Also hides some vip advertisements.
 
 ### Full Unlock
 - ***"more" buttons on dashboard***
@@ -345,37 +340,42 @@ Unlocks some vip features: advanced filters, "more" buttons on dashboard, faster
 
 ### Partial Unlock
 - ***advanced filters***<br>
-    (no saved filters, though you can always just save the url of a search with its specific parameters as a bookmark.. works all the same)
+    (You can save filter presets to the sidebar with the "Save Filters" context menu command (available via Tampermonkey's extension popup window as well).)
 - ***custom calendars***<br>
     (get generated and work, but are not listed in sidebar and can't be deleted, so you have to save the url of the custom calendar or "regenerate" it on the `/lists` page)
 - ***advanced list progress***<br>
     (From my understanding the idea is to filter your `/progress/watched` and `/progress/dropped` pages by the shows on a specific list. As this script also unlocks
     the filter-by-terms function which on the `/progress` pages happens to have regex support, it's possible to just OR all titles of watched shows on a list to get the same result.
     Drawbacks of this are that you can't use filter-by-terms anymore, active filters are turned off in the process (e.g. hide completed), and that shows with the same name can lead to incorrect results.)
-- ***~~rss/ical feeds + csv exports~~ => [How anyone can create data exports of arbitrary private user accounts](https://github.com/trakt/trakt-api/issues/636)***<br>
-    (Makes their [privacy policy](https://trakt.tv/privacy) and "You're not the product. We never sell your data." mantra read like a bad joke, nevermind the fact that they failed to make any sort of public
-    announcement about this, didn't notify the affected users and didn't produce an incident report, so god knowns on what scale this was exploited. And all I got in return was getting ghosted. Twice.)
-
-### Related Userscripts
-I've got a couple more Trakt.tv userscripts which replicate other vip features in some way:
-- [Trakt.tv \| Custom Profile Header Image](2dz6ub1t.md)
-- [Trakt.tv \| Enhanced Title Metadata](fyk2l3vj.md)
-- [Trakt.tv \| Scheduled E-Mail Data Exports](2hc6zfyy.md)
-
-Though you can always just install the [Trakt.tv \| Megascript](zzzzzzzz.md) instead.
+- ***bulk list copy and delete***<br>
+    (The "move" bulk list action is also unlocked but [can fail and result in data loss](https://greasyfork.org/en/scripts/557305-trakt-tv-megascript/discussions/320717),
+    which is why I removed the respective ui elem. If you want to make a bulk move you can instead first do a bulk copy and then a bulk deletion of the source list (same result but much safer).<br>
+    The item selection is filter based, so if you're filtering a list by genre then the bulk list actions will only apply to titles with that genre. Filtering by trakt-rating, trakt-votes,
+    years and runtime works as well, just directly modify the search params in the url (it's the same as for the advanced filters).)
+- ***creation of new lists***<br>
+    (You can bypass the limit for the amount of lists a free user is allowed to have, by going to any existing list (doesn't have to be your own) with 1-100 items,
+    and then using the "copy to new list" option and it will create a new list for you, which you can then edit and use however you want.
+    The "copied from..." text is not added if you use one of your own lists as source (like your favorites).)
+- ***~~adding items to maxed-out lists~~ => They unfortunately fixed that.***<br>
+    (This bypass was discovered thanks to an issue from [SET19724](https://github.com/SET19724). You can now add titles to maxed-out lists with the regular ui elements, which will trigger
+    two background bulk move ops because those don't properly enforce the max item limit for lists. Per 1000 items on the target list this will take ~45s. In the same way
+    you can also merge lists manually. Say you've got the lists: `watchlist1` + `watchlist2` with 99 items each and `watchlist3` with 100 items. You can now do a bulk move
+    from `watchlist3` to `watchlist2`, followed by a bulk move from `watchlist2` to `watchlist1`, to accumulate all 298 items on that list.
+    So you can grow lists to a max-size of ~4100 items by sequentially merging them with target lists that have <= 99 items.)
+- ***~~rss/ical feeds + csv exports~~ => [Trakt was leaking private user data](https://www.reddit.com/r/Addons4Kodi/comments/1rklk67/trakt_was_leaking_private_user_data/)***<br>
 
 ### Semi-Private Notes in Comments
 Trakt supports markdown syntax in comments, including reference-style links which you can misuse as a semi-private notes container like `[//]: # (hidden text goes here)`.
 The raw markdown is of course still accessible to anyone through the Trakt api and the `/comments/<comment-id>.json` endpoint (you yourself can also see the raw version when editing),
-but the content is not rendered in the classic and new web versions, in fact a comment can appear to be completely empty this way. I found this interesting because it's a relatively elegant way to
-work around the max. limit for private notes (currently 100), as the note-comments are still stored directly on your Trakt account on a per-title basis and can easily be accessed on arbitrary
+but the content is not rendered in the classic and new web versions, in fact a comment can appear to be completely empty this way. I think this is interesting because it's a relatively elegant way
+to work around the max. limit for private notes (currently 100), as the note-comments are still stored directly on your Trakt account on a per-title basis and can easily be accessed on arbitrary
 platforms, including ones that don't support userscripts. It's probably advisable to disguise the note-comments by always adding some generic one-liner.
 
 ### Filter-By-Terms Regex
 The filter-by-terms (also called "Filter by Title") function works either server or client-side, depending on whether the exact place you're using it from is paginated or not.
-The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as a case-insensitive regular expression.
-All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering, those usually don't allow for regular expressions, with the exception of
-the `/progress` page and list pages. The input is matched against:
+The `/users/<userslug>/lists`, `/seasons` and `/people` pages are all not paginated, so there the filtering is done client-side, with the input being interpreted as
+a case-insensitive regular expression. All other places where the filter-by-terms function is available are paginated and therefore use server-side filtering,
+those usually don't allow for regular expressions, with the exception of the `/progress` page and list pages. The input is matched against:
 - list title and description for `/users/<userslug>/lists` pages
 - episode title for `/seasons` pages
 - title and character name for `/people` pages
@@ -956,6 +956,10 @@ GM_addStyle(`
     padding: 15px 0 10px !important;
     background-color: #1d1d1d;
     mask: linear-gradient(to top, transparent, white 8px);
+  }
+  .frame-wrapper .sidenav:not(.advanced-filters) nav .link.saved-filter {
+    margin-bottom: 10px !important;
+    padding-left: 7px;
   }
   .frame-wrapper .sidenav:not(.advanced-filters) nav .link:not([style*="display: none;"]) {
     display: block !important;
@@ -4834,6 +4838,7 @@ const watchNowCategories = {
   debrid: 'Debrid',
   streaming: 'Streaming',
   torrentAggregator: 'Torrent Aggregator',
+  torrentTracker: 'Torrent Tracker',
   usenetIndexer: 'Usenet Indexer',
 };
 
@@ -4844,24 +4849,22 @@ const customWatchNowLinks = [
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('torrentAggregator'),
   },
   { // to open in desktop app use: buildHref: (i) => `stremio:///detail/...
-    buildHref: (i) => `https://web.stremio.com/#/detail/${i.type === 'movies' ? `movie/${i.ids.imdb}/${i.ids.imdb}` : `series/${i.ids.imdb}${i.type === 'seasons' ? `?season=${i.season}` : i.type === 'episodes' ? customLinkHelperFns.encodeRfc3986(`/${i.ids.imdb}:${i.season}:${i.episode}`) : ''}`}`,
+    buildHref: (i) => `https://web.stremio.com/#/detail/${i.type === 'movies' ? `movie/${i.ids.imdb}/${i.ids.imdb}` : `series/${i.ids.imdb}${i.type === 'seasons' ? `?season=${i.season}` : i.type === 'episodes' ? `/${i.ids.imdb}:${i.season}:${i.episode}` : ''}`}`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #19163a;', img: 'stremio', text: 'Stremio' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('debrid'),
   },
   {
+    buildHref: (i) => `https://knaben.org/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${customLinkHelperFns.encodeRfc3986(gmStorage.torrentResolution)} (265|av1)/${i.type === 'movies' ? '3000000' : i.genres.includes('anime') ? '6000000' : '2000000'}/1/${/shows|seasons/.test(i.type) ? 'bytes' : 'seeders'}`,
+    innerHtml: `<div class="icon btn-custom" style="background: #323537; flex-direction: column;">${GM_getResourceText('knaben').replace('<svg', '<svg style="max-height: 79%;"')}<div class="text" style="font-family: system-ui; font-size: 10cqi; letter-spacing: 0.3px;">KNABEN DATABASE</div></div>`,
+    tooltipHtml: customLinkHelperFns.getWnCategoryHtml('torrentAggregator'),
+  },
+  {
     buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'myanimelist')}` +
-      `.then((id) => id ?? userscriptGmXhrCustomLinks({ url: 'https://kuroiru.co/backend/search', method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, data: 'q=${customLinkHelperFns.encodeRfc3986(i.title)}', responseType: 'json' }).then((r) => r.response[0]?.id))` +
+      `.then((id) => id ?? userscriptGmXhrCustomLinks({ url: 'https://kuroiru.co/backend/search', method: 'POST', data: new URLSearchParams('q=${customLinkHelperFns.encodeRfc3986(i.title)}'), responseType: 'json' }).then((r) => r.response[0]?.id))` +
       `.then((id) => 'https://kuroiru.co/anime/' + id + '/ep${i.episode ?? '1'}')`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #191919;', img: 'kuroiru' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeAggregator'),
     includeIf: (i) => i.genres.includes('anime'),
-  },
-  {
-    buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://animetsu.cc' + (id ? '/watch/' + id + '?ep=${i.episode ?? '1'}&subType=dub&server=' : '/search?query=${customLinkHelperFns.encodeRfc3986(i.title)}'))`,
-    innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #111;', text: 'Animetsu', textStyle: 'font-family: GangOfThree; font-size: 18cqi;' }),
-    tooltipHtml: customLinkHelperFns.getWnCategoryHtml('animeStreaming'),
-    includeIf: (i) => i.genres.includes('anime'),
-    addStyles: `@font-face { font-family: "GangOfThree"; src: url("${GM_getResourceURL('animetsu')}") format("woff2"); font-display: block; }`,
   },
   { // type=dub is bugged
     buildHref: (i) => `${customLinkHelperFns.fetchAnimeId(i, 'anilist')}.then((id) => 'https://anidap.se' + (id ? '/watch?ep=${i.episode ?? '1'}&type=dub&provider=&id=' + id : '/search?q=${customLinkHelperFns.encodeRfc3986(i.title)}'))`,
@@ -4876,13 +4879,8 @@ const customWatchNowLinks = [
     includeIf: (i) => i.genres.includes('anime'),
   },
   {
-    buildHref: (i) => `https://knaben.org/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${customLinkHelperFns.encodeRfc3986(gmStorage.torrentResolution)} (265|av1)/${i.type === 'movies' ? '3000000' : i.genres.includes('anime') ? '6000000' : '2000000'}/1/${/shows|seasons/.test(i.type) ? 'bytes' : 'seeders'}`,
-    innerHtml: `<div class="icon btn-custom" style="background: #323537; flex-direction: column;">${GM_getResourceText('knaben').replace('<svg', '<svg style="max-height: 79%;"')}<div class="text" style="font-family: system-ui; font-size: 10cqi; letter-spacing: 0.3px;">KNABEN DATABASE</div></div>`,
-    tooltipHtml: customLinkHelperFns.getWnCategoryHtml('torrentAggregator'),
-  },
-  {
-    buildHref: (i) => `https://iframe.pstream.mov/embed/tmdb-${i.type === 'movies' ? `movie-${i.ids.tmdb}` : `tv-${i.ids.tmdb}/${i.season !== undefined ? i.season : '1'}/${i.episode ? i.episode : '1'}`}`,
-    innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #110d1b;', img: 'pstream', text: 'P-Stream', textStyle: 'font-size: 11cqi;' }),
+    buildHref: (i) => `https://www.fmovies.gd/watch${customLinkHelperFns.getDefaultDirectStreamingPath(i)}`,
+    innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #18252b;', text: 'FMOVIES+', textStyle: 'background-image: linear-gradient(to right, rgb(13 202 240), rgb(13 202 240 / 35%)); background-clip: text; color: transparent; font-family: system-ui; font-size: 15cqi; font-weight: 800; letter-spacing: 0.3px; border: 2px solid rgb(13 202 240 / 25%); border-radius: 5px; padding: 5%;' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('streaming'),
   },
   {
@@ -4895,11 +4893,6 @@ const customWatchNowLinks = [
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #111317;', img: 'hexa' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('streaming'),
   },
-  {
-    buildHref: (i) => `https://www.fmovies.gd/watch${customLinkHelperFns.getDefaultDirectStreamingPath(i)}`,
-    innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #18252b;', text: 'FMOVIES+', textStyle: 'background-image: linear-gradient(to right, rgb(13 202 240), rgb(13 202 240 / 35%)); background-clip: text; color: transparent; font-family: system-ui; font-size: 15cqi; font-weight: 800; letter-spacing: 0.3px; border: 2px solid rgb(13 202 240 / 25%); border-radius: 5px; padding: 5%;' }),
-    tooltipHtml: customLinkHelperFns.getWnCategoryHtml('streaming'),
-  },
   { // https://scenenzbs.com/search#adv-subtabs
     buildHref: (i) => `https://scenenzbs.com/search/${customLinkHelperFns.getDefaultTorrentQuery(i)} ${customLinkHelperFns.encodeRfc3986(gmStorage.torrentResolution)} (265|av1)`,
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #212529;', img: 'scenenzbs', imgStyle: 'transform: scale(1.8) translateY(-1px);' }),
@@ -4910,6 +4903,43 @@ const customWatchNowLinks = [
     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #2e3e51;', img: 'dmm', imgStyle: 'transform: scale(1.7);', text: 'Debrid<br>Media<br>Manager', textStyle: 'font-size: 12cqi;' }),
     tooltipHtml: customLinkHelperFns.getWnCategoryHtml('debrid'),
   },
+//   { // https://vidora.su/docs
+//     buildHref: (i) => `https://vidora.su${customLinkHelperFns.getDefaultDirectStreamingPath(i)}?autoplay=true&colour=f1091c&pausescreen=false`,
+//     innerHtml: customLinkHelperFns.getWnInnerHtml({ btnStyle: 'background: #004a51;', img: 'vidora', text: 'Vidora', textStyle: `background-image: linear-gradient(to right, #00ff9d, #60a5fa); background-clip: text; color: transparent; font-family: 'Varela Round'; font-size: 18cqi; letter-spacing: 0;` }),
+//     tooltipHtml: `${customLinkHelperFns.getWnCategoryHtml('streaming')}<br>(EMB + SYNC)`,
+//     openInFrame: true,
+//     _syncSetup: (() => window.addEventListener('message', async (evt) => { // dispatched every 4s
+//       if (evt.data?.type === 'MEDIA_DATA') {
+//         const mediaData = evt.data.data,
+//               pbProgMan = unsafeWindow.userscriptPbProgMan;
+//         if (!mediaData.id || !/movie|tv/.test(mediaData.type) || !pbProgMan) return;
+//         let itemUrl, watched, duration;
+
+//         if (mediaData.type === 'movie') {
+//           itemUrl = Object.values(itemDataCache).find((i) => i.type === 'movies' && i.ids.tmdb === +mediaData.id)?.item_url;
+//           watched = mediaData.progress.watched;
+//           duration = mediaData.progress.duration;
+//         } else if (mediaData.type === 'tv') {
+//           const idMatches = Object.values(itemDataCache).filter((i) => /shows|seasons|episodes/.test(i.type) && i.ids.tmdb === +mediaData.id);
+//           itemUrl = idMatches.find((i) => i.type === 'episodes' && i.season === mediaData.last_season_watched && i.episode === mediaData.last_episode_watched)?.item_url;
+//           if (!itemUrl) {
+//             const epData = await traktApiWrapper.episodes.summary({ id: idMatches[0].ids.trakt, season: mediaData.last_season_watched, episode: mediaData.last_episode_watched });
+//             itemUrl = `/episodes/${epData.ids.trakt}`;
+//             getItemData(itemUrl);
+//           }
+//           const progress = mediaData.show_progress?.[`s${mediaData.last_season_watched}e${mediaData.last_episode_watched}`]?.progress;
+//           watched = progress?.watched;
+//           duration = progress?.duration;
+//         }
+
+//         if (itemUrl && watched && duration) {
+//           const prog = (watched / duration) * 100;
+//           const progOld = pbProgMan.items[itemUrl]?.progress;
+//           if (prog > 5 && prog < 80 && (!progOld || (Math.abs(prog - progOld) / 100) * duration > 30)) pbProgMan.set(itemUrl, prog, false);
+//         }
+//       }
+//     }))(),
+//   },
 ];
 
 const customExternalLinks = [
@@ -5128,13 +5158,16 @@ let $, traktApiWrapper;
 unsafeWindow.userscriptLevDist = levenshteinDistance;
 unsafeWindow.userscriptGmOpenInTab = GM_openInTab;
 unsafeWindow.userscriptGmXhrCustomLinks = GM.xmlHttpRequest;
-unsafeWindow.userscriptItemDataCache = {};
 
 const gmStorage = { maxSidebarWnLinks: 4, torrentResolution: '1080p', includeNsfwLinks: false, ...(GM_getValue('customLinks')) };
 GM_setValue('customLinks', gmStorage);
 
+const itemDataCache = {};
+
 
 addStyles();
+
+// document.documentElement.insertAdjacentHTML('beforeend', '<iframe id="custom-links-frame" allow="autoplay; fullscreen; picture-in-picture" credentialless></iframe>');
 
 document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
@@ -5169,14 +5202,20 @@ document.addEventListener('turbo:load', async () => {
 
 const getCustomLinkHtml = (l, itemData, innerHtmlOverride) => {
   const buildHref = l.buildHref(itemData);
-  return `<a ${!/\)\.then\(/.test(buildHref) ? `href="${buildHref}"` : `href="javascript:void(0);" ` +
-    `onclick="event.preventDefault(); ` +
-             `$(this).removeAttr('onclick onauxclick'); ` +
-             `${buildHref}.then((href) => { $(this).attr('href', href); userscriptGmOpenInTab(href, { active: true, setParent: true }); });" ` +
-    `onauxclick="event.preventDefault(); ` +
-             `$(this).removeAttr('onclick onauxclick'); ` +
-             `${buildHref}.then((href) => { $(this).attr('href', href); if (event.button === 1) userscriptGmOpenInTab(href, { setParent: true }); });"`} ` +
-    `target="_blank" rel="noreferrer" data-original-title="${l.tooltipHtml ?? ''}">${innerHtmlOverride ?? l.innerHtml}</a>`;
+  if (!l.openInFrame) {
+    return `<a ${!/\)\.then\(/.test(buildHref) ? `href="${buildHref}"` : `href="javascript:void(0);" ` +
+      `onclick="event.preventDefault(); ` +
+        `$(this).removeAttr('onclick onauxclick'); ` +
+        `${buildHref}.then((href) => { $(this).attr('href', href); userscriptGmOpenInTab(href, { active: true, setParent: true }); });" ` +
+      `onauxclick="event.preventDefault(); ` +
+        `$(this).removeAttr('onclick onauxclick'); ` +
+        `${buildHref}.then((href) => { $(this).attr('href', href); if (event.button === 1) userscriptGmOpenInTab(href, { setParent: true }); });"`} ` +
+      `target="_blank" rel="noreferrer" data-original-title="${l.tooltipHtml ?? ''}">${innerHtmlOverride ?? l.innerHtml}</a>`;
+  } else {
+    return `<a href="javascript:void(0);" ` +
+      `onclick="$('#custom-links-frame').attr('src') !== '${buildHref}' ? $('#custom-links-frame').attr('src', '${buildHref}').show() : $('#custom-links-frame').removeAttr('src').hide();" ` +
+      `data-original-title="${l.tooltipHtml ?? ''}">${innerHtmlOverride ?? l.innerHtml}</a>`;
+  }
 };
 
 function addExternalLinksToSidebar(itemData) {
@@ -5303,7 +5342,7 @@ async function addCustomLinksToModal($watchNowContent) {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 async function getItemData(itemUrl) {
-  return (unsafeWindow.userscriptItemDataCache[itemUrl] ??= await (
+  return (itemDataCache[itemUrl] ??= await (
     (traktApiWrapper ? getItemDataFromTraktApi : getItemDataFromSummaryPage)(itemUrl)
       .then((i) => i.type === 'episodes' && i.genres.includes('anime') ? verifyEpisodeGroup(i) : i)
   ));
@@ -5443,6 +5482,17 @@ async function verifyEpisodeGroup(itemData) { // some anime don't default to the
 
 function addStyles() {
   GM_addStyle(`
+#custom-links-frame {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 999999;
+  width: max(35vw, 300px);
+  aspect-ratio: 16 / 9;
+  display: none;
+}
+
+
 #info-wrapper .additional-stats.with-external-links .visible-xs {
   font-size: 0;
   user-select: none;
@@ -5648,10 +5698,10 @@ const logger = {
 const gmStorage = { ...(GM_getValue('vipUnlock')) };
 GM_setValue('vipUnlock', gmStorage);
 
-const token = null; // atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?) -->/)[1];
+const token = null; // atob(GM_info.script.icon.split(',')[1]).match(/<!-- (.*?) -->/)[1]; // 45d2385d3aacbb59326a386149c5a878 (Trakt Co-Founder Justin's admin feed token)
 
+let saveFiltersMenuCommandId = null;
 
-addStyles();
 
 // document.addEventListener('click', (evt) => {
 //   const listBtnEl = evt.target.closest('.quick-icons .list, .btn-summary.btn-list, .btn-summary.btn-list .side-btn .icon-add'),
@@ -5663,6 +5713,8 @@ addStyles();
 //   }
 // }, { capture: true });
 
+addStyles();
+
 document.addEventListener('turbo:load', async () => {
   $ ??= unsafeWindow.jQuery;
   compressedCache ??= unsafeWindow.compressedCache;
@@ -5671,7 +5723,7 @@ document.addEventListener('turbo:load', async () => {
 
 
   // unsafeWindow.actionList = addToListPopupOverride;
-  $('body').removeAttr('data-turbo');
+  if (location.pathname !== '/auth/signin') $('body').attr('data-turbo', true).data('turbo', true);
   patchUserSettings();
   if (token) $('body:not(.dashboard) .feed-icon.csv').attr('href', location.pathname + '.csv?slurm=' + token + location.search.replace('?', '&'));
 
@@ -5711,6 +5763,10 @@ document.addEventListener('turbo:load', async () => {
     });
     location.search = searchParams.toString();
   }
+
+
+  if (saveFiltersMenuCommandId !== null) { GM_unregisterMenuCommand(saveFiltersMenuCommandId); saveFiltersMenuCommandId = null; };
+  if (unsafeWindow.advancedFiltersOn) saveFiltersMenuCommandId = GM_registerMenuCommand('VIP Unlock: Save Filters', () => $('#saved-filters-modal').modal('show'));
 }, { capture: true });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -5868,7 +5924,6 @@ function addStyles() {
   display: none !important;
 }
   `);
-
 // .popover:not(.copy-list) ul.lists li.maxed-out:not(.selected) {
 //   text-decoration: line-through dashed 2px;
 // }
