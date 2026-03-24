@@ -3,13 +3,14 @@ My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation 
 
 [![install standard](https://img.shields.io/badge/install-standard-006400)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.user.js)
 [![install minified](https://img.shields.io/badge/install-minified-64962a)](https://raw.githubusercontent.com/Fenn3c401/Trakt.tv-Userscript-Collection/main/userscripts/dist/zzzzzzzz.min.user.js)
-[![version](https://img.shields.io/badge/version-2026--03--24__14--07-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
+[![version](https://img.shields.io/badge/version-2026--03--24__14--23-blue)](../../../../blame/main/userscripts/dist/zzzzzzzz.user.js)
 [![lines of code](https://img.shields.io/badge/loc-4871-orange)](../../userscripts/dist/zzzzzzzz.user.js)
 
 ## Info
 ### General
-- You can disable individual modules by setting the corresponding id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding id to `false` in the userscript storage tab *(note: only displayed after first run and with "Config mode" set to "Advanced" in TM settings)*.
 - Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
+- Newly added modules will automatically get enabled when the script is updated. Modules that you already disabled will stay disabled.
 - As VIP user you should disable: `2dz6ub1t`, `fyk2l3vj`, `x70tru7b`, `2hc6zfyy`
 - This userscript is automatically generated. YMMV.
 

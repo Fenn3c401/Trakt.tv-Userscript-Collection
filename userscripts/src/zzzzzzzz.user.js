@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Trakt.tv | Megascript
 // @description  My 15 trakt.tv userscripts merged into one for convenience: Actor Pronunciation Helper, All-In-One Lists View, Average Season And Episode Ratings, Bug Fixes And Optimizations, Charts - Ratings Distribution, Charts - Seasons, Custom Links (Watch-Now + External), Custom Profile Header Image, Enhanced List Preview Posters, Enhanced Title Metadata, Nested Header Navigation Menus, Partial VIP Unlock, Playback Progress Manager, Scheduled E-Mail Data Exports, Trakt API Wrapper.
-// @version      2026-03-24_14-07
+// @version      2026-03-24_14-23
 // @updateURL    https://update.greasyfork.org/scripts/557305.meta.js
 // @namespace    zzzzzzzz
 // @icon         https://trakt.tv/assets/logos/logomark.square.gradient-b644b16c38ff775861b4b1f58c1230f6a097a2466ab33ae00445a505c33fcb91.svg
@@ -45,8 +45,9 @@
 
 /* README
 ### General
-- You can disable individual modules by setting the corresponding id to `false` in the userscript storage tab *(note: only displayed after first run)*.
+- You can disable individual modules by setting the corresponding id to `false` in the userscript storage tab *(note: only displayed after first run and with "Config mode" set to "Advanced" in TM settings)*.
 - Each enabled module will conflict with the corresponding standalone userscript. Either uninstall the standalone version (suggested) or disable the respective module.
+- Newly added modules will automatically get enabled when the script is updated. Modules that you already disabled will stay disabled.
 - As VIP user you should disable: `2dz6ub1t`, `fyk2l3vj`, `x70tru7b`, `2hc6zfyy`
 - This userscript is automatically generated. YMMV.
 
